@@ -35,3 +35,8 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### CUSTOM ###
+.DS_Store
+*.yml
+/resources/
