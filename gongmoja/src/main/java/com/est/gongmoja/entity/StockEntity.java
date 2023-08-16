@@ -38,8 +38,7 @@ public class StockEntity {
     @OneToMany(mappedBy = "stock")
     private List<NewsEntity> newsEntityList = new ArrayList<>();
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "stocks")
+    @ManyToMany(mappedBy = "stocks")
     private List<UserEntity> users;
 
     @OneToOne(fetch = FetchType.LAZY)
