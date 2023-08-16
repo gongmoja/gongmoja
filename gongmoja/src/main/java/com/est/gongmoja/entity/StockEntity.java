@@ -36,10 +36,9 @@ public class StockEntity {
     private int minOrder; // 최소 주문량
 
     @OneToMany(mappedBy = "stock")
-    private List<NewsEntity> newsEntityList = new ArrayList<>();
+    final private List<NewsEntity> newsEntityList = new ArrayList<>();
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "stocks")
+    @ManyToMany(mappedBy = "stocks")
     private List<UserEntity> users;
 
     @OneToOne(fetch = FetchType.LAZY)
@@ -49,4 +48,5 @@ public class StockEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "calender_id")
     private CalenderEntity calender;
+
 }

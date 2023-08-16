@@ -24,7 +24,7 @@ public class ChatRoomEntity {
     private LocalDateTime closeDate;
 
     @OneToMany(mappedBy = "chatRoom")
-    private List<ChatDataEntity> chatDataEntityList = new ArrayList<>();
+    final private List<ChatDataEntity> chatDataEntityList = new ArrayList<>();
 
 
 }

@@ -25,11 +25,9 @@ public class UserEntity {
     private int role;
 
     @OneToMany(mappedBy = "user")
-    private List<QuestionEntity> questionEntities = new ArrayList<>();
+    final private List<QuestionEntity> questionEntities = new ArrayList<>();
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "favorites")
     private List<StockEntity> stocks;
-
-
 }

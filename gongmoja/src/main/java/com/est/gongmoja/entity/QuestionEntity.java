@@ -29,6 +29,6 @@ public class QuestionEntity {
     private UserEntity user;
 
     @OneToMany(mappedBy = "question")
-    private List<QuestionImageEntity> questionImageList = new ArrayList<>();
+    final private List<QuestionImageEntity> questionImageList = new ArrayList<>();
 
 }
