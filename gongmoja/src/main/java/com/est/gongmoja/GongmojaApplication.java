@@ -1,4 +1,4 @@
-package com.est.gongmoja.service;
+package com.est.gongmoja;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
