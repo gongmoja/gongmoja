@@ -20,5 +20,5 @@ public class CalenderEntity {
     private Long id;
 
     @OneToMany(mappedBy = "calender")
-    private List<StockEntity> stockEntityList = new ArrayList<>();
+    final private List<StockEntity> stockEntityList = new ArrayList<>();
 }
