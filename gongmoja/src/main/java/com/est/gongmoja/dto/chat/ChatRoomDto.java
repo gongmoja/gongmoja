@@ -1,4 +1,4 @@
-package com.est.gongmoja.dto;
+package com.est.gongmoja.dto.chat;
 
 import com.est.gongmoja.entity.ChatDataEntity;
 import com.est.gongmoja.entity.StockEntity;

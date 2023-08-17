@@ -45,7 +45,7 @@ public class StockEntity {
     private ChatRoomEntity chatRoom;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "calender_id")
-    private CalendarEntity calender;
+    @JoinColumn(name = "calendar_id")
+    private CalendarEntity calendar;
 
 }

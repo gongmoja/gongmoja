@@ -1,4 +1,4 @@
-package com.est.gongmoja.dto;
+package com.est.gongmoja.dto.chat;
 
 import java.time.LocalDateTime;
 

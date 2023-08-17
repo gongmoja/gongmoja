@@ -1,12 +1,10 @@
 package com.est.gongmoja.service;
 
-import com.est.gongmoja.dto.ChatRoomDto;
+import com.est.gongmoja.dto.chat.ChatRoomDto;
 import com.est.gongmoja.entity.ChatRoomEntity;
-import com.est.gongmoja.entity.StockEntity;
 import com.est.gongmoja.entity.UserEntity;
 import com.est.gongmoja.repository.ChatDataRepository;
 import com.est.gongmoja.repository.ChatRoomRepository;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
