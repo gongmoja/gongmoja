@@ -27,13 +27,12 @@ public class StockEntity {
     private LocalDateTime ipoDate; // 상장일
     private LocalDateTime refundDate; // 환불일
 
+    private String name; // 공모주 이름
     private String competitionRate; // 경쟁률
     private String industry; // 종목
     private String sponsor; // 주관사
-    private String companyUrl;
     private int shareAmount; // 총 발행량
     private int price; // 공모가
-    private int minOrder; // 최소 주문량
 
     @OneToMany(mappedBy = "stock")
     final private List<NewsEntity> newsEntityList = new ArrayList<>();
@@ -47,6 +46,6 @@ public class StockEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "calender_id")
-    private CalenderEntity calender;
+    private CalendarEntity calender;
 
 }
