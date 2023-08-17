@@ -13,12 +13,15 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "calender")
-public class CalenderEntity {
+@Table(name = "calendar")
+public class CalendarEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "calender")
+    private LocalDateTime stockStartDate;
+    private LocalDateTime stockEndDate;
+
+    @OneToMany(mappedBy = "calendar")
     final private List<StockEntity> stockEntityList = new ArrayList<>();
 }

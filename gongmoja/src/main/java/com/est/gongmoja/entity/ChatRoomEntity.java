@@ -22,6 +22,13 @@ public class ChatRoomEntity {
     private String title;
     private LocalDateTime openDate;
     private LocalDateTime closeDate;
+    private Long userCount;
+
+
+    @OneToOne
+    @JoinColumn(name = "stock_id", referencedColumnName = "id")
+    private StockEntity stockId;
+
 
     @OneToMany(mappedBy = "chatRoom")
     final private List<ChatDataEntity> chatDataEntityList = new ArrayList<>();
