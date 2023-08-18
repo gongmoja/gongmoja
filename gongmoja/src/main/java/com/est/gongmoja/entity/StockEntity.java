@@ -30,7 +30,7 @@ public class StockEntity {
     private String name; // 공모주 이름
     private String competitionRate; // 경쟁률
     private String industry; // 종목
-    private String sponsor; // 주관사
+    private String sponsor; // 주간사
     private int shareAmount; // 총 발행량
     private int price; // 공모가
 
