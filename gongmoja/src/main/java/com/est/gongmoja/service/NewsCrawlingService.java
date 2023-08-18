@@ -32,6 +32,9 @@ public class NewsCrawlingService {
                     String sourceName = sourceElement.text();
                     String imageUrl = imageElement.attr("data-lazysrc");
 
+                    if (!imageUrl.startsWith("http"))
+                        imageUrl = "https://www.google.com/s2/favicons?domain=example.com";
+
                     System.out.println("Title: " + title);
                     System.out.println("Summary: " + summary);
                     System.out.println("URL: " + articleUrl);
