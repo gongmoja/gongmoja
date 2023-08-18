@@ -1,16 +1,25 @@
 package com.est.gongmoja.controller;
 
 import com.est.gongmoja.dto.user.UserLoginRequestDto;
+import com.est.gongmoja.dto.user.UserLoginResponseDto;
 import com.est.gongmoja.dto.user.UserRegisterRequestDto;
 import com.est.gongmoja.exception.CustomException;
 import com.est.gongmoja.service.UserService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponseWrapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpCookie;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.net.CookieHandler;
 
 @Controller
 @RequiredArgsConstructor
@@ -23,14 +32,41 @@ public class UserController {
     }
 
     @GetMapping("/login") // 로그인 페이지로 이동
-    public String loginPage(){
+    public String loginPage(Model model){
+        //dto object 전달
+        model.addAttribute("userLoginRequestDto",new UserLoginRequestDto());
         return "users/login";
     }
 
     @PostMapping("/login") // 로그인 요청
-    public String loginRequest(){
+    public String loginRequest(
+            @ModelAttribute UserLoginRequestDto requestDto,
+            Model model,
+            HttpServletResponse response
+    ){
+        try{
+            //accessToken & refreshToken 가져옴
+            UserLoginResponseDto loginResponseDto = userService.login(requestDto);
 
-        return "main";
+            //클라이언트에 넘길 쿠키 생성
+            Cookie cookie1 = new Cookie("gongMoAccessToken", loginResponseDto.getAccessToken());
+            Cookie cookie2 = new Cookie("gongMoRefreshToken", loginResponseDto.getRefreshToken());
+
+            //자바스크립트에서 쿠키값을 읽어가지 못하도록 설정
+            cookie1.setHttpOnly(true);
+            cookie2.setHttpOnly(true);
+
+            //서블릿리스폰스에 쿠키담기
+            response.addCookie(cookie1);
+            response.addCookie(cookie2);
+
+            //메인페이지 이동
+            return "main";
+        }
+        catch (CustomException e){
+            //todo : message 띄워야하는데 나중에 추가구현해야함 1
+            return "users/login";
+        }
     }
 
     @GetMapping("/register") // 회원가입 페이지로 이동
@@ -46,11 +82,13 @@ public class UserController {
             Model model){
         try{
             userService.createUser(requestDto);
+            return "redirect:/login";
         }
         catch (CustomException e){
+            //todo : message 띄워야하는데 나중에 추가구현해야함 2
             return "users/register";
         }
-        return "users/login";
+
     }
 
 

@@ -1,6 +1,7 @@
 package com.est.gongmoja.service;
 
 import com.est.gongmoja.dto.user.UserLoginRequestDto;
+import com.est.gongmoja.dto.user.UserLoginResponseDto;
 import com.est.gongmoja.entity.RefreshTokenEntity;
 import com.est.gongmoja.entity.UserEntity;
 import com.est.gongmoja.exception.CustomException;
@@ -45,13 +46,15 @@ public class UserService {
     }
 
     //로그인 로직 ( accessToken 발급, refreshToken 발급 )
-    public void login(UserLoginRequestDto requestDto){
+    public UserLoginResponseDto login(UserLoginRequestDto requestDto){
+        log.info("메소드 도착");
         //userName 또는 password 불일치 예외처리 로직
         Optional<UserEntity> optionalUser = userRepository.findByUserName(requestDto.getUsername());
         if(optionalUser.isEmpty()) throw new CustomException(ErrorCode.USERNAME_NOT_FOUND);
         else if(!passwordEncoder.matches(requestDto.getPassword(),optionalUser.get().getPassword())) throw new CustomException(ErrorCode.USERNAME_NOT_FOUND);
 
         //유저 객체 생성
+        log.info("예외처리 지나침");
         UserEntity userEntity = optionalUser.get();
 
         //token 생성 로직 ( accessToken 과 refreshToken 동시 생성 )
@@ -65,7 +68,12 @@ public class UserService {
                 .refreshToken(refreshToken)
                 .build());
 
-
+        //token 실어서 return
+        return UserLoginResponseDto
+                .builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build();
     }
 
     //로그아웃 로직 ( accessToken 삭제 )
