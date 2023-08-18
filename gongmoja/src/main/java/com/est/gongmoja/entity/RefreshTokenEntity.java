@@ -6,13 +6,12 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "tokens")
+@Table(name = "refresh_tokens")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class RefreshTokenEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String userName;
     @Column(nullable = false)
     private String refreshToken;
