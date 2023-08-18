@@ -24,6 +24,8 @@ public class NewsEntity {
     private String publisher;
     private String newsUrl;
     private LocalDateTime publishedTime;
+    private String imageUrl;
+    private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "stock_id")
