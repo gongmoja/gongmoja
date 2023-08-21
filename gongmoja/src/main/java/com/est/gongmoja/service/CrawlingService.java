@@ -26,27 +26,21 @@ public class CrawlingService {
     private final StockRepository repository;
 
     @PostConstruct
+    // 크롤링 데이터 범위 [2023.6월~ 현재 month+1월]
     public void monthlyCrawl() throws IOException {
         int currentMonth = LocalDate.now().getMonthValue(); // 현재 월(month)
-        for (int i = 6; i <= currentMonth+1 ; i++) {
+        for (int i = 6; i <= currentMonth + 1; i++) {
             getCrawlData(2023, i);
         }
     }
 
-
-//    @PostConstruct
     public void getCrawlData(int year, int month) throws IOException {
 
         int shareAmount = 0;
         boolean isCanceled; // 공모철회
-        String stockName = "", industry = "", sponsor="";
+        String stockName = "", industry = "", sponsor = "";
         LocalDateTime refundDate = null, ipoDate = null;
-//        int year = 2023; // 연도
-//        int month = 7;
-        String url = "http://www.ipostock.co.kr/sub03/ipo04.asp?str1="+year+"&str2="+month; // 대상 웹 페이지 URL, 어디까지 크롤링할 지 정해야함.
-        log.info(url);
-
-
+        String url = "http://www.ipostock.co.kr/sub03/ipo04.asp?str1=" + year + "&str2=" + month;
 
         try {
             Document document = Jsoup.connect(url).get();
@@ -100,9 +94,9 @@ public class CrawlingService {
                     }
                 }
 
-                if (isCanceled){ // 공모철회
+                if (isCanceled) { // 공모철회
                     Optional<StockEntity> canceledOptionalStock = repository.findByName(stockName);
-                    if (canceledOptionalStock.isPresent()){  // 이미 db에 존재시
+                    if (canceledOptionalStock.isPresent()) {  // 이미 db에 존재시
                         StockEntity canceledStock = canceledOptionalStock.get();
                         repository.delete(canceledStock);
                     }
@@ -152,7 +146,7 @@ public class CrawlingService {
                         .build();
 
 
-                Optional<StockEntity> optionalStock  = repository.findByName(stockName);
+                Optional<StockEntity> optionalStock = repository.findByName(stockName);
                 if (optionalStock.isEmpty())
                     repository.save(stock);
                 else { // 기존 공모주 정보 업데이트 (id, name은 업데이트 안됨)
