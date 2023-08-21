@@ -1,13 +1,15 @@
 package com.est.gongmoja.dto.user;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class UserRegisterRequestDto {
+@NoArgsConstructor
+@AllArgsConstructor
+public class UserLoginRequestDto {
     private String username;
     private String password;
-    private String nickname;
-    private String email;
 }
