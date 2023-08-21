@@ -12,6 +12,7 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -25,15 +26,27 @@ public class CrawlingService {
     private final StockRepository repository;
 
     @PostConstruct
-    public void getCrawlData() throws IOException {
+    public void monthlyCrawl() throws IOException {
+        int currentMonth = LocalDate.now().getMonthValue(); // 현재 월(month)
+        for (int i = 6; i <= currentMonth+1 ; i++) {
+            getCrawlData(2023, i);
+        }
+    }
+
+
+//    @PostConstruct
+    public void getCrawlData(int year, int month) throws IOException {
 
         int shareAmount = 0;
         boolean isCanceled; // 공모철회
         String stockName = "", industry = "", sponsor="";
         LocalDateTime refundDate = null, ipoDate = null;
-        String year = "2023"; // 연도
-        String url = "http://www.ipostock.co.kr/sub03/ipo04.asp?str1=2023&str2=7"; // 대상 웹 페이지 URL, 어디까지 크롤링할 지 정해야함.
-        // TODO 월별 크롤링 http://www.ipostock.co.kr/sub03/ipo04.asp?str1={year}&str2={month}
+//        int year = 2023; // 연도
+//        int month = 7;
+        String url = "http://www.ipostock.co.kr/sub03/ipo04.asp?str1="+year+"&str2="+month; // 대상 웹 페이지 URL, 어디까지 크롤링할 지 정해야함.
+        log.info(url);
+
+
 
         try {
             Document document = Jsoup.connect(url).get();
