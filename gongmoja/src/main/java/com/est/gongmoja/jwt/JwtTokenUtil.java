@@ -37,14 +37,14 @@ public class JwtTokenUtil {
     }
 
     // JWT 유효성 검증
-    public boolean isValidToken(String username){
+    public String isValidToken(String username){
         try {
             jwtParser.parseClaimsJws(username);
-            return true;
+            return "ok";
         } catch (ExpiredJwtException e){ // 토큰 만료 예외처리
-            return false;
+            return "expired";
         } catch (Exception e){ // 토큰 유효하지 않음 예외처리
-            return false;
+            return "notValid";
         }
     }
 
