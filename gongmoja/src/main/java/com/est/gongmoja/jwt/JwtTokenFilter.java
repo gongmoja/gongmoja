@@ -84,6 +84,16 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         if(atStatus.equals(ErrorCode.TOKEN_EXPIRED.name())){
             log.info("만료된 토큰");
 
+            //쿠키 refreshToken 과 DB refreshToken 검증
+            //todo 필요한 과정인 것인가 에 대해 논의
+            String username = jwtTokenUtil.getUsername(refreshToken);
+            Optional<RefreshTokenEntity> optionalToken = refreshTokenRepository.findById(username);
+            if(optionalToken.isEmpty()){
+                log.info("서버 내의 리프레시 토큰과 일치하지 않음");
+                filterChain.doFilter(request,response);
+            }
+
+
             //만약 refreshToken 도 expired 라면?
             if(rtStatus.equals(ErrorCode.TOKEN_EXPIRED.name())){
                 log.info("리프레시 토큰의 유효시간이 지남. 다시 로그인이 필요함");
@@ -96,8 +106,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             //refreshToken 이 유효하다면?
             else{
                 log.info("accessToken 재발급");
-                //refreshToken 에서 username 정보 가져옴
-                String username = jwtTokenUtil.getUsername(refreshToken);
                 //새로운 accessToken 생성
                 String newAccessToken = jwtTokenUtil.createToken(username,JwtTokenUtil.accessTokenExpireMs);
                 //쿠키 객체에 담아 응답쿠키에 보냄
