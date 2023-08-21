@@ -21,6 +21,7 @@ public class StockEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private LocalDateTime updateTime; // 마지막 크롤링 시간
 
     private LocalDateTime startDate; // 청약시작일
     private LocalDateTime endDate; // 청약종료일
