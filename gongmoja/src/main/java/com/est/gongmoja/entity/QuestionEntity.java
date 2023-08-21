@@ -31,4 +31,11 @@ public class QuestionEntity {
     @OneToMany(mappedBy = "question")
     final private List<QuestionImageEntity> questionImageList = new ArrayList<>();
 
+    public QuestionEntity(Long id, String title, String content, LocalDateTime createdAt, UserEntity user) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.createdAt = createdAt;
+        this.user = user;
+    }
 }

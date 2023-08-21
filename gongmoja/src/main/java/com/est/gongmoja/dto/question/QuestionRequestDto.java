@@ -12,20 +12,20 @@ import java.util.List;
 @Getter
 @ToString
 @NoArgsConstructor
-public class QuestionDto {
-    private Long id;
+public class QuestionRequestDto {
+    private Long userId;
     private String title;
     private String content;
     private LocalDateTime createdAt;
     private UserDto userDto;
-    private List<QuestionImageEntity> questionImageEntityList;
+    private List<String> imageUrls; // 첨부된 이미지 url
 
-    public QuestionDto(Long id, String title, String content, LocalDateTime createdAt, UserDto userDto, List<QuestionImageEntity> questionImageEntityList) {
-        this.id = id;
+    public QuestionRequestDto(Long userId, String title, String content, LocalDateTime createdAt, UserDto userDto, List<String> imageUrls) {
+        this.userId = userId;
         this.title = title;
         this.content = content;
         this.createdAt = createdAt;
         this.userDto = userDto;
-        this.questionImageEntityList = questionImageEntityList;
+        this.imageUrls = imageUrls;
     }
 }
