@@ -9,9 +9,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -30,6 +28,7 @@ public class CrawlingService {
     public void getCrawlData() throws IOException {
 
         int shareAmount = 0;
+        boolean isCanceled; // 공모철회
         String stockName = "", industry = "", sponsor="";
         LocalDateTime refundDate = null, ipoDate = null;
         String year = "2023"; // 연도
@@ -53,31 +52,10 @@ public class CrawlingService {
                 strings.remove(0); // [0] 공백 데이터 삭제
 
                 // 청약일정 parsing (ex. "08.29 ~ 08.30" -> 2023-08-10T10:00, 2023-08-11T16:00)
+                // 공모 철회 flag
                 if (strings.get(0).equals("공모철회"))
-                    continue; // TODO 로직 추가
-                String[] dates = strings.get(0).split("~");
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd.HH.mm.ss");
-                LocalDateTime startDate = LocalDateTime.parse(year + "." + dates[0].substring(0, dates[0].length() - 1) + ".10.00.00", formatter);
-                LocalDateTime endDate = LocalDateTime.parse(year + "." + dates[1].substring(1) + ".16.00.00", formatter);
-
-                // 환불일
-                if (!strings.get(5).equals("")) {
-                    refundDate = LocalDateTime.parse(year + "." + strings.get(5).substring(0, dates[0].length() - 1) + ".09.00.00", formatter);
-                }
-
-                // 상장일
-                if (!strings.get(6).equals(""))
-                {
-                    ipoDate = LocalDateTime.parse(year + "." + strings.get(6).substring(0, dates[0].length() - 1) + ".09.00.00", formatter);
-                }
-
-                // 공모가
-                String priceStr = strings.get(3);
-                String priceStrParse = priceStr.replaceAll("[^0-9]", "");
-                int price = Integer.parseInt(priceStrParse);
-
-                // 경쟁률
-                String competitionRate = strings.get(7);
+                    isCanceled = true;
+                else isCanceled = false;
 
                 // 종목별 세부링크 내에서 크롤링
                 Element linkElement = element.select("a[href]").first();
@@ -90,22 +68,61 @@ public class CrawlingService {
                     Element nameElem = detailDoc.select("strong.view_tit").first();
                     stockName = nameElem.text();
 
-                    // 분야
-                    Element industryElem = detailDoc.select("td:has(font[color=213894])").last();
-                    industry = industryElem.ownText().substring(1);
+                    // 철회 데이터 크롤링 시 오류 발생 가능하므로 조건문으로 체크
+                    if (!isCanceled) { // 철회 아닐 경우
+                        // 분야
+                        Element industryElem = detailDoc.select("td:has(font[color=213894])").last();
+                        industry = industryElem.ownText().substring(1);
 
-                    // 주간사
-                    Elements sponsorElems = detailDoc.select("table.view_tb");
-                    String sponsorList =sponsorElems.select("td > strong:contains(증권), td > strong:contains(투자)").text();
-                    sponsor = sponsorList.replace("(", "");
+                        // 주식 총발행량
+                        Elements shareAmountElem = detailDoc.select("table.view_tb");
+                        Element detailShareAmountElem = shareAmountElem.select("table.view_tb > tbody > tr:nth-child(4) > td:nth-child(2) > b").first();
+                        String shareAmountStr = detailShareAmountElem.text().replaceAll("[^0-9]", "");
+                        shareAmount = Integer.parseInt(shareAmountStr);
 
-                    // 주식 총발행량
-                    // TODO 주간사별 발행량 or 모든 주간사 합계 발행량
-                    Elements shareAmountElem = detailDoc.select("table.view_tb");
-                    Element detailShareAmountElem = shareAmountElem.select("table.view_tb > tbody > tr:nth-child(4) > td:nth-child(2) > b").first();
-                    String shareAmountStr = detailShareAmountElem.text().replaceAll("[^0-9]", "");
-                    shareAmount = Integer.parseInt(shareAmountStr);
+                        // 주간사
+                        Elements sponsorElems = detailDoc.select("table.view_tb");
+                        String sponsorList = sponsorElems.select("td > strong:contains(증권), td > strong:contains(투자)").text();
+                        sponsor = sponsorList.replace("(", "");
+                    }
                 }
+
+                if (isCanceled){ // 공모철회
+                    Optional<StockEntity> canceledOptionalStock = repository.findByName(stockName);
+                    if (canceledOptionalStock.isPresent()){  // 이미 db에 존재시
+                        StockEntity canceledStock = canceledOptionalStock.get();
+                        repository.delete(canceledStock);
+                    }
+
+                    // 존재 안 할 시 크롤링 stop 후 continue
+                    continue;
+                }
+
+
+                /* 이후 크롤링 데이터들은 철회 아닌 공모주에 대해서만 진행하게 됨 */
+
+                String[] dates = strings.get(0).split("~");
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd.HH.mm.ss");
+                LocalDateTime startDate = LocalDateTime.parse(year + "." + dates[0].substring(0, dates[0].length() - 1) + ".10.00.00", formatter);
+                LocalDateTime endDate = LocalDateTime.parse(year + "." + dates[1].substring(1) + ".16.00.00", formatter);
+
+                // 환불일
+                if (!strings.get(5).equals("")) {
+                    refundDate = LocalDateTime.parse(year + "." + strings.get(5).substring(0, dates[0].length() - 1) + ".09.00.00", formatter);
+                }
+
+                // 상장일
+                if (!strings.get(6).equals("")) {
+                    ipoDate = LocalDateTime.parse(year + "." + strings.get(6).substring(0, dates[0].length() - 1) + ".09.00.00", formatter);
+                }
+
+                // 공모가
+                String priceStr = strings.get(3);
+                String priceStrParse = priceStr.replaceAll("[^0-9]", "");
+                int price = Integer.parseInt(priceStrParse);
+
+                // 경쟁률
+                String competitionRate = strings.get(7);
 
                 // entity build
                 StockEntity stock = StockEntity.builder()
@@ -120,7 +137,6 @@ public class CrawlingService {
                         .ipoDate(ipoDate)
                         .refundDate(refundDate)
                         .build();
-
 
 
                 Optional<StockEntity> optionalStock  = repository.findByName(stockName);
@@ -139,7 +155,6 @@ public class CrawlingService {
                     updateStock.setRefundDate(refundDate);
                     repository.save(updateStock);
                 }
-
             }
         } catch (Exception e) {
             e.printStackTrace();
