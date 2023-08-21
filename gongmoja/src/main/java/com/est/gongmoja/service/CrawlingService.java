@@ -9,6 +9,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -25,9 +26,10 @@ import java.util.Optional;
 public class CrawlingService {
     private final StockRepository repository;
 
-    @PostConstruct
-    // 크롤링 데이터 범위 [2023.6월~ 현재 month+1월]
+    @Scheduled(cron = "0 * * * * *") // 1분마다 한번 업데이트 (정상작동 테스트용)
+//    @Scheduled(cron = "0 */10 * * * *") // 10분마다 한번 업데이트
     public void monthlyCrawl() throws IOException {
+        // 크롤링 데이터 범위 [2023.6월~ 현재 month+1월]
         int currentMonth = LocalDate.now().getMonthValue(); // 현재 월(month)
         for (int i = 6; i <= currentMonth + 1; i++) {
             getCrawlData(2023, i);
@@ -43,6 +45,9 @@ public class CrawlingService {
         String url = "http://www.ipostock.co.kr/sub03/ipo04.asp?str1=" + year + "&str2=" + month;
 
         try {
+
+            // 현재 업데이트 시간 기록
+
             Document document = Jsoup.connect(url).get();
             Elements oddData = document.select("tr[bgcolor=#f8fafc]:contains(원)"); // 홀수 라인 종목
             Elements evenData = document.select("tr[bgcolor=#ffffff]:contains(원)"); // 짝수 라인 종목
@@ -131,6 +136,10 @@ public class CrawlingService {
                 // 경쟁률
                 String competitionRate = strings.get(7);
 
+                // 크롤링 시각 업데이트
+                LocalDateTime updateTime = LocalDateTime.now();
+
+
                 // entity build
                 StockEntity stock = StockEntity.builder()
                         .startDate(startDate)
@@ -143,6 +152,7 @@ public class CrawlingService {
                         .sponsor(sponsor)
                         .ipoDate(ipoDate)
                         .refundDate(refundDate)
+                        .updateTime(updateTime)
                         .build();
 
 
@@ -160,6 +170,7 @@ public class CrawlingService {
                     updateStock.setSponsor(sponsor);
                     updateStock.setIpoDate(ipoDate);
                     updateStock.setRefundDate(refundDate);
+                    updateStock.setUpdateTime(updateTime);
                     repository.save(updateStock);
                 }
             }
