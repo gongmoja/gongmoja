@@ -52,6 +52,8 @@ public class UserController {
             Cookie cookie1 = new Cookie("gongMoAccessToken", loginResponseDto.getAccessToken());
             Cookie cookie2 = new Cookie("gongMoRefreshToken", loginResponseDto.getRefreshToken());
 
+            response.setHeader(HttpHeaders.AUTHORIZATION,String.format("Bearer %s",loginResponseDto.getAccessToken()));
+
             //자바스크립트에서 쿠키값을 읽어가지 못하도록 설정
             cookie1.setHttpOnly(true);
             cookie2.setHttpOnly(true);
@@ -61,7 +63,7 @@ public class UserController {
             response.addCookie(cookie2);
 
             //메인페이지 이동
-            return "main";
+            return "redirect:/";
         }
         catch (CustomException e){
             //todo : message 띄워야하는데 나중에 추가구현해야함 1
