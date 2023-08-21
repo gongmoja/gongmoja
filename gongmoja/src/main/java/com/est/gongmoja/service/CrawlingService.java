@@ -9,13 +9,16 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -99,13 +102,13 @@ public class CrawlingService {
                     // 주식 총발행량
                     // TODO 주간사별 발행량 or 모든 주간사 합계 발행량
                     Elements shareAmountElem = detailDoc.select("table.view_tb");
-                    Element detailShareAmountElem = shareAmountElem.select("td[bgcolor=#FFFFFF]:contains(주)").first();
+                    Element detailShareAmountElem = shareAmountElem.select("table.view_tb > tbody > tr:nth-child(4) > td:nth-child(2) > b").first();
                     String shareAmountStr = detailShareAmountElem.text().replaceAll("[^0-9]", "");
                     shareAmount = Integer.parseInt(shareAmountStr);
                 }
 
                 // entity build
-                StockEntity stockEntity = StockEntity.builder()
+                StockEntity stock = StockEntity.builder()
                         .startDate(startDate)
                         .endDate(endDate)
                         .name(stockName)
@@ -118,7 +121,25 @@ public class CrawlingService {
                         .refundDate(refundDate)
                         .build();
 
-                repository.save(stockEntity);
+
+
+                Optional<StockEntity> optionalStock  = repository.findByName(stockName);
+                if (optionalStock.isEmpty())
+                    repository.save(stock);
+                else { // 기존 공모주 정보 업데이트 (id, name은 업데이트 안됨)
+                    StockEntity updateStock = optionalStock.get();
+                    updateStock.setStartDate(startDate);
+                    updateStock.setEndDate(endDate);
+                    updateStock.setIndustry(industry);
+                    updateStock.setShareAmount(shareAmount);
+                    updateStock.setPrice(price);
+                    updateStock.setCompetitionRate(competitionRate);
+                    updateStock.setSponsor(sponsor);
+                    updateStock.setIpoDate(ipoDate);
+                    updateStock.setRefundDate(refundDate);
+                    repository.save(updateStock);
+                }
+
             }
         } catch (Exception e) {
             e.printStackTrace();
