@@ -3,12 +3,14 @@ package com.est.gongmoja.controller;
 import com.est.gongmoja.dto.user.UserLoginRequestDto;
 import com.est.gongmoja.dto.user.UserLoginResponseDto;
 import com.est.gongmoja.dto.user.UserRegisterRequestDto;
+import com.est.gongmoja.entity.UserEntity;
 import com.est.gongmoja.exception.CustomException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -85,6 +87,13 @@ public class UserController {
             return "users/register";
         }
 
+    }
+
+    @GetMapping("/my")
+    public String myPage(Authentication authentication){
+        UserEntity userEntity = (UserEntity) authentication.getPrincipal();
+        log.info("{} 님 마이페이지 입장",userEntity.getUserName());
+        return "mypage";
     }
 
 
