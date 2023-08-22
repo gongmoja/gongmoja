@@ -1,81 +1,123 @@
 package com.est.gongmoja.service;
 
 import com.est.gongmoja.entity.NewsEntity;
+import com.est.gongmoja.entity.StockEntity;
 import com.est.gongmoja.repository.NewsRepository;
+import com.est.gongmoja.repository.StockRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
+import java.util.List;
+
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class NewsCrawlingService {
     private final NewsRepository newsRepository;
+    private final StockRepository stockRepository;
+
+    private Set<String> existNews = new HashSet<>();
 
     @PostConstruct
-    public void getCrawlNewsData() throws IOException {
-        String stockName = "대신밸런스제15호스팩";
-        // 대상 웹 페이지 URL, 어디까지 크롤링할 지 정해야함.
-        String url = "https://search.naver.com/search.naver?where=news&sm=tab_pge&query=" + stockName + "&sort=0&photo=0&field=0&pd=0&ds=&de=&cluster_rank=27&mynews=0&office_type=0&office_section_code=0&news_office_checked=&nso=so:r,p:all,a:all&start=1";
+    //@Scheduled(cron = "0 * * * * *")
+    public void getCrawlNewsData() throws InterruptedException {
+        List<StockEntity> stockEntityList = stockRepository.findAll(); // db에 있는 전체 주식
+        List<NewsEntity> existingNews = newsRepository.findAll();
+        for (NewsEntity news : existingNews) {
+            existNews.add(news.getNewsUrl());
+            log.info(news.getNewsUrl());
+        }
 
-        try {
-            Document document = Jsoup.connect(url).get();
-            Elements articleElements = document.select("ul.list_news li");
-            int cnt = 1;
-            for (Element articleElement : articleElements) {
-                // 각 기사의 제목, 요약 내용, 링크 가져오기
-                //if (cnt++ > 3) break;
-                Element titleElement = articleElement.select("a.news_tit").first(); // 뉴스 제목
-                Element summaryElement = articleElement.select("div.news_dsc").first(); // 뉴스 요약
-                Element timeElement = articleElement.select("span.info").first(); // 뉴스 시간
-                Element sourceElement = articleElement.select("a.info.press").first(); // 뉴스 발행사
+        int count = 1; // 크롤 한 뉴스기사 개수
+        for (StockEntity entity : stockEntityList) {
+            if (count++ % 9 == 0) Thread.sleep(3000); // 기사 10개 크롤하면 3초 쉬는 count
+            String stockName = entity.getName();
+            // 대상 웹 페이지 URL, 어디까지 크롤링할 지 정해야함.
+            String url = "https://search.naver.com/search.naver?where=news&sm=tab_pge&query=" + stockName + "+공모" ;
+            try {
+                Document document = Jsoup.connect(url)
+                        .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3")
+                        .get();
+                Elements articleElements = document.select("ul.list_news li");
+                int cnt = 0;
+                for (Element articleElement : articleElements) {
+                    // 각 기사의 제목, 요약 내용, 링크 가져오기
+                    Element titleElement = articleElement.select("a.news_tit").first();
+                    Element summaryElement = articleElement.select("div.news_dsc").first();
+                    Element sourceElement = articleElement.select("a.info.press").first();
 
-                if (titleElement != null && summaryElement != null && timeElement != null && sourceElement != null) {
-                    Element imageElement = sourceElement.select("img.thumb").first();
-                    String title = titleElement.text();
-                    String summary = summaryElement.text();
-                    String articleUrl = titleElement.attr("href");
-                    String timeInfo = timeElement.text().substring(0,timeElement.text().length() - 1);
-                    String sourceName = sourceElement.text();
-                    String imageUrl = imageElement.attr("data-lazysrc");
+                    if (titleElement != null && summaryElement != null && sourceElement != null) {
+                        Element imageElement = sourceElement.select("img.thumb").first();
+                        String title = titleElement.text(); // 뉴스 제목
+                        String summary = summaryElement.text(); // 뉴스 요약
+                        String articleUrl = titleElement.attr("href"); // 뉴스기사 링크
+                        String sourceName = sourceElement.text().replaceAll("언론사 선정", ""); // 뉴스 발행사
+                        String imageUrl = imageElement.attr("data-lazysrc"); // 언론사 이미지
 
-                    if (!imageUrl.startsWith("http"))
-                        imageUrl = "https://www.google.com/s2/favicons?domain=example.com";
+                        if (!imageUrl.startsWith("http"))
+                            imageUrl = "https://www.google.com/s2/favicons?domain=example.com";
 
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd.HH.mm.ss");
-                    LocalDateTime publishedTime = LocalDateTime.parse(timeInfo + ".00.00.00", formatter);
+                        // 뉴스 발행일
+                        Elements timeElements = articleElement.select("span.info");
+                        Pattern pattern = Pattern.compile("\\d{4}\\.\\d{2}\\.\\d{2}");
+                        Matcher matcher = pattern.matcher(timeElements.text());
+                        String timeInfo = "";
+                        LocalDateTime parsedDateTime = null;
+                        if (matcher.find()) {
+                            timeInfo = matcher.group();
+                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd.HH.mm.ss");
+                            parsedDateTime = LocalDateTime.parse(timeInfo+".00.00.00", formatter);
+                        } else {
+                            char time = timeElements.text().charAt(0);
+                            String temp = timeElements.text().substring(1);
+                            if (temp.startsWith("시")){
+                                LocalDateTime dateTime = LocalDateTime.now();
+                                parsedDateTime = dateTime.minusHours(time-'0');
+                            } else {
+                                LocalDateTime dateTime = LocalDateTime.now();
+                                parsedDateTime = dateTime.minusDays(time-'0');
+                            }
+                        }
 
-                    System.out.println("Title: " + title);
-                    System.out.println("Summary: " + summary);
-                    System.out.println("URL: " + articleUrl);
-                    System.out.println("Time Info: " + timeInfo);
-                    System.out.println("Source Name: " + sourceName);
-                    System.out.println("Image URL: " + imageUrl);
-                    System.out.println();
-                    //System.out.println(document);
-                    NewsEntity newsEntity = NewsEntity.builder()
-                            .newsUrl(url)
-                            .content(summary)
-                            .publishedTime(publishedTime)
-                            .imageUrl(imageUrl)
-                            .title(title)
-                            .publisher(sourceName)
-                            .build();
-                    newsRepository.save(newsEntity);
+                        NewsEntity newsEntity = NewsEntity.builder()
+                                .newsUrl(articleUrl)
+                                .content(summary)
+                                .publishedTime(parsedDateTime)
+                                .imageUrl(imageUrl)
+                                .title(title)
+                                .publisher(sourceName)
+                                .stock(entity)
+                                .build();
+                        newsRepository.save(newsEntity);
+                        existNews.add(articleUrl);
+
+                        if (cnt++ > 1) break; // 하나의 주식 당 3개의 뉴스 크롤
+                    }
                 }
+            } catch (HttpStatusException e) {
+                if (e.getStatusCode() == 403)
+                    log.warn(stockName + " Access to the website is forbidden. Continuing with next task...");
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 }
