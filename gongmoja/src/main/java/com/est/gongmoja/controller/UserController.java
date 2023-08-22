@@ -5,6 +5,7 @@ import com.est.gongmoja.dto.user.UserLoginResponseDto;
 import com.est.gongmoja.dto.user.UserRegisterRequestDto;
 import com.est.gongmoja.entity.UserEntity;
 import com.est.gongmoja.exception.CustomException;
+import com.est.gongmoja.service.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
