@@ -1,5 +1,4 @@
 package com.est.gongmoja.service;
-gut up
 
 import com.est.gongmoja.entity.NewsEntity;
 import com.est.gongmoja.repository.NewsRepository;

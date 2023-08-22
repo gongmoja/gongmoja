@@ -17,8 +17,11 @@ public class ChatDataEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
+
     private String message;
     private LocalDateTime createdAt;
+    private boolean isEntered;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

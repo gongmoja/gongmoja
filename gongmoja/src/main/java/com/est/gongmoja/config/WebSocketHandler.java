@@ -1,5 +1,6 @@
 package com.est.gongmoja.config;
 
+import com.est.gongmoja.dto.chat.ChatRoomDto;
 import com.est.gongmoja.entity.ChatDataEntity;
 import com.est.gongmoja.entity.ChatRoomEntity;
 import com.est.gongmoja.service.ChatService;
@@ -32,6 +33,8 @@ public class WebSocketHandler extends TextWebSocketHandler {
         // 메시지가 존재하는 방 탐색
         ChatRoomEntity chatRoom = chatService.findRoomById(chatData.getChatRoom().getId());
 
-//        chatRoom.handleActions(session, chatMessage, chatService);
+        ChatRoomDto.handlerActions(session,chatService, chatData);
+
+
     }
 }
