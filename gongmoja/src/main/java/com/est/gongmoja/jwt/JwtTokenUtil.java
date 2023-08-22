@@ -1,5 +1,6 @@
 package com.est.gongmoja.jwt;
 
+import com.est.gongmoja.exception.ErrorCode;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtParser;
@@ -21,8 +22,8 @@ public class JwtTokenUtil {
         this.jwtParser = Jwts.parserBuilder().setSigningKey(signingKey).build();
     }
 
-    public static long accessTokenExpireMs = 1000 * 60 * 30; // accessToken 유효기간 30분
-    public static long refreshTokenExpireMs = 1000 * 60 * 60 * 12; // refreshToken 유효기간 12시간
+    public static long accessTokenExpireMs = 1000 * 60 * 30  ; // accessToken 유효기간 30분
+    public static long refreshTokenExpireMs = 1000 * 60 * 60 * 3; // refreshToken 유효기간 3시간
 
     // JWT 발급
     public String createToken(String username , Long expireTime){
@@ -42,14 +43,19 @@ public class JwtTokenUtil {
             jwtParser.parseClaimsJws(username);
             return "ok";
         } catch (ExpiredJwtException e){ // 토큰 만료 예외처리
-            return "expired";
+            return ErrorCode.TOKEN_EXPIRED.name();
         } catch (Exception e){ // 토큰 유효하지 않음 예외처리
-            return "notValid";
+            return ErrorCode.TOKEN_INVALID.name();
         }
     }
 
     // JWT 안에 있는 username 추출 ( 파싱 )
     public String getUsername(String token){
         return jwtParser.parseClaimsJws(token).getBody().getSubject();
+    }
+
+    // JWT 전체 파싱
+    public Claims parseToken(String token){
+        return jwtParser.parseClaimsJws(token).getBody();
     }
 }

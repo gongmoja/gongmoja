@@ -8,6 +8,9 @@ import com.est.gongmoja.exception.CustomException;
 import com.est.gongmoja.exception.ErrorCode;
 import com.est.gongmoja.repository.RefreshTokenRepository;
 import com.est.gongmoja.repository.UserRepository;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import com.est.gongmoja.dto.user.UserRegisterRequestDto;
@@ -16,6 +19,7 @@ import org.apache.catalina.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 @Service
@@ -47,14 +51,12 @@ public class UserService {
 
     //로그인 로직 ( accessToken 발급, refreshToken 발급 )
     public UserLoginResponseDto login(UserLoginRequestDto requestDto){
-        log.info("메소드 도착");
         //userName 또는 password 불일치 예외처리 로직
         Optional<UserEntity> optionalUser = userRepository.findByUserName(requestDto.getUsername());
         if(optionalUser.isEmpty()) throw new CustomException(ErrorCode.USERNAME_NOT_FOUND);
         else if(!passwordEncoder.matches(requestDto.getPassword(),optionalUser.get().getPassword())) throw new CustomException(ErrorCode.USERNAME_NOT_FOUND);
 
         //유저 객체 생성
-        log.info("예외처리 지나침");
         UserEntity userEntity = optionalUser.get();
 
         //token 생성 로직 ( accessToken 과 refreshToken 동시 생성 )
@@ -76,7 +78,11 @@ public class UserService {
                 .build();
     }
 
-    //로그아웃 로직 ( accessToken 삭제 )
+    //로그아웃 로직 ( refreshToken 삭제 )
+    public void logOut(String username){
+        // refreshToken 삭제
+        refreshTokenRepository.deleteById(username);
+    }
 
     //정보수정 로직
 
