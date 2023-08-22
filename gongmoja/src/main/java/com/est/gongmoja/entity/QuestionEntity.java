@@ -11,24 +11,32 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "questions")
 public class QuestionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id; //번호
 
-    private String title;
-    private String content;
-    private LocalDateTime createdAt;
+    @Column(length = 200)
+    private String title; // 제목
 
+    @Column(columnDefinition = "TEXT")
+    private String content; // 내용
+
+    private LocalDateTime createdAt; // 작성 일시
+
+    // userid
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
+    // 이미지
     @OneToMany(mappedBy = "question")
-    final private List<QuestionImageEntity> questionImageList = new ArrayList<>();
+    private List<QuestionImageEntity> questionImageList = new ArrayList<>();
 
+    // 답변
+    @OneToMany(mappedBy = "questionEntity", cascade = CascadeType.REMOVE) // 질문 삭제하면 답변도 전체 삭제
+    private List<AnswerEntity> answerEntityList;
 }

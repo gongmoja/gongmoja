@@ -24,6 +24,9 @@ public class UserEntity {
     private String nickName;
     private int role;
 
+    // 소셜로그인 제공자 문자값
+    private String provider;
+
     @OneToMany(mappedBy = "user")
     final private List<QuestionEntity> questionEntities = new ArrayList<>();
 

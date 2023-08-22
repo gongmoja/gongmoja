@@ -35,10 +35,11 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         authorizationManagerRequestMatcherRegistry -> authorizationManagerRequestMatcherRegistry
-                                .requestMatchers("/favicon.ico").permitAll()
                                 //메인 페이지는 전부 접근 가능
                                 .requestMatchers("/").permitAll()
-                                //로그인 페이지 , 회원가입 페이지는 전부 접근 가능
+                                //oauth2 관련 익명 접근 가능
+                                .requestMatchers("/oauth2/**").anonymous()
+                                //로그인 페이지 , 회원가입 페이지는 익명 접근 가능
                                 .requestMatchers("/login","/register").anonymous()
                                 //이외 페이지는 인가된 이용자만 접근 가능
                                 .anyRequest().authenticated()
