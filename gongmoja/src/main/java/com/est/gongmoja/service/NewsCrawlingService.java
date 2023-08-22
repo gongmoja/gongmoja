@@ -40,7 +40,7 @@ public class NewsCrawlingService {
 
         int count = 1; // 크롤 한 주식개수
         for (StockEntity entity : stockEntityList) {
-            if (count++ % 5 == 0) break; //Thread.sleep(3000 + (int)(Math.random() * 1000)); // 주식 7개 크롤하면 3초 쉬는 count
+            if (count++ % 9 == 0) Thread.sleep(3000 + (int)(Math.random() * 1000)); // 주식 7개 크롤하면 3초 쉬는 count
             String stockName = entity.getName();
             // 대상 웹 페이지 URL, 어디까지 크롤링할 지 정해야함.
             String url = "https://search.naver.com/search.naver?where=news&sm=tab_pge&query=" + stockName + "+공모" ;
