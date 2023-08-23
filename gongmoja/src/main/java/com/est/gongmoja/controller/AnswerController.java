@@ -22,15 +22,15 @@ public class AnswerController {
     private final AnswerService answerService;
 
     // 답변저장
-    @PostMapping("/create/{id}")
-    public String createAnswer(Model model, @PathVariable("id") Long id, @Valid AnswerFormDto answerForm, BindingResult bindingResult){
-        QuestionEntity questionEntity = this.questionService.getQuestion(id);
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("question", questionEntity);
-            return "question_detail";
-        }
-
-        this.answerService.create(questionEntity, answerForm.getContent());
-        return String.format("redirect:/question/detail/%s", id);
-    }
+//    @PostMapping("/create/{id}")
+//    public String createAnswer(Model model, @PathVariable("id") Long id, @Valid AnswerFormDto answerForm, BindingResult bindingResult){
+//        QuestionEntity questionEntity = this.questionService.getQuestion(id);
+//        if (bindingResult.hasErrors()) {
+//            model.addAttribute("question", questionEntity);
+//            return "question_detail";
+//        }
+//
+//        this.answerService.create(questionEntity, answerForm.getContent());
+//        return String.format("redirect:/question/detail/%s", id);
+//    }
 }
