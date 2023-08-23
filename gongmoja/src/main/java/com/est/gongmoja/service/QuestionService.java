@@ -20,6 +20,4 @@ import java.util.Timer;
 @Service
 public class QuestionService {
     private final QuestionRepository questionRepository;
-
-    public
 }
