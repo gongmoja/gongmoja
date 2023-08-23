@@ -19,10 +19,10 @@ public class QuestionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; //번호
 
-    @Column(length = 200)
+    @Column(nullable = false, length = 100)
     private String title; // 제목
 
-    @Column(columnDefinition = "TEXT")
+    @Column(nullable = false, length = 500)
     private String content; // 내용
 
     private LocalDateTime createdAt; // 작성 일시

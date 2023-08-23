@@ -17,11 +17,5 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class QuestionRequestDto {
-    private Long userId;
-    private String title;
-    private String content;
-    private LocalDateTime createdAt;
-    private UserDto userDto;
-    private List<String> imageUrls; // 첨부된 이미지 url
-
+    private String message;
 }
