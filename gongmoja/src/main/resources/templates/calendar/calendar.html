@@ -2,26 +2,71 @@
 <html lang='en'>
 <head>
     <meta charset='utf-8' />
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
+    <!-- fullcalendar css, js -->
+    <link href='/resources/templates/calendar/fullcalendar-5.11.5/main.css' rel='stylesheet' />
+    <script src='/resources/templates/calendar/fullcalendar-5.11.5/main.js'></script>
+
     <script>
 
         document.addEventListener('DOMContentLoaded', function() {
+
             var calendarEl = document.getElementById('calendar');
+
             var calendar = new FullCalendar.Calendar(calendarEl, {
+                // 초기 로드 될때 보이는 캘린더 화면(기본 설정: 달)
                 initialView: 'dayGridMonth',
-                    events : [
-                        {
-                            title: '주식테스트1',
-                            start: '2023-08-01',
-                            end : "2023-08-05"
-                        },
-                        {
-                            title: '주식테스트2',
-                            start: '2023-08-03',
-                            end: '2023-08-05'
-                 }
-              ]
-        });
+                // 한국어 설정
+                locale: "ko",
+                // 이벤트 목록
+                events : [
+                    {
+                        title : '대신밸런스스팩15호',
+                        start : '2023-08-21',
+                        end   : '2023-08-22'
+                    },
+
+                    {
+                        title : '한국스팩12호',
+                        start : '2023-08-21',
+                        end   : '2023-08-22'
+                    },
+
+                    {
+                        title : '넥스틸',
+                        start : '2023-08-21',
+                        end   : '2023-08-21'
+                    },
+
+                    {
+                        title : '대신밸런스스팩16호',
+                        start : '2023-08-23',
+                        end   : '2023-08-24'
+                    },
+
+                    {
+                        title : '넥스틸',
+                        start : '2023-08-14',
+                        end   : '2023-08-16',
+                        url: 'http://google.com/' // 클릭시 해당 url로 이동
+                    }
+                ],
+            });
+            document.addEventListener('DOMContentLoaded', function() {
+                var datalist = [];
+                $.ajax({
+                    url: '${pageContext.request.contextPath}/admin/select',
+                    type:"Get",
+                    dataType: "json",
+                    success: function(result) {
+                        $.each(result, function(index, value){
+                            datalist.push(value);
+                        });
+                        openCalander(datalist);
+                    }
+                });
+
+            });
+            // 캘린더 랜더링
             calendar.render();
         });
 

@@ -15,14 +15,14 @@ import java.util.Map;
 public class CalendarController {
 
     @Autowired
-    private CalendarService calendarService;
+    CalendarService calendarService;
 
-    @RequestMapping
-    public String viewCalendar() {
-        return "calendarPage";
+    @RequestMapping //기본 페이지 표시
+    public String viewCalendar(){
+        return "calendar/calendar"; // 경로 수정
     }
 
-    @GetMapping("/event")
+    @GetMapping("/event") //ajax 데이터 전송 URL
     public @ResponseBody List<Map<String, Object>> getEvent() {
         return calendarService.getEventList();
     }
