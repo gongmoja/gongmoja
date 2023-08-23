@@ -23,6 +23,7 @@ public class UserEntity {
     private String email;
     private String nickName;
     private int role;
+    private Long chatSessionId = null;
 
     @OneToMany(mappedBy = "user")
     final private List<QuestionEntity> questionEntities = new ArrayList<>();
