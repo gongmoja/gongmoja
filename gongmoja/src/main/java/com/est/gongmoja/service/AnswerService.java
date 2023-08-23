@@ -4,21 +4,35 @@ import com.est.gongmoja.entity.AnswerEntity;
 import com.est.gongmoja.entity.QuestionEntity;
 import com.est.gongmoja.repository.AnswerRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
 public class AnswerService {
+
     private final AnswerRepository answerRepository;
 
-    // 답변 저장
-    public void create(QuestionEntity questionEntity, String content){
+    public AnswerEntity create(QuestionEntity questionEntity, String content) {
         AnswerEntity answerEntity = new AnswerEntity();
         answerEntity.setContent(content);
         answerEntity.setCreateDate(LocalDateTime.now());
         answerEntity.setQuestionEntity(questionEntity);
+
         this.answerRepository.save(answerEntity);
+        return answerEntity;
+    }
+
+    public AnswerEntity getAnswer(Long id) {
+        Optional<AnswerEntity> answer = this.answerRepository.findById(id);
+        if (answer.isPresent()) {
+            return answer.get();
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
     }
 }
