@@ -21,5 +21,4 @@ import java.util.Timer;
 public class QuestionService {
     private final QuestionRepository questionRepository;
 
-    public
 }
