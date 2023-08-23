@@ -19,11 +19,14 @@ public class UserEntity {
     private Long id;
 
     private String userName;
-    private String password;
+    private String password; //null 이어도 되게 구현해야할 듯. 소셜로그인 할때는 password 를 기입할 필요가 없어서
     private String email;
     private String nickName;
     private int role;
-    private Long chatSessionId = null;
+
+    // 소셜로그인 제공자 문자값
+    private String provider;
+    private String providerId;
 
     @OneToMany(mappedBy = "user")
     final private List<QuestionEntity> questionEntities = new ArrayList<>();

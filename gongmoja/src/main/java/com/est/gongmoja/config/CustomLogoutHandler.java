@@ -35,7 +35,9 @@ public class CustomLogoutHandler implements LogoutSuccessHandler {
 
         // 덮어 쓸 쿠키 객체 작성
         Cookie accessTokenCookie = new Cookie("gongMoAccessToken","destroyed");
+        accessTokenCookie.setMaxAge(0);
         Cookie refreshTokenCookie = new Cookie("gongMoRefreshToken","destroyed");
+        refreshTokenCookie.setMaxAge(0);
         response.addCookie(accessTokenCookie);
         response.addCookie(refreshTokenCookie);
 

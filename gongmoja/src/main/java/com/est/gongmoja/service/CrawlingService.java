@@ -27,7 +27,6 @@ import java.util.Optional;
 public class CrawlingService {
     private final StockRepository repository;
 
-//    @Scheduled(cron = "0 * * * * *") // 1분마다 한번 업데이트 (정상작동 테스트용)
     @Scheduled(cron = "0 */10 * * * *") // 10분마다 한번 업데이트 (변경완료)
     @PostConstruct
     public void monthlyCrawl() throws IOException {

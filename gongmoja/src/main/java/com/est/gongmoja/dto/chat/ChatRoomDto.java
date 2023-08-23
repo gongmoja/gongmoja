@@ -28,7 +28,7 @@ public class ChatRoomDto {
     private List<ChatDataEntity> chatDataEntityList;
     private List<UserEntity> chatUserList;
 
-    private Set<WebSocketSession> sessions = new HashSet<>();
+    private Set<WebSocketSession> sessions;
     public void handlerActions(WebSocketSession session, ChatService chatService, ChatDataDto chatData)  {
         if (this.sessions == null) {
             this.sessions = new HashSet<>(); // Initialize the sessions if it's null
