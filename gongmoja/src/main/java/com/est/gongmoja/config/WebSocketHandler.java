@@ -1,5 +1,6 @@
 package com.est.gongmoja.config;
 
+import com.est.gongmoja.dto.chat.ChatDataDto;
 import com.est.gongmoja.dto.chat.ChatRoomDto;
 import com.est.gongmoja.entity.ChatDataEntity;
 import com.est.gongmoja.entity.ChatRoomEntity;
@@ -32,6 +33,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
     private final UserRepository userRepository;
 
 
+
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 
@@ -41,15 +43,17 @@ public class WebSocketHandler extends TextWebSocketHandler {
         log.info("Received message: {}", payload);
 
         // JSON 문자열을 ChatDataEntity로 변환
-        ChatDataEntity chatData = objectMapper.readValue(payload, ChatDataEntity.class);
+        ChatDataDto chatData = objectMapper.readValue(payload, ChatDataDto.class);
 
         // 메시지가 존재하는 방 탐색
-        ChatRoomEntity chatRoom = chatService.findRoomById(chatData.getChatRoom().getId());
+        ChatRoomDto chatRoom = chatService.findRoomById(chatData.getChatRoomId());
 
-        chatService.handlerActions(session, chatRoom, chatData);
-
-
+        chatRoom.handlerActions(session, chatService, chatData);
     }
+
+
+// import 생략....
+
 //    @Override
 //    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 ////        request.getCookies();

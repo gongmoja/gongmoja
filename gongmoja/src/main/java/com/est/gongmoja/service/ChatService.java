@@ -9,6 +9,7 @@ import com.est.gongmoja.repository.ChatDataRepository;
 import com.est.gongmoja.repository.ChatRoomRepository;
 import com.est.gongmoja.repository.StockRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -29,33 +30,31 @@ public class ChatService {
     private final StockRepository stockRepository;
 
     //채팅방 별 연결된 웹소캣 세션의 집합
-    private Map<Long, Set<WebSocketSession>> chatRoomSessions = new HashMap<>();
+    private Map<String, ChatRoomDto> chatRooms = new LinkedHashMap<>();
     private Set<WebSocketSession> sessions = new HashSet<>();
 
     private final ObjectMapper objectMapper;
 
-    public void addSessionToChatRoom(Long chatRoomId, WebSocketSession session) {
-        chatRoomSessions.computeIfAbsent(chatRoomId, key -> new HashSet<>()).add(session);
+
+    public List<ChatRoomDto> findAllRoom(){
+        return new ArrayList<>(chatRooms.values());
     }
-
-    public void handlerActions(WebSocketSession session, ChatRoomEntity chatRoom, ChatDataEntity chatData) {
-        if (chatData.getType().equals(ChatDataEntity.MessageType.ENTER)) {
-            chatData.setMessage(chatData.getUser().getNickName() + " 님이 입장하였습니다.");
-            convertMessage(chatData);
-        } else if (chatData.getType().equals(ChatDataEntity.MessageType.TALK)) {
-            convertMessage(chatData);
-        }
-    }
-
-
-    public <T> void convertMessage(T message) {
-        sessions.parallelStream().forEach(session -> sendMessageToAll(session, message));
+    public ChatRoomDto createRoom(String name) {
+        String randomId = UUID.randomUUID().toString();
+        ChatRoomDto chatRoom = ChatRoomDto.builder()
+                .id(randomId)
+//                .title(chatRoomDto.getTitle())
+                .title(name)
+//                .openDate(chatRoomDto.getOpenDate())
+//                .closeDate(chatRoomDto.getCloseDate())
+                .build();
+        chatRooms.put(randomId, chatRoom);
+        return chatRoom;
     }
 
     public <T> void sendMessageToAll(WebSocketSession session, T message) {
         try {
             session.sendMessage(new TextMessage(objectMapper.writeValueAsString(message)));
-            ;
         } catch (IOException e) {
             log.error(e.getMessage(), e);
         }
@@ -80,16 +79,7 @@ public class ChatService {
 //                .build();
 //        chatRoomRepository.save(chatRoom);
 //    }
-    public ChatRoomEntity createRoom(ChatRoomDto chatRoomDto) {
-        String randomId = UUID.randomUUID().toString();
-        ChatRoomEntity chatRoom = ChatRoomEntity.builder()
-                .id(123L)
-                .title(chatRoomDto.getTitle())
-                .openDate(chatRoomDto.getOpenDate())
-                .closeDate(chatRoomDto.getCloseDate())
-                .build();
-        return chatRoom;
-    }
+
 
 
 
@@ -99,10 +89,8 @@ public class ChatService {
      * @param id 채팅방의 id
      * @return 해당 id에 일치하는 채팅방 객체
      */
-    public ChatRoomEntity findRoomById(Long id) {
-        Optional<ChatRoomEntity> chatRoomEntityOptional = chatRoomRepository.findById(id);
-        //잘못된 채팅방일경우 추가해야함
-        return chatRoomEntityOptional.get();
+    public ChatRoomDto findRoomById(String id) {
+        return chatRooms.get(id);
 
     }
 
@@ -155,16 +143,16 @@ public class ChatService {
      * @param chatRoomId 유저가 입장하는 채팅방의 id
      * @param session    joinChat에서 유저에게 할당된 세션
      */
-    public void userEnteredChatRoom(Long chatRoomId, WebSocketSession session) {
-        Set<WebSocketSession> sessions = chatRoomSessions.getOrDefault(chatRoomId, new HashSet<>());
-        if (sessions == null) {
-            sessions = new HashSet<>();
-            sessions.add(session);
-            chatRoomSessions.put(chatRoomId, sessions);
-        } else {
-            sessions.add(session);
-        }
-    }
+//    public void userEnteredChatRoom(Long chatRoomId, WebSocketSession session) {
+//        Set<WebSocketSession> sessions = chatRoomSessions.getOrDefault(chatRoomId, new HashSet<>());
+//        if (sessions == null) {
+//            sessions = new HashSet<>();
+//            sessions.add(session);
+//            chatRoomSessions.put(chatRoomId, sessions);
+//        } else {
+//            sessions.add(session);
+//        }
+//    }
 }
 
 

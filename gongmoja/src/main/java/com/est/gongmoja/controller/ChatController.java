@@ -6,6 +6,8 @@ import com.est.gongmoja.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/chat")
@@ -13,13 +15,13 @@ public class ChatController {
     private final ChatService chatService;
 
     @PostMapping
-    public ChatRoomEntity createRoom(@RequestBody ChatRoomDto chatRoomDto) {
-        return chatService.createRoom(chatRoomDto);
+    public ChatRoomDto createRoom(@RequestBody String name) {
+        return chatService.createRoom(name);
 
     }
 
-//    @GetMapping
-//    public List<ChatRoomEntity> findAllRoom() {
-//        return chatService.findAllRoom();
-//    }
+    @GetMapping
+    public List<ChatRoomDto> findAllRoom() {
+        return chatService.findAllRoom();
+    }
 }
