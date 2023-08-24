@@ -1,13 +1,13 @@
 package com.est.gongmoja.service;
 
 import com.est.gongmoja.entity.QuestionEntity;
+import com.est.gongmoja.entity.UserEntity;
 import com.est.gongmoja.exception.ErrorCode;
 import com.est.gongmoja.repository.QuestionRepository;
 
+import jakarta.persistence.Id;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;

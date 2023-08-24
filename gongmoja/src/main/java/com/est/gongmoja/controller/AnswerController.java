@@ -15,9 +15,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import java.security.Principal;
 
 @RequiredArgsConstructor
 @RequestMapping("/answer")
@@ -26,7 +23,6 @@ public class AnswerController {
 
     private final QuestionService questionService;
     private final AnswerService answerService;
-    private final UserService userService;
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/create/{id}")
@@ -37,9 +33,9 @@ public class AnswerController {
             model.addAttribute("question", question);
             return "question/question_detail";
         }
-        AnswerEntity answer = this.answerService.create(question,
-                answerFormDto.getContent());
+
+        AnswerEntity answer = this.answerService.create(question, answerFormDto.getContent());
 //        return String.format("redirect:/question/detail/%s#answer_%s", answer.getId(), answer.getId());
-        return "redirect:/question/detail/" + id + "#answer" + answer.getId();
+        return "redirect:/question/detail/" + id + "#answer_" + answer.getId();
     }
-    }
+}

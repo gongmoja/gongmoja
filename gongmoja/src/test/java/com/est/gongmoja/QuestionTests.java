@@ -2,8 +2,10 @@ package com.est.gongmoja;
 
 import com.est.gongmoja.entity.AnswerEntity;
 import com.est.gongmoja.entity.QuestionEntity;
+import com.est.gongmoja.entity.UserEntity;
 import com.est.gongmoja.repository.AnswerRepository;
 import com.est.gongmoja.repository.QuestionRepository;
+import jakarta.persistence.Id;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,14 +33,14 @@ class QuestionTests {
     @DisplayName("질문 등록 테스트 1")
     void testJpa() {
         QuestionEntity q1 = new QuestionEntity();
-        q1.setSubject("sbb가 무엇인가요?");
-        q1.setContent("sbb에 대해서 알고 싶습니다.");
+        q1.setSubject("이번주에 하는 공모주가 어떤게 있나요?");
+        q1.setContent("공모주에 대해 알고 싶습니다.");
         q1.setCreateDate(LocalDateTime.now());
         this.questionRepository.save(q1);  // 첫번째 질문 저장
 
         QuestionEntity q2 = new QuestionEntity();
-        q2.setSubject("스프링부트 모델 질문입니다.");
-        q2.setContent("id는 자동으로 생성되나요?");
+        q2.setSubject("asdf 닉네임을 가진 사람을 신고하고싶습니다.");
+        q2.setContent("신고해주세요");
         q2.setCreateDate(LocalDateTime.now());
         this.questionRepository.save(q2);  // 두번째 질문 저장
     }
@@ -91,4 +93,5 @@ class QuestionTests {
         a.setCreateDate(LocalDateTime.now());
         this.answerRepository.save(a);
     }
+
 }

@@ -3,7 +3,6 @@ package com.est.gongmoja.controller;
 import com.est.gongmoja.dto.answer.AnswerFormDto;
 import com.est.gongmoja.dto.question.QuestionFormDto;
 import com.est.gongmoja.entity.QuestionEntity;
-import com.est.gongmoja.repository.QuestionRepository;
 import com.est.gongmoja.service.QuestionService;
 import com.est.gongmoja.service.UserService;
 import jakarta.validation.Valid;
@@ -16,7 +15,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 
@@ -50,22 +48,24 @@ public class QuestionController {
         return "question/question_detail";
     }
 
-    // 질문 생성 화면 http://localhost:8080/question/create
+    // 질문 등록 화면 http://localhost:8080/question/create
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/create")
     public String questionCreate(Model model) {
         model.addAttribute("questionFormDto", new QuestionFormDto());
-        return "question_form";
+        return "question/question_form";
     }
 
-    // 질문 등록 화면 http://localhost:8080/question/create
+    // 질문 등록 처리 http://localhost:8080/question/create
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/create")
-    public String questionCreate(@Valid QuestionFormDto questionFormDto,
-                                 BindingResult bindingResult, Principal principal) {
+    public String questionCreate(String Subject, String content, @Valid QuestionFormDto questionFormDto, BindingResult bindingResult) {
+
+
         if (bindingResult.hasErrors()) {
-            return "question_form";
+            return "question/question_form";
         }
+
         this.questionService.create(questionFormDto.getSubject(), questionFormDto.getContent());
         return "redirect:/question/list";
     }
