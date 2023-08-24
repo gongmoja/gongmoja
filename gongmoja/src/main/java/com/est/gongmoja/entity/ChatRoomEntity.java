@@ -16,6 +16,7 @@ import java.util.List;
 
 @Table(name = "chat_room")
 public class ChatRoomEntity {
+
     @Id
     private String id;
 

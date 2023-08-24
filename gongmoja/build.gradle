@@ -23,6 +23,7 @@ repositories {
 
 dependencies {
 	implementation group: 'org.jsoup', name: 'jsoup', version: '1.7.2'
+	implementation group: 'org.knowm.xchart', name: 'xchart', version: '3.2.2'
 
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
