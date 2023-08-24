@@ -27,6 +27,7 @@ public class QuestionEntity {
 
     private LocalDateTime createDate; // 작성 일시
 
+
     // userid
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

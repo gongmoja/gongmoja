@@ -2,6 +2,7 @@ package com.est.gongmoja.service;
 
 import com.est.gongmoja.entity.AnswerEntity;
 import com.est.gongmoja.entity.QuestionEntity;
+import com.est.gongmoja.exception.ErrorCode;
 import com.est.gongmoja.repository.AnswerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,6 @@ public class AnswerService {
         answerEntity.setContent(content);
         answerEntity.setCreateDate(LocalDateTime.now());
         answerEntity.setQuestionEntity(questionEntity);
-
         this.answerRepository.save(answerEntity);
         return answerEntity;
     }
@@ -32,7 +32,7 @@ public class AnswerService {
         if (answer.isPresent()) {
             return answer.get();
         } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(ErrorCode.TOKEN_NOT_FOUND.getHttpStatus());
         }
     }
 }

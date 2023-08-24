@@ -50,6 +50,8 @@ dependencies {
 
 	//web socket
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
+	implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-jasper'
 }
 
 tasks.named('test') {
