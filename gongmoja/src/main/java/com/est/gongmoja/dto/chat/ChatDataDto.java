@@ -14,10 +14,10 @@ public class ChatDataDto {
         ENTER, TALK
     }
     private messageType type;
-    private String chatRoomId;
+    private Long chatRoomId;
     private String sender;
 //    private LocalDateTime sentTime;
-    private String content;
+    private String message;
 //    private long userId;
 
 
