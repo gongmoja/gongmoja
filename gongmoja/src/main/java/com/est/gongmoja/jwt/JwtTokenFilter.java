@@ -61,7 +61,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
         //accessToken 이 들어있는 cookie 가 없다면?
         if(accessTokenCookie.getName().equals("noCookie")){
-            log.info("access 쿠키 없음");
+            log.info("공모자들 쿠키 없음");
             filterChain.doFilter(request,response);
             return;
         }
@@ -84,14 +84,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         if(atStatus.equals(ErrorCode.TOKEN_EXPIRED.name())){
             log.info("만료된 토큰");
 
-            //쿠키 refreshToken 과 DB refreshToken 검증
-            //todo 필요한 과정인 것인가 에 대해 논의
-            String username = jwtTokenUtil.getUsername(refreshToken);
-            Optional<RefreshTokenEntity> optionalToken = refreshTokenRepository.findById(username);
-            if(optionalToken.isEmpty()){
-                log.info("서버 내의 리프레시 토큰과 일치하지 않음");
-                filterChain.doFilter(request,response);
-            }
+
 
 
             //만약 refreshToken 도 expired 라면?
@@ -105,6 +98,16 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             }
             //refreshToken 이 유효하다면?
             else{
+                //쿠키 refreshToken 과 DB refreshToken 검증
+                //todo 필요한 과정인 것인가 에 대해 논의
+                String username = jwtTokenUtil.getUsername(refreshToken);
+                Optional<RefreshTokenEntity> optionalToken = refreshTokenRepository.findById(username);
+                if(optionalToken.isEmpty()){
+                    log.info("서버 내의 리프레시 토큰과 일치하지 않음");
+                    filterChain.doFilter(request,response);
+                }
+
+
                 log.info("accessToken 재발급");
                 //새로운 accessToken 생성
                 String newAccessToken = jwtTokenUtil.createToken(username,JwtTokenUtil.accessTokenExpireMs);
