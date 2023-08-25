@@ -164,12 +164,12 @@ public class ChatService {
     }
 
     public void sendMessage(ChatDataDto chatData){
-        joinChat(chatData);
+        //joinChat(chatData);
         if(ChatDataEntity.MessageType.ENTER.equals(chatData.getType())){
             //현재 시간을 가져오는 줄 필요
             chatData.setMessage(chatData.getSender() + "님이 입장하셨습니다.");
         }
-        messagingTemplate.convertAndSend("/sub/{stockName}/chat" + chatData.getChatRoomId(), chatData);
+        messagingTemplate.convertAndSend("/sub/" + chatData.getChatRoomId(), chatData);
     }
 }
 

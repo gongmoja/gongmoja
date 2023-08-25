@@ -1,19 +1,20 @@
 package com.est.gongmoja.dto.chat;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ChatDataDto {
     private long id;
 
-    public enum messageType{
+    public enum MessageType{
         ENTER, TALK
     }
-    private messageType type;
+    private MessageType type;
     private Long chatRoomId;
     private String sender;
 //    private LocalDateTime sentTime;
