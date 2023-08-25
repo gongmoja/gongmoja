@@ -18,7 +18,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChatRoomDto {
-    private String id;
+    private Long id;
 
     private String title;
     private LocalDateTime openDate;
@@ -28,23 +28,23 @@ public class ChatRoomDto {
     private List<ChatDataEntity> chatDataEntityList;
     private List<UserEntity> chatUserList;
 
-    private Set<WebSocketSession> sessions;
-    public void handlerActions(WebSocketSession session, ChatService chatService, ChatDataDto chatData)  {
-        if (this.sessions == null) {
-            this.sessions = new HashSet<>(); // Initialize the sessions if it's null
-        }
-        if (chatData.getType().equals(ChatDataDto.messageType.ENTER)) {
-            sessions.add(session);
-//            chatData.setContent(userRepository.findById(chatData.getUserId()).get().getNickName() + "님이 입장했습니다.");
-            chatData.setContent(chatData.getSender() + "님이 입장했습니다.");
-        }
-        convertMessage(chatData, chatService);
-
-    }
-
-    public <T> void convertMessage(T message, ChatService chatService) {
-        sessions.parallelStream().forEach(session -> chatService.sendMessageToAll(session, message));
-    }
+//    private Set<WebSocketSession> sessions;
+//    public void handlerActions(WebSocketSession session, ChatService chatService, ChatDataDto chatData)  {
+//        if (this.sessions == null) {
+//            this.sessions = new HashSet<>(); // Initialize the sessions if it's null
+//        }
+//        if (chatData.getType().equals(ChatDataDto.messageType.ENTER)) {
+//            sessions.add(session);
+////            chatData.setContent(userRepository.findById(chatData.getUserId()).get().getNickName() + "님이 입장했습니다.");
+//            chatData.setContent(chatData.getSender() + "님이 입장했습니다.");
+//        }
+//        convertMessage(chatData, chatService);
+//
+//    }
+//
+//    public <T> void convertMessage(T message, ChatService chatService) {
+//        sessions.parallelStream().forEach(session -> chatService.sendMessageToAll(session, message));
+//    }
 
 
 }
