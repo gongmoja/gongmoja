@@ -41,20 +41,23 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     protected OAuth2User processOAuth2User(OAuth2UserRequest userRequest, OAuth2User oAuth2User){
         //제공자 (카카오 or 네이버)
         String authProvider = userRequest.getClientRegistration().getRegistrationId().toLowerCase();
-
+        log.info("provider = {}",authProvider);
         //user 정보 객체 생성
         OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(authProvider,oAuth2User.getAttributes());
 
         //db 저장 단계
         //OAuth2 속성에 이메일이 담겨오지 않았다면 예외처리
         if(!StringUtils.hasText(oAuth2UserInfo.getEmail())) throw new RuntimeException();
+        log.info("email = {}",oAuth2UserInfo.getEmail());
+        log.info("name = {}",oAuth2UserInfo.getName());
+        log.info("oauth2ID = {}",oAuth2UserInfo.getOAuth2Id());
 
         //User 객체 저장 , 생성
         UserEntity userEntity = saveOrUpdateUser(authProvider,oAuth2UserInfo);
 
         return new CustomOAuth2User(
                 oAuth2User.getAttributes(),
-                Collections.singletonList(new SimpleGrantedAuthority("USER")),
+                Collections.singletonList(new SimpleGrantedAuthority("User")),
                 userEntity.getEmail());
     }
 

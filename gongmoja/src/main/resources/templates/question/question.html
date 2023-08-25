@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<head th:replace="~{fragment/header::headerFragment(~{::title})}">
+  <title th:text="Register"></title>
+  <meta charset="UTF-8">
+</head>
+<body>
+<th:block layout:fragment="content">
+  <div>
+    <h2>Create a new post</h2>
+    <div>
+      <label for="title">Title</label>
+      <input title="title" type="text" name="title" id="title"/>
+    </div>
+    <div class="content-box">
+      <label>내용</label> <!-- Display Hangul text directly -->
+      <textarea class="content" name="content"
+                rows="10" cols="50"></textarea>
+    </div>
+    <button id="save" type="button">Save</button>
+  </div>
+</th:block>
+</body>
+</html>
