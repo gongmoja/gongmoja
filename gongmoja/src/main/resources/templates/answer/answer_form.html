@@ -1,5 +1,6 @@
-<meta charset="UTF-8">
-<html layout:decorate="~{layout}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" th:href="@{/static/question/style.css}">
+
 <div layout:fragment="content" class="container">
     <h5 class="my-3 border-bottom pb-2">답변 수정</h5>
     <form th:object="${answerForm}" method="post">

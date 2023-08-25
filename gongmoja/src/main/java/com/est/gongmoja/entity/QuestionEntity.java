@@ -19,13 +19,14 @@ public class QuestionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; //번호
 
-    @Column(nullable = false, length = 100)
-    private String title; // 제목
+    @Column(length = 200)
+    private String subject; // 제목
 
-    @Column(nullable = false, length = 500)
+    @Column(columnDefinition = "TEXT")
     private String content; // 내용
 
-    private LocalDateTime createdAt; // 작성 일시
+    private LocalDateTime createDate; // 작성 일시
+
 
     // userid
     @ManyToOne(fetch = FetchType.LAZY)
