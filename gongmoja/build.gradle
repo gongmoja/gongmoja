@@ -49,20 +49,6 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
 
-<<<<<<< HEAD
-	//websocket
-	implementation 'org.springframework.boot:spring-boot-starter-websocket'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-websocket'
-	implementation 'org.springframework.boot:spring-boot-starter-freemarker'
-	implementation 'org.springframework.boot:spring-boot-devtools'
-	implementation 'org.webjars.bower:bootstrap:5.2.2'
-	implementation 'org.webjars.bower:vue:2.6.14'
-	implementation 'org.webjars.bower:axios:0.21.1'
-	implementation 'org.webjars:sockjs-client:1.5.1'
-	implementation 'org.webjars:stomp-websocket:2.3.4'
-	implementation 'com.google.code.gson:gson:2.10.1'
-=======
     //web socket
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -75,7 +61,6 @@ dependencies {
     implementation 'org.webjars:sockjs-client:1.5.1'
     implementation 'org.webjars:stomp-websocket:2.3.4'
     implementation 'com.google.code.gson:gson:2.10.1'
->>>>>>> be2aa2cba46f87a051190295c59046d324babad7
 
 }
 
