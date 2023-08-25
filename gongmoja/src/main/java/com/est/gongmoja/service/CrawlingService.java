@@ -1,6 +1,8 @@
 package com.est.gongmoja.service;
 
+import com.est.gongmoja.entity.SponsorEntity;
 import com.est.gongmoja.entity.StockEntity;
+import com.est.gongmoja.repository.SponsorRepository;
 import com.est.gongmoja.repository.StockRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +27,7 @@ import java.util.Optional;
 @Slf4j
 @RequiredArgsConstructor
 public class CrawlingService {
-    private final StockRepository repository;
+    private final StockRepository stockRepository;
 
     @Scheduled(cron = "0 */10 * * * *") // 10분마다 한번 업데이트 (변경완료)
     @PostConstruct
@@ -101,10 +103,10 @@ public class CrawlingService {
                 }
 
                 if (isCanceled) { // 공모철회
-                    Optional<StockEntity> canceledOptionalStock = repository.findByName(stockName);
+                    Optional<StockEntity> canceledOptionalStock = stockRepository.findByName(stockName);
                     if (canceledOptionalStock.isPresent()) {  // 이미 db에 존재시
                         StockEntity canceledStock = canceledOptionalStock.get();
-                        repository.delete(canceledStock);
+                        stockRepository.delete(canceledStock);
                     }
 
                     // 존재 안 할 시 크롤링 stop 후 continue
@@ -157,9 +159,9 @@ public class CrawlingService {
                         .build();
 
 
-                Optional<StockEntity> optionalStock = repository.findByName(stockName);
-                if (optionalStock.isEmpty())
-                    repository.save(stock);
+                Optional<StockEntity> optionalStock = stockRepository.findByName(stockName);
+                if (optionalStock.isEmpty()){
+                    stockRepository.save(stock);}
                 else { // 기존 공모주 정보 업데이트 (id, name은 업데이트 안됨)
                     StockEntity updateStock = optionalStock.get();
                     updateStock.setStartDate(startDate);
@@ -172,7 +174,7 @@ public class CrawlingService {
                     updateStock.setIpoDate(ipoDate);
                     updateStock.setRefundDate(refundDate);
                     updateStock.setUpdateTime(updateTime);
-                    repository.save(updateStock);
+                    stockRepository.save(updateStock);
                 }
             }
         } catch (Exception e) {
