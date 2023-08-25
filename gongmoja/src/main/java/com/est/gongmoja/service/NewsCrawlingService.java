@@ -5,6 +5,7 @@ import com.est.gongmoja.entity.StockEntity;
 import com.est.gongmoja.repository.NewsRepository;
 import com.est.gongmoja.repository.StockRepository;
 import jakarta.annotation.PostConstruct;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.HttpStatusException;
@@ -21,9 +22,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.List;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+
 
 @Service
 @Slf4j
@@ -32,30 +36,22 @@ public class NewsCrawlingService {
     private final NewsRepository newsRepository;
     private final StockRepository stockRepository;
 
-    private Set<String> existNews = new HashSet<>();
-
-//    @PostConstruct
-    //@Scheduled(cron = "0 * * * * *")
+    // 수정상항
+    @PostConstruct
+    @Scheduled(cron = "0 */10 * * * *")
     public void getCrawlNewsData() throws InterruptedException {
         List<StockEntity> stockEntityList = stockRepository.findAll(); // db에 있는 전체 주식
-        List<NewsEntity> existingNews = newsRepository.findAll();
-        for (NewsEntity news : existingNews) {
-            existNews.add(news.getNewsUrl());
-            log.info(news.getNewsUrl());
-        }
 
-        int count = 1; // 크롤 한 뉴스기사 개수
+        int count = 1; // 크롤 한 주식개수
         for (StockEntity entity : stockEntityList) {
-            if (count++ % 9 == 0) Thread.sleep(3000); // 기사 10개 크롤하면 3초 쉬는 count
+            if (count++ % 9 == 0) Thread.sleep(3000 + (int)(Math.random() * 1000)); // 주식 7개 크롤하면 3초 쉬는 count
             String stockName = entity.getName();
             // 대상 웹 페이지 URL, 어디까지 크롤링할 지 정해야함.
             String url = "https://search.naver.com/search.naver?where=news&sm=tab_pge&query=" + stockName + "+공모" ;
             try {
-                Document document = Jsoup.connect(url)
-                        .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3")
-                        .get();
+                Document document = Jsoup.connect(url).get();
                 Elements articleElements = document.select("ul.list_news li");
-                int cnt = 0;
+                int cnt = 0; // 크롤한 뉴스기사 수
                 for (Element articleElement : articleElements) {
                     // 각 기사의 제목, 요약 내용, 링크 가져오기
                     Element titleElement = articleElement.select("a.news_tit").first();
@@ -104,9 +100,11 @@ public class NewsCrawlingService {
                                 .publisher(sourceName)
                                 .stock(entity)
                                 .build();
-                        newsRepository.save(newsEntity);
-                        existNews.add(articleUrl);
 
+                        Optional<NewsEntity> optionalNewsEntity = newsRepository.findByNewsUrl(articleUrl);
+                        if (optionalNewsEntity.isEmpty()) {
+                            newsRepository.save(newsEntity);
+                        }
                         if (cnt++ > 1) break; // 하나의 주식 당 3개의 뉴스 크롤
                     }
                 }
@@ -118,4 +116,5 @@ public class NewsCrawlingService {
             }
         }
     }
+
 }
