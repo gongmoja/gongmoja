@@ -29,7 +29,7 @@ public class UserEntity {
     private String providerId;
 
     @OneToMany(mappedBy = "user")
-    final private List<QuestionEntity> questionEntities = new ArrayList<>();
+    private List<QuestionEntity> questionEntities = new ArrayList<>();
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "favorites")

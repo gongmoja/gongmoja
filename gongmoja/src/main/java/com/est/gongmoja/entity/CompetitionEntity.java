@@ -1,11 +1,9 @@
 package com.est.gongmoja.entity;
 
-
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-
 
 @Entity
 @Getter

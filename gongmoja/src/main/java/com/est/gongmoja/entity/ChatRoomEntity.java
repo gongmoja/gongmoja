@@ -34,6 +34,4 @@ public class ChatRoomEntity {
 
     @OneToMany(mappedBy = "chatRoom")
     final private List<ChatDataEntity> chatDataEntityList = new ArrayList<>();
-
-
 }
