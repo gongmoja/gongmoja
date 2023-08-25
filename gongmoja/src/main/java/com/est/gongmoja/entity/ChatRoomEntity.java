@@ -18,7 +18,8 @@ import java.util.List;
 public class ChatRoomEntity {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private String title;
     private LocalDateTime openDate;

@@ -1,5 +1,6 @@
 package com.est.gongmoja.service;
 
+import com.est.gongmoja.dto.chat.ChatDataDto;
 import com.est.gongmoja.dto.chat.ChatRoomDto;
 import com.est.gongmoja.entity.ChatDataEntity;
 import com.est.gongmoja.entity.ChatRoomEntity;
@@ -8,11 +9,13 @@ import com.est.gongmoja.entity.UserEntity;
 import com.est.gongmoja.repository.ChatDataRepository;
 import com.est.gongmoja.repository.ChatRoomRepository;
 import com.est.gongmoja.repository.StockRepository;
+import com.est.gongmoja.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.socket.TextMessage;
@@ -27,6 +30,8 @@ import java.util.*;
 public class ChatService {
     private final ChatRoomRepository chatRoomRepository;
     private final ChatDataRepository chatDataRepository;
+    private final SimpMessageSendingOperations messagingTemplate;
+    private final UserRepository userRepository;
     private final StockRepository stockRepository;
 
     //채팅방 별 연결된 웹소캣 세션의 집합
@@ -39,16 +44,33 @@ public class ChatService {
     public List<ChatRoomDto> findAllRoom(){
         return new ArrayList<>(chatRooms.values());
     }
-    public ChatRoomDto createRoom(String name) {
-        String randomId = UUID.randomUUID().toString();
-        ChatRoomDto chatRoom = ChatRoomDto.builder()
-                .id(randomId)
-//                .title(chatRoomDto.getTitle())
-                .title(name)
-//                .openDate(chatRoomDto.getOpenDate())
-//                .closeDate(chatRoomDto.getCloseDate())
+//    public ChatRoomDto createRoom(String name) {
+//        String randomId = UUID.randomUUID().toString();
+//        ChatRoomDto chatRoom = ChatRoomDto.builder()
+//                .id(randomId)
+////                .title(chatRoomDto.getTitle())
+//                .title(name)
+////                .openDate(chatRoomDto.getOpenDate())
+////                .closeDate(chatRoomDto.getCloseDate())
+//                .build();
+//        chatRooms.put(randomId, chatRoom);
+//        return chatRoom;
+//    }
+
+    public ChatRoomEntity createChatRoom(String stockName){
+        log.info(stockName);
+        Optional<StockEntity> optionalStock = stockRepository.findByName(stockName);
+        if(optionalStock.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "공모주가 존재하지 않습니다");
+        }
+        StockEntity stock = optionalStock.get();
+        ChatRoomEntity chatRoom =ChatRoomEntity.builder()
+                .title(stockName + " 채팅방")
+                .openDate(stock.getStartDate())
+                .closeDate(stock.getEndDate())
+                .userCount(0L)
                 .build();
-        chatRooms.put(randomId, chatRoom);
+        chatRoomRepository.save(chatRoom);
         return chatRoom;
     }
 
@@ -100,59 +122,55 @@ public class ChatService {
      * <p>
      * 입장하려는 채팅방이 존재하고, 그 채팅방이 공모주에 연결되어 있고, 해당 공모주를 즐겨찾기했는지 확인한다
      *
-     * @param user        채팅방에 입장하려는 사용자
-     * @param chatRoomDto 해당 채팅방의 정보
+     * @param chatDataDto 해당 채팅방의 정보
      */
-//    public void joinChat(UserEntity user, ChatRoomDto chatRoomDto, WebSocketSession session) {
-//
-//        //채팅방 존재 유무 확인
-//        Optional<ChatRoomEntity> chatRoomEntityOptional = chatRoomRepository.findById(chatRoomDto.getId());
-//        ChatRoomEntity chatRoom = null;
-//        if (chatRoomEntityOptional.isEmpty()) {
-//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "채팅방이 존재하지 않습니다");
-//        } else {
-//            chatRoom = chatRoomEntityOptional.get();
-//        }
-//
-//        //공모주 존재여부 확인
-//        Optional<StockEntity> stockEntityOptional = stockRepository.findById(chatRoomDto.getStockId().getId());
-//        StockEntity stock = null;
-//        if (stockEntityOptional.isEmpty()) {
-//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "공모주가 존재하지 않습니다");
-//        } else {
-//            stock = stockEntityOptional.get();
-//        }
-//
-//        //즐겨찾기 여부 확인
-//        if (user.getStocks().contains(stock) == false) {
-//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "즐겨찾기가 되어있지 않은 공모주입니다");
-//        }
-//
-//        //웹소켓 세션을 생성해서 추가해야한다
-//
-//
-//        userEnteredChatRoom(chatRoom.getId(), session);
-//        chatRoom.setUserCount(chatRoom.getUserCount() + 1);
-//        //채팅에 참여중인 인원에 추가하고 세션이 만료될경우 삭제하는 기능 추가
-//    }
+    public void joinChat(ChatDataDto chatDataDto) {
 
 
-    /**
-     * 채팅방의 세션그룹에 입장한 유저의 세션을 분류하는
-     *
-     * @param chatRoomId 유저가 입장하는 채팅방의 id
-     * @param session    joinChat에서 유저에게 할당된 세션
-     */
-//    public void userEnteredChatRoom(Long chatRoomId, WebSocketSession session) {
-//        Set<WebSocketSession> sessions = chatRoomSessions.getOrDefault(chatRoomId, new HashSet<>());
-//        if (sessions == null) {
-//            sessions = new HashSet<>();
-//            sessions.add(session);
-//            chatRoomSessions.put(chatRoomId, sessions);
-//        } else {
-//            sessions.add(session);
-//        }
-//    }
+        //채팅방 존재 유무 확인
+        Optional<ChatRoomEntity> chatRoomEntityOptional = chatRoomRepository.findById(chatDataDto.getChatRoomId());
+        ChatRoomEntity chatRoom;
+        if (chatRoomEntityOptional.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "채팅방이 존재하지 않습니다");
+        } else {
+            chatRoom = chatRoomEntityOptional.get();
+        }
+
+        //공모주 존재여부 확인
+        Optional<StockEntity> stockEntityOptional = stockRepository.findById(chatRoom.getStockId().getId());
+        StockEntity stock;
+        if (stockEntityOptional.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "공모주가 존재하지 않습니다");
+        } else {
+            stock = stockEntityOptional.get();
+        }
+
+        //발신 사용자 존재여부
+        Optional<UserEntity> userEntityOptional = userRepository.findByUserName(chatDataDto.getSender());
+        UserEntity user = null;
+        if (userEntityOptional.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "공모주가 존재하지 않습니다");
+        } else {
+            user = userEntityOptional.get();
+        }
+
+        //즐겨찾기 여부 확인
+        if (user.getStocks().contains(stock) == false) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "즐겨찾기가 되어있지 않은 공모주입니다");
+        }
+        //유저 추가 엔티티에 매핑 건의
+        //기본메시지 강제 발송
+        chatRoom.setUserCount(chatRoom.getUserCount() + 1);
+    }
+
+    public void sendMessage(ChatDataDto chatData){
+        //joinChat(chatData);
+        if(ChatDataEntity.MessageType.ENTER.equals(chatData.getType())){
+            //현재 시간을 가져오는 줄 필요
+            chatData.setMessage(chatData.getSender() + "님이 입장하셨습니다.");
+        }
+        messagingTemplate.convertAndSend("/sub/" + chatData.getChatRoomId(), chatData);
+    }
 }
 
 
