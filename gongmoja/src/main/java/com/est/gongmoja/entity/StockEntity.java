@@ -38,6 +38,9 @@ public class StockEntity {
     @OneToMany(mappedBy = "stock")
     final private List<NewsEntity> newsEntityList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "stock")
+    final private List<SponsorEntity> sponsorEntityList = new ArrayList<>();
+
     @ManyToMany(mappedBy = "stocks")
     private List<UserEntity> users;
 
