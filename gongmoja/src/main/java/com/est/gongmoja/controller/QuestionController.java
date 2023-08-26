@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,10 +33,13 @@ public class QuestionController {
     // 질문 전체 목록 리스트 화면 http://localhost:8080/question/list
     // TODO: admin만 보이게 권한 수정해야함
     @GetMapping("/list")
-    public String list(Model model, @RequestParam(value="page", defaultValue="0") int page,
-                       @RequestParam(value = "kw", defaultValue = "") String kw) {
+    public String list(Model model, @RequestParam(value="page", defaultValue="0") int page) {
+        Page<QuestionEntity> paging = this.questionService.getList(page);
+
+        model.addAttribute("paging", paging);
+
         List<QuestionEntity> questionEntity = questionService.getList();
-        log.info("page:{}, kw:{}", page, kw);
+//        log.info("page:{}, kw:{}", page, kw);
         model.addAttribute("questionEntity", questionEntity);
 
         return "question/question_list";
