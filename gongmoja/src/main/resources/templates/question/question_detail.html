@@ -18,7 +18,10 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" href="/login">로그인</a>
+<!--                        <a class="nav-link" href="/login">로그인</a>-->
+                        <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/login}">로그인</a>
+                        <!--                    로그인되어있으면 로그아웃버튼이 나오고, 로그인 안되어있으면 로그인 버튼이 나옴 -->
+                        <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/logout}">로그아웃</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/question/list">질문목록</a>
