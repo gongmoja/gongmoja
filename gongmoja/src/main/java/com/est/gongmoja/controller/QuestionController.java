@@ -14,7 +14,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 
@@ -49,7 +51,7 @@ public class QuestionController {
     }
 
     // 질문 등록 화면 http://localhost:8080/question/create
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated()") // 로그인 안하면 질문 작성 안됨
     @GetMapping("/create")
     public String questionCreate(Model model) {
         model.addAttribute("questionFormDto", new QuestionFormDto());
@@ -57,10 +59,10 @@ public class QuestionController {
     }
 
     // 질문 등록 처리 http://localhost:8080/question/create
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated()") // 로그인 안하면 질문 작성 안됨
     @PostMapping("/create")
-    public String questionCreate(String Subject, String content, @Valid QuestionFormDto questionFormDto, BindingResult bindingResult) {
-
+    public String questionCreate( @Valid QuestionFormDto questionFormDto,
+                                  BindingResult bindingResult) throws IOException {
 
         if (bindingResult.hasErrors()) {
             return "question/question_form";

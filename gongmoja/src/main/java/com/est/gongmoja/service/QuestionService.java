@@ -1,15 +1,18 @@
 package com.est.gongmoja.service;
 
 import com.est.gongmoja.entity.QuestionEntity;
+import com.est.gongmoja.entity.QuestionImageEntity;
 import com.est.gongmoja.entity.UserEntity;
 import com.est.gongmoja.exception.ErrorCode;
+import com.est.gongmoja.repository.QuestionImageRepository;
 import com.est.gongmoja.repository.QuestionRepository;
 
-import jakarta.persistence.Id;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 
 import java.util.List;
@@ -21,6 +24,7 @@ import java.util.Optional;
 public class QuestionService {
 
     private final QuestionRepository questionRepository;
+    private final QuestionImageRepository questionImageRepository;
 
     public List<QuestionEntity> getList(){
         return questionRepository.findAll();
@@ -36,7 +40,7 @@ public class QuestionService {
         }
     }
     // 질문 등록
-    public void create(String subject, String content) {
+    public void create(String subject, String content) throws IOException {
         QuestionEntity q = new QuestionEntity();
         q.setSubject(subject); // 제목
         q.setContent(content); // 내용
