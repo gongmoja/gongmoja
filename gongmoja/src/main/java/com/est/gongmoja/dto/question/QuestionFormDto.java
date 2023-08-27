@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.security.Principal;
+import java.util.List;
+
 @Getter
 @Setter
 public class QuestionFormDto {
@@ -16,6 +19,5 @@ public class QuestionFormDto {
     @NotEmpty(message="내용은 필수항목입니다.")
     private String content;
 
-//    // 이미지 첨부 기능 추가
-//    private MultipartFile imageUrl; // 이미지파일 추가
+
 }

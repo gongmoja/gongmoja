@@ -18,6 +18,7 @@ import com.est.gongmoja.jwt.JwtTokenUtil;
 import org.apache.catalina.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -86,4 +87,14 @@ public class UserService {
 
     //정보수정 로직
 
+
+//    // Question userId 로직
+//    public UserEntity getUser(String username){
+//        Optional<UserEntity> userEntity = this.userRepository.findByUserName(username);
+//        if (userEntity.isPresent()){
+//            return userEntity.get();
+//        } else {
+//            throw new ResponseStatusException(ErrorCode.TOKEN_NOT_FOUND.getHttpStatus());
+//        }
+//    }
 }

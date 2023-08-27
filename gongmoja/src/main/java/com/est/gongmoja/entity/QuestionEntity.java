@@ -3,9 +3,7 @@ package com.est.gongmoja.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -20,24 +18,31 @@ public class QuestionEntity {
     private Long id; //번호
 
     @Column(length = 200)
-    private String subject; // 제목
+    private String subject; // 제목 
 
     @Column(columnDefinition = "TEXT")
     private String content; // 내용
 
     private LocalDateTime createDate; // 작성 일시
 
+    private String filename; // 파일 이름
+
+    private String filepath; // 파일 경로
 
     // userid
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private UserEntity user;
-
-    // 이미지
-    @OneToMany(mappedBy = "question")
-    private List<QuestionImageEntity> questionImageList = new ArrayList<>();
 
     // 답변
     @OneToMany(mappedBy = "questionEntity", cascade = CascadeType.REMOVE) // 질문 삭제하면 답변도 전체 삭제
     private List<AnswerEntity> answerEntityList;
+
+    public void setFileName(String fileName) {
+        this.filename = fileName;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filepath = filePath;
+    }
 }
