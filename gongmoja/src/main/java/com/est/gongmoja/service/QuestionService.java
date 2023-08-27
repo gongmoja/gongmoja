@@ -54,8 +54,7 @@ public class QuestionService {
         File saveFile = new File(projectPath, fileName);
         imageFile.transferTo(saveFile);
         question.setFileName(fileName);
-        question.setFilePath("/files/" + fileName);
-
+        question.setFilePath("/files/" + fileName); //파일 경로
         questionRepository.save(question);
     }
 }

@@ -51,7 +51,7 @@ public class QuestionController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/create")
-    public String questionCreate(@Valid QuestionFormDto questionFormDto,
+    public String questionCreate(Model model, @Valid QuestionFormDto questionFormDto,
                                  @RequestParam("file") MultipartFile imageFile,
                                  BindingResult bindingResult) throws IOException {
         if (bindingResult.hasErrors()) {
@@ -59,6 +59,8 @@ public class QuestionController {
         }
 
         questionService.create(questionFormDto.getSubject(), questionFormDto.getContent(), imageFile);
+        model.addAttribute("message", "글 작성이 완료되었습니다.");
+        log.info("질문 작성 완료");
         return "redirect:/question/list";
     }
 }
