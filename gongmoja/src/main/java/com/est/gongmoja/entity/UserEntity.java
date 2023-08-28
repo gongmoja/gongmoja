@@ -28,7 +28,7 @@ public class UserEntity {
     private String provider;
     private String providerId;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<QuestionEntity> questionEntities;
 
     @ManyToMany(cascade = CascadeType.ALL)

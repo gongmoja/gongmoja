@@ -30,7 +30,7 @@ public class QuestionEntity {
     private String filepath; // 파일 경로
 
     // userid
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private UserEntity user;
 

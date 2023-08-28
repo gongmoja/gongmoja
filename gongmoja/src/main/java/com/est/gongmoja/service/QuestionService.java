@@ -2,8 +2,11 @@ package com.est.gongmoja.service;
 
 import com.est.gongmoja.entity.QuestionEntity;
 
+import com.est.gongmoja.entity.UserEntity;
+import com.est.gongmoja.exception.ErrorCode;
 import com.est.gongmoja.repository.QuestionRepository;
 
+import com.est.gongmoja.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,6 +22,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -26,6 +30,8 @@ import java.util.UUID;
 @Service
 public class QuestionService {
     private final QuestionRepository questionRepository;
+
+    private final UserRepository userRepository; // user 정보 추가
 
     public List<QuestionEntity> getList() {
         return questionRepository.findAll();
@@ -42,30 +48,21 @@ public class QuestionService {
         return questionRepository.findAll(pageable);
     }
 
-    public void create(String subject, String content, MultipartFile imageFile) throws IOException {
+    public void create(String subject, String content, MultipartFile imageFile, UserEntity user) throws IOException {
         QuestionEntity question = new QuestionEntity();
         question.setSubject(subject);
         question.setContent(content);
+        question.setUser(user);
         question.setCreateDate(LocalDateTime.now());
+
 
         String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/files";
         UUID uuid = UUID.randomUUID();
         String fileName = uuid + "_" + imageFile.getOriginalFilename();
         File saveFile = new File(projectPath, fileName);
-        imageFile.transferTo(saveFile);
+        imageFile.transferTo(saveFile); // 수정해야할 부분
         question.setFileName(fileName);
         question.setFilePath("/files/" + fileName); //파일 경로
         questionRepository.save(question);
     }
 }
-
-
-    // 질문 등록
-//    public void create(String subject, String content, UserEntity user) throws IOException {
-//        QuestionEntity q = new QuestionEntity();
-//        q.setSubject(subject); // 제목
-//        q.setContent(content); // 내용
-//        q.setCreateDate(LocalDateTime.now()); // 작성시간
-//        q.setUser(user);
-//        this.questionRepository.save(q);
-//    }
