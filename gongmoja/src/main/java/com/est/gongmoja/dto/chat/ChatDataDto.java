@@ -17,7 +17,9 @@ public class ChatDataDto {
     private MessageType type;
     private Long chatRoomId;
     private String sender;
+
 //    private LocalDateTime sentTime;
+
     private String message;
 //    private long userId;
 

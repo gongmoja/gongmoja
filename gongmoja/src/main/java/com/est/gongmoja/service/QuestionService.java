@@ -52,9 +52,9 @@ public class QuestionService {
         UUID uuid = UUID.randomUUID();
         String fileName = uuid + "_" + imageFile.getOriginalFilename();
         File saveFile = new File(projectPath, fileName);
-        imageFile.transferTo(saveFile);
+//        imageFile.transferTo(saveFile);
         question.setFileName(fileName);
-        question.setFilePath("/files/" + fileName); //파일 경로
+        question.setFilePath("/static.files/" + fileName); //파일 경로
         questionRepository.save(question);
     }
 }
