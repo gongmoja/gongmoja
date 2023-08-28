@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -42,7 +43,9 @@ public class QuestionService {
     }
 
     public Page<QuestionEntity> getList(int page) {
-        List<Sort.Order> sorts = List.of(Sort.Order.desc("createDate"));
+//        List<Sort.Order> sorts = List.of(Sort.Order.desc("createDate"));
+        List<Sort.Order> sorts = new ArrayList<>();
+        sorts.add(Sort.Order.desc("createDate"));
         Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
         return questionRepository.findAll(pageable);
     }

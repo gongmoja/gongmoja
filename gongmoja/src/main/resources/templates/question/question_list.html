@@ -54,7 +54,7 @@
 <div class="container my-3">
     <table class="table">
         <thead class="table-dark">
-        <tr>
+        <tr class="text-center">
             <th>번호</th>
             <th style="width: 50%">제목</th>
             <th>작성자</th>
@@ -65,23 +65,24 @@
         <tbody>
 
         <tr th:each="questionEntity, index : ${questionEntity}">
-<!--        <tr th:each="questionEntity, loop : ${questionEntity}">-->
-<!--        <tr th:each="questionEntity, loop : ${questionEntity}">-->
-        <tr th:each="questionEntity, loop : ${paging}">
+        <tr class="text-center" th:each="questionEntity, loop : ${paging}">
+
             <!--번호-->
             <td th:text="${loop.count}"></td>
+
             <!--제목-->
-            <td>
+            <td class="text-center">
                 <a th:href="@{|/question/detail/${questionEntity.id}|}" th:text="${questionEntity.subject}"></a>
 
                 <span class="text-danger small ms-2"
                       th:if="${#lists.size(questionEntity.answerEntityList) > 0}"
                       th:text="${#lists.size(questionEntity.answerEntityList)}">
                     </span>
-
             </td>
+
             <!--작성자-->
-            <td><span th:if="${questionEntity.user != null}" th:text="${questionEntity.user.id}"></span></td>
+            <td><span th:if="${questionEntity.user != null}" th:text="${questionEntity.user.userName}"></span></td>
+
             <!--일시-->
             <td th:text="${#temporals.format(questionEntity.createDate, 'yy-MM-dd HH:mm')}"></td>
         </tr>
