@@ -7,6 +7,7 @@ import com.est.gongmoja.exception.ErrorCode;
 import com.est.gongmoja.repository.QuestionRepository;
 
 import com.est.gongmoja.repository.UserRepository;
+import jakarta.persistence.Id;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -57,14 +58,24 @@ public class QuestionService {
         question.setUser(user);
         question.setCreateDate(LocalDateTime.now());
 
-        if (imageFile != null && !imageFile.isEmpty()){
+        if (imageFile != null && !imageFile.isEmpty()) {
             String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/files";
+
+            // 파일업로드시 userName별 디렉토리 생성
+            String userDirectory = projectPath + "/" + user.getUserName();
+            File userDirectoryFile = new File(userDirectory);
+            if (!userDirectoryFile.exists()) {
+                userDirectoryFile.mkdirs();
+            }
+
             UUID uuid = UUID.randomUUID();
             String fileName = uuid + "_" + imageFile.getOriginalFilename();
-            File saveFile = new File(projectPath, fileName);
+            File saveFile = new File(userDirectory, fileName); // 변경된 부분
+
             imageFile.transferTo(saveFile); // 수정해야할 부분
+
             question.setFileName(fileName);
-            question.setFilePath("/files/" + fileName); //파일 경로
+            question.setFilePath("/files/" + user.getUserName() + "/" + fileName); //파일 경로
         }
         questionRepository.save(question);
     }
