@@ -19,7 +19,7 @@ public class CalendarController {
 
     @RequestMapping //기본 페이지 표시
     public String viewCalendar(){
-        return "calendar/calendar"; // 경로 수정
+        return "/calendar/calendar"; // 경로 수정
     }
 
     @GetMapping("/event") //ajax 데이터 전송 URL
