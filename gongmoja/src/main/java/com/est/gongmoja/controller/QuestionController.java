@@ -13,11 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -62,11 +59,8 @@ public class QuestionController {
                                  @Valid QuestionFormDto questionFormDto,
                                  @RequestParam("file") MultipartFile imageFile, Authentication authentication) throws IOException {
 
-        UserEntity userEntity = (UserEntity) authentication.getPrincipal();
-
-//        if (bindingResult.hasErrors()) {
-//            return "question/question_form";
-//        }
+        UserEntity user = (UserEntity) authentication.getPrincipal();
+        UserEntity userEntity = userService.getUser(user.getUserName());
 
         questionService.create(questionFormDto.getSubject(), questionFormDto.getContent(), imageFile, userEntity);
 

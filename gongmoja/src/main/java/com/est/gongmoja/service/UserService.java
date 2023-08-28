@@ -86,17 +86,7 @@ public class UserService {
         refreshTokenRepository.deleteById(username);
     }
 
-    // user정보 question에 보내기
-        public UserEntity getUser(String username) {
-            Optional<UserEntity> userEntity = this.userRepository.findByUserName(username);
-
-            log.info(username);
-
-            if (userEntity.isPresent()){
-                return userEntity.get();
-            }
-            else {
-                throw new ResponseStatusException(ErrorCode.USERNAME_NOT_FOUND.getHttpStatus(), "사용자를 찾을 수 없습니다");
-            }
-        }
+     public UserEntity getUser(String username){
+        return userRepository.findByUserName(username).orElseThrow(()->new CustomException(ErrorCode.USERNAME_NOT_FOUND));
     }
+}
