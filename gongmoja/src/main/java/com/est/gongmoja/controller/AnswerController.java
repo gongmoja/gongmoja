@@ -8,6 +8,7 @@ import com.est.gongmoja.service.QuestionService;
 import com.est.gongmoja.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 @RequestMapping("/answer")
 @Controller
+@Slf4j
 public class AnswerController {
 
     private final QuestionService questionService;

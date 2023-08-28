@@ -5,6 +5,8 @@ import com.est.gongmoja.entity.QuestionEntity;
 import com.est.gongmoja.entity.UserEntity;
 import com.est.gongmoja.repository.AnswerRepository;
 import com.est.gongmoja.repository.QuestionRepository;
+import com.est.gongmoja.repository.UserRepository;
+import com.est.gongmoja.service.UserService;
 import jakarta.persistence.Id;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,6 +30,7 @@ class QuestionTests {
 
     @Autowired
     private AnswerRepository answerRepository;
+
 
     @Test
     @DisplayName("질문 등록 테스트 1")
