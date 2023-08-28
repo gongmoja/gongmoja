@@ -12,7 +12,11 @@ public enum ErrorCode {
     USERNAME_ALREADY_EXISTS(HttpStatus.BAD_REQUEST,"이미 존재하는 아이디입니다."),
     TOKEN_NOT_FOUND(HttpStatus.BAD_REQUEST,"잘못된 접근 입니다."),
     TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED,"토큰이 만료되었습니다."),
-    TOKEN_INVALID(HttpStatus.UNAUTHORIZED,"유효하지 않은 토큰입니다.");
+    TOKEN_INVALID(HttpStatus.UNAUTHORIZED,"유효하지 않은 토큰입니다."),
+
+    STOCK_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 주식이 존재하지 않습니다."),
+    NEWS_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 뉴스가 존재하지 않습니다.")
+    ;
 
     private HttpStatus httpStatus;
     private String message;

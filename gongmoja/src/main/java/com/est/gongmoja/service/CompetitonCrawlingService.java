@@ -32,8 +32,8 @@ public class CompetitonCrawlingService {
     private final CompetitionRepository competitionRepository;
 
     //    @Scheduled(cron = "0 */10 * * * *") // 10분마다 한번 업데이트 (변경완료)
-    @Scheduled(cron = "0 */1 * * * *") // 매 분마다 실행
-    @PostConstruct
+    //@Scheduled(cron = "0 */1 * * * *") // 매 분마다 실행
+    //@PostConstruct
     public void getCompetitionCrawlData() throws IOException {
         String sponor = "대신증권";
         List<SponsorEntity> sponsorEntityList
