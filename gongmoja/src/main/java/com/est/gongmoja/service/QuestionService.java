@@ -57,14 +57,15 @@ public class QuestionService {
         question.setUser(user);
         question.setCreateDate(LocalDateTime.now());
 
-
-        String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/files";
-        UUID uuid = UUID.randomUUID();
-        String fileName = uuid + "_" + imageFile.getOriginalFilename();
-        File saveFile = new File(projectPath, fileName);
-        imageFile.transferTo(saveFile); // 수정해야할 부분
-        question.setFileName(fileName);
-        question.setFilePath("/files/" + fileName); //파일 경로
+        if (imageFile != null && !imageFile.isEmpty()){
+            String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/files";
+            UUID uuid = UUID.randomUUID();
+            String fileName = uuid + "_" + imageFile.getOriginalFilename();
+            File saveFile = new File(projectPath, fileName);
+            imageFile.transferTo(saveFile); // 수정해야할 부분
+            question.setFileName(fileName);
+            question.setFilePath("/files/" + fileName); //파일 경로
+        }
         questionRepository.save(question);
     }
 }
