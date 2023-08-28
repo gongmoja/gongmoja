@@ -15,7 +15,10 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="/login">로그인</a>
+<!--                    <a class="nav-link" href="/login">로그인</a>-->
+                    <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/login}">로그인</a>
+<!--                    로그인되어있으면 로그아웃버튼이 나오고, 로그인 안되어있으면 로그인 버튼이 나옴 -->
+                    <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/logout}">로그아웃</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/question/list">질문목록</a>
@@ -30,7 +33,8 @@
         <thead class="table-dark">
         <tr>
             <th>번호</th>
-            <th>제목</th>
+            <th style="width: 50%">제목</th>
+            <th>작성자</th>
             <th>작성일시</th>
         </tr>
         </thead>
@@ -38,8 +42,12 @@
         <tbody>
 
         <tr th:each="questionEntity, index : ${questionEntity}">
-        <tr th:each="questionEntity, loop : ${questionEntity}">
+<!--        <tr th:each="questionEntity, loop : ${questionEntity}">-->
+<!--        <tr th:each="questionEntity, loop : ${questionEntity}">-->
+        <tr th:each="questionEntity, loop : ${paging}">
+            <!--번호-->
             <td th:text="${loop.count}"></td>
+            <!--제목-->
             <td>
                 <a th:href="@{|/question/detail/${questionEntity.id}|}" th:text="${questionEntity.subject}"></a>
 
@@ -49,10 +57,37 @@
                     </span>
 
             </td>
+            <!--작성자-->
+            <td><span th:if="${questionEntity.user != null}" th:text="${questionEntity.user.id}"></span></td>
+            <!--일시-->
             <td th:text="${#temporals.format(questionEntity.createDate, 'yy-MM-dd HH:mm')}"></td>
         </tr>
         </tbody>
     </table>
+
+    <!-- 페이징처리 시작 -->
+    <div th:if="${!paging.isEmpty()}">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{|?page=${paging.number-1}|}">
+                    <span>이전</span>
+                </a>
+            </li>
+            <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
+                th:if="${page >= paging.number-5 and page <= paging.number+5}"
+                th:classappend="${page == paging.number} ? 'active'"
+                class="page-item">
+                <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
+            </li>
+            <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
+                <a class="page-link" th:href="@{|?page=${paging.number+1}|}">
+                    <span>다음</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!-- 페이징처리 끝 -->
 
     <a th:href="@{/question/create}" class="btn btn-primary">질문 등록하기</a>
 

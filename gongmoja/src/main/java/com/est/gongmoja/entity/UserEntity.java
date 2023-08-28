@@ -34,4 +34,5 @@ public class UserEntity {
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "favorites")
     private List<StockEntity> stocks;
+
 }
