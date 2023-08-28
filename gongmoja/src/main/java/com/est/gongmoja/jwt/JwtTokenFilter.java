@@ -35,6 +35,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
+
+
         //cookie 가 없다면
         if(request.getCookies() == null){
             log.info("쿠키 없음");
@@ -43,38 +45,35 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         }
 
         //accessToken 세팅
-        Cookie accessTokenCookie = Arrays
-                .stream(request.getCookies())
-                .filter(cookie -> cookie.getName()
-                        .equals("gongMoAccessToken"))
-                .findAny()
-                .orElse(new Cookie("noCookie","noCookie"));
-
-
+        Optional<Cookie> accessTokenCookie = CookieUtil.getCookie(request,"gongMoAccessToken");
         //refreshToken 세팅
-        Cookie refreshTokenCookie = Arrays
-                .stream(request.getCookies())
-                .filter(cookie -> cookie.getName()
-                        .equals("gongMoRefreshToken"))
-                .findAny()
-                .orElse(new Cookie("noCookie","noCookie"));
+        Optional<Cookie> refreshTokenCookie = CookieUtil.getCookie(request,"gongMoRefreshToken");
 
-        //accessToken 이 들어있는 cookie 가 없다면?
-        if(accessTokenCookie.getName().equals("noCookie")){
-            log.info("공모자들 쿠키 없음");
+
+
+        if(refreshTokenCookie.isEmpty()){
+            log.info("refreshToken 없음");
             filterChain.doFilter(request,response);
             return;
         }
-        //밸류가 삭제되었다면? (로그아웃)
-        else if(accessTokenCookie.getValue().equals("destroyed") || refreshTokenCookie.getValue().equals("destroyed")){
-            log.info("삭제된 토큰");
-            filterChain.doFilter(request,response);
-            return;
-        }
+
+
+//        //accessToken 이 들어있는 cookie 가 없다면?
+//        if(accessTokenCookie.getName().equals("noCookie")){
+//            log.info("공모자들 쿠키 없음");
+//            filterChain.doFilter(request,response);
+//            return;
+//        }
+//        //밸류가 삭제되었다면? (로그아웃)
+//        else if(accessTokenCookie.getValue().equals("destroyed") || refreshTokenCookie.getValue().equals("destroyed")){
+//            log.info("삭제된 토큰");
+//            filterChain.doFilter(request,response);
+//            return;
+//        }
 
         //accessToken, refreshToken 쿠키 파싱
-        String accessToken = accessTokenCookie.getValue();
-        String refreshToken = refreshTokenCookie.getValue();
+        String accessToken = accessTokenCookie.get().getValue();
+        String refreshToken = refreshTokenCookie.get().getValue();
 
         //토큰의 상태 객체 ( ok , expired , invalid )
         String atStatus = jwtTokenUtil.isValidToken(accessToken);
@@ -82,38 +81,45 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
         //만약 accessToken 이 expired 라면?
         if(atStatus.equals(ErrorCode.TOKEN_EXPIRED.name())){
-            log.info("만료된 토큰");
 
-
-
+            log.info("accessToken 만료");
 
             //만약 refreshToken 도 expired 라면?
             if(rtStatus.equals(ErrorCode.TOKEN_EXPIRED.name())){
-                log.info("리프레시 토큰의 유효시간이 지남. 다시 로그인이 필요함");
-                filterChain.doFilter(request,response);
+                log.info("refreshToken 만료. 다시 로그인이 필요");
+                throw new CustomException(ErrorCode.TOKEN_EXPIRED);
+//                filterChain.doFilter(request,response);
             }
+
             else if(rtStatus.equals(ErrorCode.TOKEN_INVALID.name())){
-                log.info("잘못 된 리프레시 토큰");
+                log.info("refreshToken INVALID");
                 filterChain.doFilter(request,response);
             }
+
             //refreshToken 이 유효하다면?
             else{
-                //쿠키 refreshToken 과 DB refreshToken 검증
-                //todo 필요한 과정인 것인가 에 대해 논의
+
+                //쿠키 refreshToken 과 DB refreshToken 대조
                 String username = jwtTokenUtil.getUsername(refreshToken);
+
                 Optional<RefreshTokenEntity> optionalToken = refreshTokenRepository.findById(username);
                 if(optionalToken.isEmpty()){
                     log.info("서버 내의 리프레시 토큰과 일치하지 않음");
-                    filterChain.doFilter(request,response);
+//                    filterChain.doFilter(request,response);
+                    throw new CustomException(ErrorCode.TOKEN_NOT_FOUND);
                 }
 
-
                 log.info("accessToken 재발급");
+
                 //새로운 accessToken 생성
                 String newAccessToken = jwtTokenUtil.createToken(username,JwtTokenUtil.accessTokenExpireMs);
+
                 //쿠키 객체에 담아 응답쿠키에 보냄
-                Cookie newCookie = new Cookie("gongMoAccessToken",newAccessToken);
-                response.addCookie(newCookie);
+                CookieUtil.addCookie(
+                        response,
+                        "gongMoAccessToken",
+                        newAccessToken,
+                        (int)((JwtTokenUtil.refreshTokenExpireMs/1000)+10));
 
                 //인증정보 생성
                 //todo 인증정보 반복된 코드 메서드분리 해서 리팩터 하는것 고민

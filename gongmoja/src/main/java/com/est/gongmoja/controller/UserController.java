@@ -5,6 +5,8 @@ import com.est.gongmoja.dto.user.UserLoginResponseDto;
 import com.est.gongmoja.dto.user.UserRegisterRequestDto;
 import com.est.gongmoja.entity.UserEntity;
 import com.est.gongmoja.exception.CustomException;
+import com.est.gongmoja.jwt.CookieUtil;
+import com.est.gongmoja.jwt.JwtTokenUtil;
 import com.est.gongmoja.service.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -45,19 +47,19 @@ public class UserController {
             //accessToken & refreshToken 가져옴
             UserLoginResponseDto loginResponseDto = userService.login(requestDto);
 
-            //클라이언트에 넘길 쿠키 생성
-            Cookie cookie1 = new Cookie("gongMoAccessToken", loginResponseDto.getAccessToken());
-            Cookie cookie2 = new Cookie("gongMoRefreshToken", loginResponseDto.getRefreshToken());
 
-            response.setHeader(HttpHeaders.AUTHORIZATION,String.format("Bearer %s",loginResponseDto.getAccessToken()));
+            //쿠키에 저장
+            CookieUtil.addCookie(
+                    response,
+                    "gongMoAccessToken",
+                    loginResponseDto.getAccessToken(),
+                    (int) ((JwtTokenUtil.refreshTokenExpireMs/1000) +10));
+            CookieUtil.addCookie(
+                    response,
+                    "gongMoRefreshToken",
+                    loginResponseDto.getRefreshToken(),
+                    (int) ((JwtTokenUtil.refreshTokenExpireMs/1000) + 10));
 
-            //자바스크립트에서 쿠키값을 읽어가지 못하도록 설정
-            cookie1.setHttpOnly(true);
-            cookie2.setHttpOnly(true);
-
-            //서블릿리스폰스에 쿠키담기
-            response.addCookie(cookie1);
-            response.addCookie(cookie2);
 
             //메인페이지 이동
             return "redirect:/";
