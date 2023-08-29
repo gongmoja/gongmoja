@@ -69,7 +69,6 @@ public class GraphService {
 
             String encodedImage = Base64.encodeBase64String(imageBytes);
 
-            // Here, you can do something with the encoded image, e.g., save it to a file or return it
             return encodedImage;
         } catch (IOException e) {
             e.printStackTrace();
