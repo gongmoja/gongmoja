@@ -7,6 +7,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -40,6 +41,12 @@ public class CustomLogoutHandler implements LogoutSuccessHandler {
         refreshTokenCookie.setMaxAge(0);
         response.addCookie(accessTokenCookie);
         response.addCookie(refreshTokenCookie);
+
+        //oauth2 인증시 사용한 세션 삭제
+        HttpSession session = request.getSession(false);
+        if(session != null) {
+            session.invalidate();
+        }
 
         //로그아웃 시 메인페이지로 가게끔
         response.sendRedirect("/");

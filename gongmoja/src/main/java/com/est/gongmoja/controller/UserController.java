@@ -53,12 +53,12 @@ public class UserController {
                     response,
                     "gongMoAccessToken",
                     loginResponseDto.getAccessToken(),
-                    (int) ((JwtTokenUtil.refreshTokenExpireMs/1000) +10));
+                    (int) ((JwtTokenUtil.refreshTokenExpireMs/1000)));
             CookieUtil.addCookie(
                     response,
                     "gongMoRefreshToken",
                     loginResponseDto.getRefreshToken(),
-                    (int) ((JwtTokenUtil.refreshTokenExpireMs/1000) + 10));
+                    (int) ((JwtTokenUtil.refreshTokenExpireMs/1000)));
 
 
             //메인페이지 이동

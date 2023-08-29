@@ -5,6 +5,7 @@ import com.est.gongmoja.entity.UserEntity;
 import com.est.gongmoja.exception.CustomException;
 import com.est.gongmoja.exception.ErrorCode;
 import com.est.gongmoja.repository.RefreshTokenRepository;
+import com.est.gongmoja.service.RedisService;
 import com.est.gongmoja.service.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -32,6 +33,7 @@ import java.util.Optional;
 public class JwtTokenFilter extends OncePerRequestFilter {
     private final JwtTokenUtil jwtTokenUtil;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final RedisService redisService;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
@@ -51,25 +53,31 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
 
 
-        if(refreshTokenCookie.isEmpty()){
-            log.info("refreshToken 없음");
+        //case 1: refreshToken 은 살아있으나 , accessToken 이 없어진 경우
+        if(accessTokenCookie.isEmpty() && refreshTokenCookie.isPresent()){
+            log.info("refreshToken 검증 시작");
+            String refreshToken = refreshTokenCookie.get().getValue();
+            String username = jwtTokenUtil.getUsername(refreshToken);
+            String refreshTokenFromRedis = redisService.getData(username);
+            if(!refreshToken.equals(refreshTokenFromRedis)) throw new CustomException(ErrorCode.TOKEN_NOT_FOUND);
+
+            log.info("AccessToken 재생성 시작");
+            String accessToken = jwtTokenUtil.createToken(username,JwtTokenUtil.accessTokenExpireMs);
+            CookieUtil.addCookie(response,"gongMoAccessToken",accessToken,(int)((JwtTokenUtil.accessTokenExpireMs/1000)));
+            createContext(accessToken);
+            filterChain.doFilter(request,response);
+            return;
+        }
+
+        //case 2: 토큰 둘다 없는 경우
+        if(refreshTokenCookie.isEmpty() || accessTokenCookie.isEmpty()){
+            log.info("Token 없음");
             filterChain.doFilter(request,response);
             return;
         }
 
 
-//        //accessToken 이 들어있는 cookie 가 없다면?
-//        if(accessTokenCookie.getName().equals("noCookie")){
-//            log.info("공모자들 쿠키 없음");
-//            filterChain.doFilter(request,response);
-//            return;
-//        }
-//        //밸류가 삭제되었다면? (로그아웃)
-//        else if(accessTokenCookie.getValue().equals("destroyed") || refreshTokenCookie.getValue().equals("destroyed")){
-//            log.info("삭제된 토큰");
-//            filterChain.doFilter(request,response);
-//            return;
-//        }
+
 
         //accessToken, refreshToken 쿠키 파싱
         String accessToken = accessTokenCookie.get().getValue();
@@ -87,7 +95,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             //만약 refreshToken 도 expired 라면?
             if(rtStatus.equals(ErrorCode.TOKEN_EXPIRED.name())){
                 log.info("refreshToken 만료. 다시 로그인이 필요");
-                throw new CustomException(ErrorCode.TOKEN_EXPIRED);
+                throw new CustomException(ErrorCode.RE_LOGIN_REQUIRED);
 //                filterChain.doFilter(request,response);
             }
 
@@ -102,8 +110,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 //쿠키 refreshToken 과 DB refreshToken 대조
                 String username = jwtTokenUtil.getUsername(refreshToken);
 
-                Optional<RefreshTokenEntity> optionalToken = refreshTokenRepository.findById(username);
-                if(optionalToken.isEmpty()){
+//                Optional<RefreshTokenEntity> optionalToken = refreshTokenRepository.findById(username);
+                String optionalToken = redisService.getData(username);
+                if(optionalToken == null){
                     log.info("서버 내의 리프레시 토큰과 일치하지 않음");
 //                    filterChain.doFilter(request,response);
                     throw new CustomException(ErrorCode.TOKEN_NOT_FOUND);
@@ -119,20 +128,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                         response,
                         "gongMoAccessToken",
                         newAccessToken,
-                        (int)((JwtTokenUtil.refreshTokenExpireMs/1000)+10));
+                        (int)((JwtTokenUtil.accessTokenExpireMs/1000)));
 
-                //인증정보 생성
-                //todo 인증정보 반복된 코드 메서드분리 해서 리팩터 하는것 고민
-                SecurityContext context = SecurityContextHolder.createEmptyContext();
-
-                AbstractAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        UserEntity.builder().userName(username).build(),
-                        newAccessToken,
-                        new ArrayList<>()
-                );
-
-                context.setAuthentication(authToken);
-                SecurityContextHolder.setContext(context);
+                createContext(newAccessToken);
                 log.info("인증정보 재생성 완료");
                 filterChain.doFilter(request,response);
             }
@@ -144,23 +142,29 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         }
         //만약 정상적인 토큰이라면? > 컨텍스트 작성
         else if(atStatus.equals("ok")){
-            String username = jwtTokenUtil.getUsername(accessToken);
-            log.info(username);
-            SecurityContext context = SecurityContextHolder.createEmptyContext();
-
-            AbstractAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                    UserEntity
-                            .builder()
-                            .userName(username)
-                            .build(),
-                    accessToken,
-                    new ArrayList<>());
-
-            //인증정보 저장
-            context.setAuthentication(authToken);
-            SecurityContextHolder.setContext(context);
+            createContext(accessToken);
             log.info("인증정보 생성완료");
             filterChain.doFilter(request,response);
         }
+    }
+
+    //인증정보 생성 메서드
+    private void createContext(String accessToken){
+        String username = jwtTokenUtil.getUsername(accessToken);
+        log.info(username);
+        SecurityContext context = SecurityContextHolder.createEmptyContext();
+
+        AbstractAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                UserEntity
+                        .builder()
+                        .userName(username)
+                        .build(),
+                accessToken,
+                new ArrayList<>());
+
+        //인증정보 저장
+        context.setAuthentication(authToken);
+        SecurityContextHolder.setContext(context);
+        log.info("인증정보 생성완료");
     }
 }
