@@ -28,9 +28,9 @@ import java.util.Optional;
 public class CrawlingService {
     private final StockRepository stockRepository;
 
-    //@PostConstruct
-    //@Scheduled(cron = "0 * * * * *") // 1분마다 한번 업데이트 (정상작동 테스트용)
-//    @Scheduled(cron = "0 */10 * * * *") // 10분마다 한번 업데이트
+//    @PostConstruct
+//    @Scheduled(cron = "0 * * * * *") // 1분마다 한번 업데이트 (정상작동 테스트용)
+////    @Scheduled(cron = "0 */10 * * * *") // 10분마다 한번 업데이트
     public void monthlyCrawl() throws IOException {
         // 크롤링 데이터 범위 [2023.6월~ 현재 month+1월]
         int currentMonth = LocalDate.now().getMonthValue(); // 현재 월(month)

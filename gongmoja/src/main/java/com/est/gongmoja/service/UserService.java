@@ -34,10 +34,10 @@ public class UserService {
     private final RefreshTokenRepository refreshTokenRepository;
 
     //회원가입 로직
-    public void createUser(UserRegisterRequestDto requestDto){
+    public void createUser(UserRegisterRequestDto requestDto) {
         //userName 중복 예외처리
         Optional<UserEntity> optionalUser = userRepository.findByUserName(requestDto.getUsername());
-        if(optionalUser.isPresent()) throw new CustomException(ErrorCode.USERNAME_ALREADY_EXISTS);
+        if (optionalUser.isPresent()) throw new CustomException(ErrorCode.USERNAME_ALREADY_EXISTS);
 
         //유저 객체 저장
         userRepository.save(UserEntity
@@ -51,18 +51,19 @@ public class UserService {
     }
 
     //로그인 로직 ( accessToken 발급, refreshToken 발급 )
-    public UserLoginResponseDto login(UserLoginRequestDto requestDto){
+    public UserLoginResponseDto login(UserLoginRequestDto requestDto) {
         //userName 또는 password 불일치 예외처리 로직
         Optional<UserEntity> optionalUser = userRepository.findByUserName(requestDto.getUsername());
-        if(optionalUser.isEmpty()) throw new CustomException(ErrorCode.USERNAME_NOT_FOUND);
-        else if(!passwordEncoder.matches(requestDto.getPassword(),optionalUser.get().getPassword())) throw new CustomException(ErrorCode.USERNAME_NOT_FOUND);
+        if (optionalUser.isEmpty()) throw new CustomException(ErrorCode.USERNAME_NOT_FOUND);
+        else if (!passwordEncoder.matches(requestDto.getPassword(), optionalUser.get().getPassword()))
+            throw new CustomException(ErrorCode.USERNAME_NOT_FOUND);
 
         //유저 객체 생성
         UserEntity userEntity = optionalUser.get();
 
         //token 생성 로직 ( accessToken 과 refreshToken 동시 생성 )
-        String accessToken = jwtTokenUtil.createToken(userEntity.getUserName(),JwtTokenUtil.accessTokenExpireMs);
-        String refreshToken = jwtTokenUtil.createToken(userEntity.getUserName(),JwtTokenUtil.refreshTokenExpireMs);
+        String accessToken = jwtTokenUtil.createToken(userEntity.getUserName(), JwtTokenUtil.accessTokenExpireMs);
+        String refreshToken = jwtTokenUtil.createToken(userEntity.getUserName(), JwtTokenUtil.refreshTokenExpireMs);
 
         //refreshToken 은 DB 에 저장
         refreshTokenRepository.save(RefreshTokenEntity
@@ -80,21 +81,12 @@ public class UserService {
     }
 
     //로그아웃 로직 ( refreshToken 삭제 )
-    public void logOut(String username){
+    public void logOut(String username) {
         // refreshToken 삭제
         refreshTokenRepository.deleteById(username);
     }
 
-    //정보수정 로직
-
-
-//    // Question userId 로직
-//    public UserEntity getUser(String username){
-//        Optional<UserEntity> userEntity = this.userRepository.findByUserName(username);
-//        if (userEntity.isPresent()){
-//            return userEntity.get();
-//        } else {
-//            throw new ResponseStatusException(ErrorCode.TOKEN_NOT_FOUND.getHttpStatus());
-//        }
-//    }
+     public UserEntity getUser(String username){
+        return userRepository.findByUserName(username).orElseThrow(()->new CustomException(ErrorCode.USERNAME_NOT_FOUND));
+    }
 }
