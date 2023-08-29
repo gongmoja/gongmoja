@@ -2,8 +2,12 @@ package com.est.gongmoja.service;
 
 import com.est.gongmoja.entity.QuestionEntity;
 
+import com.est.gongmoja.entity.UserEntity;
+import com.est.gongmoja.exception.ErrorCode;
 import com.est.gongmoja.repository.QuestionRepository;
 
+import com.est.gongmoja.repository.UserRepository;
+import jakarta.persistence.Id;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,6 +31,8 @@ import java.util.UUID;
 @Service
 public class QuestionService {
     private final QuestionRepository questionRepository;
+
+    private final UserRepository userRepository; // user 정보 추가
 
     public List<QuestionEntity> getList() {
         return questionRepository.findAll();
@@ -37,35 +44,46 @@ public class QuestionService {
     }
 
     public Page<QuestionEntity> getList(int page) {
-        List<Sort.Order> sorts = List.of(Sort.Order.desc("createDate"));
+//        List<Sort.Order> sorts = List.of(Sort.Order.desc("createDate"));
+        List<Sort.Order> sorts = new ArrayList<>();
+        sorts.add(Sort.Order.desc("createDate"));
         Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
         return questionRepository.findAll(pageable);
     }
 
-    public void create(String subject, String content, MultipartFile imageFile) throws IOException {
+    public void create(String subject, String content, MultipartFile imageFile, UserEntity user) throws IOException {
         QuestionEntity question = new QuestionEntity();
         question.setSubject(subject);
         question.setContent(content);
+        question.setUser(user);
         question.setCreateDate(LocalDateTime.now());
 
-        String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/files";
-        UUID uuid = UUID.randomUUID();
-        String fileName = uuid + "_" + imageFile.getOriginalFilename();
-        File saveFile = new File(projectPath, fileName);
-//        imageFile.transferTo(saveFile);
-        question.setFileName(fileName);
-        question.setFilePath("/static.files/" + fileName); //파일 경로
+        String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/questionFiles";
+
+//        String filesDirectory = projectPath + "/files";
+//        File filesDirectoryFile = new File(filesDirectory);
+//        if (!filesDirectoryFile.exists()) {
+//            filesDirectoryFile.mkdirs();
+//        }
+
+        if (imageFile != null && !imageFile.isEmpty()) {
+            // 파일업로드시 userName별 디렉토리 생성
+            String userDirectory = projectPath + "/" + user.getUserName();
+            File userDirectoryFile = new File(userDirectory);
+            if (!userDirectoryFile.exists()) {
+                userDirectoryFile.mkdirs();
+            }
+
+            UUID uuid = UUID.randomUUID();
+            String fileName = uuid + "_" + imageFile.getOriginalFilename();
+            File saveFile = new File(userDirectory, fileName);
+
+            imageFile.transferTo(saveFile);
+
+            question.setFileName(fileName);
+            question.setFilePath("/questionFiles/" + user.getUserName() + "/" + fileName); // 수정된 파일 경로
+        }
+
         questionRepository.save(question);
     }
 }
-
-
-    // 질문 등록
-//    public void create(String subject, String content, UserEntity user) throws IOException {
-//        QuestionEntity q = new QuestionEntity();
-//        q.setSubject(subject); // 제목
-//        q.setContent(content); // 내용
-//        q.setCreateDate(LocalDateTime.now()); // 작성시간
-//        q.setUser(user);
-//        this.questionRepository.save(q);
-//    }

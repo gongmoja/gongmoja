@@ -30,6 +30,8 @@ class QuestionTests {
 
     @Autowired
     private AnswerRepository answerRepository;
+    @Autowired
+    private UserRepository userRepository;
 
 
     @Test

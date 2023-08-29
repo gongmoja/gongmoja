@@ -14,15 +14,38 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
                 <li class="nav-item">
-<!--                    <a class="nav-link" href="/login">로그인</a>-->
                     <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/login}">로그인</a>
-<!--                    로그인되어있으면 로그아웃버튼이 나오고, 로그인 안되어있으면 로그인 버튼이 나옴 -->
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/logout}">로그아웃</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/question/list">질문목록</a>
+                    <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/register}">회원가입</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/my">마이페이지</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/display-graph">경쟁률</a>
+                </li>
+                <!--공모주 뉴스 아이디 매핑 수정해야함-->
+                <li class="nav-item">
+                    <a class="nav-link" href="/news/1">공모주 뉴스</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/calendar">공모주 일정</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/question/create">질문게시판</a>
+                </li>
+
+                <!--admin만 보일 수 있게 수정-->
+                <li class="nav-item">
+                    <a class="nav-link" href="/question/list">질문 목록</a>
+                </li>
+
             </ul>
         </div>
     </div>
@@ -31,7 +54,7 @@
 <div class="container my-3">
     <table class="table">
         <thead class="table-dark">
-        <tr>
+        <tr class="text-center">
             <th>번호</th>
             <th style="width: 50%">제목</th>
             <th>작성자</th>
@@ -42,23 +65,24 @@
         <tbody>
 
         <tr th:each="questionEntity, index : ${questionEntity}">
-<!--        <tr th:each="questionEntity, loop : ${questionEntity}">-->
-<!--        <tr th:each="questionEntity, loop : ${questionEntity}">-->
-        <tr th:each="questionEntity, loop : ${paging}">
+        <tr class="text-center" th:each="questionEntity, loop : ${paging}">
+
             <!--번호-->
             <td th:text="${loop.count}"></td>
+
             <!--제목-->
-            <td>
+            <td class="text-center">
                 <a th:href="@{|/question/detail/${questionEntity.id}|}" th:text="${questionEntity.subject}"></a>
 
                 <span class="text-danger small ms-2"
                       th:if="${#lists.size(questionEntity.answerEntityList) > 0}"
                       th:text="${#lists.size(questionEntity.answerEntityList)}">
                     </span>
-
             </td>
+
             <!--작성자-->
-            <td><span th:if="${questionEntity.user != null}" th:text="${questionEntity.user.id}"></span></td>
+            <td><span th:if="${questionEntity.user != null}" th:text="${questionEntity.user.userName}"></span></td>
+
             <!--일시-->
             <td th:text="${#temporals.format(questionEntity.createDate, 'yy-MM-dd HH:mm')}"></td>
         </tr>

@@ -3,13 +3,11 @@
 <head>
     <meta charset='utf-8' />
     <!-- fullcalendar css, js -->
-    <link href='/resources/templates/calendar/fullcalendar-5.11.5/main.css' rel='stylesheet' />
-    <script src='/resources/templates/calendar/fullcalendar-5.11.5/main.js'></script>
+    <link href='/static/fullcalendar-5.11.5/main.css' rel='stylesheet' />
+    <script src='/static/fullcalendar-5.11.5/main.js'></script>
 
     <script>
-
         document.addEventListener('DOMContentLoaded', function() {
-
             var calendarEl = document.getElementById('calendar');
 
             var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -68,11 +66,26 @@
             });
             // 캘린더 랜더링
             calendar.render();
-        });
 
+            // You don't need the second DOMContentLoaded event listener here
+            var datalist = [];
+            $.ajax({
+                url: '${pageContext.request.contextPath}/admin/select',
+                type: 'GET',
+                dataType: 'json',
+                success: function(result) {
+                    $.each(result, function(index, value){
+                        datalist.push(value);
+                    });
+                    openCalander(datalist);
+                }
+            });
+        });
     </script>
 </head>
 <body>
+<div id='calendar-container' style='width: 60%;; margin: 0 auto;'>
 <div id='calendar'></div>
+</div>
 </body>
 </html>
