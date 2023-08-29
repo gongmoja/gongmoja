@@ -32,6 +32,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final RedisService redisService;
 
     //회원가입 로직
     public void createUser(UserRegisterRequestDto requestDto) {
@@ -65,12 +66,16 @@ public class UserService {
         String accessToken = jwtTokenUtil.createToken(userEntity.getUserName(), JwtTokenUtil.accessTokenExpireMs);
         String refreshToken = jwtTokenUtil.createToken(userEntity.getUserName(), JwtTokenUtil.refreshTokenExpireMs);
 
-        //refreshToken 은 DB 에 저장
-        refreshTokenRepository.save(RefreshTokenEntity
-                .builder()
-                .userName(userEntity.getUserName())
-                .refreshToken(refreshToken)
-                .build());
+//        //refreshToken 은 DB 에 저장
+//        refreshTokenRepository.save(RefreshTokenEntity
+//                .builder()
+//                .userName(userEntity.getUserName())
+//                .refreshToken(refreshToken)
+//                .build());
+
+        //refreshToken 을 Redis 에 저장
+        //key : username , value : refreshToken
+        redisService.setData(userEntity.getUserName(),refreshToken);
 
         //token 실어서 return
         return UserLoginResponseDto
@@ -82,8 +87,11 @@ public class UserService {
 
     //로그아웃 로직 ( refreshToken 삭제 )
     public void logOut(String username) {
-        // refreshToken 삭제
-        refreshTokenRepository.deleteById(username);
+//        // refreshToken 삭제
+//        refreshTokenRepository.deleteById(username);
+
+        //Redis 에서 삭제
+        redisService.deleteData(username);
     }
 
      public UserEntity getUser(String username){
