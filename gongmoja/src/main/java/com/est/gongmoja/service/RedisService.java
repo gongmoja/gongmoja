@@ -26,12 +26,11 @@ public class RedisService {
         if(this.getData(key) != null){
             //키:값 튜플 삭제
             this.deleteData(key);
-            //키:값 튜플 저장
-            redisTemplate.opsForValue().set(key,value);
-            log.info("redis 값 들어감");
         }
+        //키:값 튜플 저장
+        redisTemplate.opsForValue().set(key,value);
+        log.info("redis 값 들어감");
     }
-
     public void deleteData(String key){
         redisTemplate.delete(key);
     }
