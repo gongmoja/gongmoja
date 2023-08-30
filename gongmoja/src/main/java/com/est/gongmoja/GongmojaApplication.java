@@ -10,4 +10,5 @@ public class GongmojaApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(GongmojaApplication.class, args);
 	}
+
 }
