@@ -25,7 +25,7 @@ public class CookieUtil {
         return Optional.empty();
     }
 
-    //쿠키 저장 ( Parameter : 서블릿 리스폰스 , 쿠키 이름 , 쿠키 밸류 , 맥스시간 )
+    //쿠키 저장
     public static void addCookie(HttpServletResponse response, String name, String value, int maxAge) {
         Cookie cookie = new Cookie(name, value);
         cookie.setPath("/");
@@ -34,7 +34,6 @@ public class CookieUtil {
         response.addCookie(cookie);
     }
 
-    //쿠키 삭제 ( Parameter : 서블릿 리퀘스트 , 서블릿 리스폰스 , 쿠키 이름 )
     public static void deleteCookie(HttpServletRequest request, HttpServletResponse response, String name) {
         Cookie[] cookies = request.getCookies();
         if (cookies != null && cookies.length > 0) {
@@ -49,14 +48,5 @@ public class CookieUtil {
         }
     }
 
-    //API 가 URL 에
-    public static String serialize(Object object) {
-        return Base64.getUrlEncoder()
-                .encodeToString(SerializationUtils.serialize(object));
-    }
 
-    public static <T> T deserialize(Cookie cookie, Class<T> cls) {
-        return cls.cast(SerializationUtils.deserialize(
-                Base64.getUrlDecoder().decode(cookie.getValue())));
-    }
 }
