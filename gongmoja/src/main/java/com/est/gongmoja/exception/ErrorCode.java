@@ -16,7 +16,7 @@ public enum ErrorCode {
     STOCK_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 주식이 존재하지 않습니다."),
     NEWS_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 뉴스가 존재하지 않습니다."),
 
-    CHATROOM_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 채팅방이 존재하지 않습니다.")
+    CHATROOM_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 채팅방이 존재하지 않습니다."),
     RE_LOGIN_REQUIRED(HttpStatus.UNAUTHORIZED,"인증 만료. 다시 로그인 해주시기 바랍니다.")
     ;
 
