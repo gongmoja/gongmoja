@@ -1,6 +1,7 @@
 package com.est.gongmoja.service;
 
 import com.est.gongmoja.entity.StockEntity;
+import com.est.gongmoja.entity.UserEntity;
 import com.est.gongmoja.exception.CustomException;
 import com.est.gongmoja.exception.ErrorCode;
 import com.est.gongmoja.repository.StockRepository;
@@ -27,5 +28,10 @@ public class StockService {
         Optional<StockEntity> byId = stockRepository.findById(stockId);
         if(byId.isEmpty()) throw new CustomException(ErrorCode.STOCK_NOT_FOUND);
         return byId.get();
+    }
+
+
+    public StockEntity getStockById(Long stockId){
+        return stockRepository.findById(stockId).orElseThrow(()->new CustomException(ErrorCode.USERNAME_NOT_FOUND));
     }
 }
