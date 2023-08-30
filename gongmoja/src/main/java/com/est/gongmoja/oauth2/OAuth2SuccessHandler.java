@@ -47,10 +47,9 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         redisService.setData(customOAuth2User.getEmail(),refreshToken);
 
         //인증에 사용한 세션 삭제
-        HttpSession session = request.getSession(false);
-        if(session != null) {
-            session.invalidate();
-        }
+        HttpSession httpSession = request.getSession(false);
+        if(httpSession != null) httpSession.invalidate();
+        CookieUtil.deleteCookie(request,response,"JSESSIONID");
 
         getRedirectStrategy().sendRedirect(request, response,"/");
     }
