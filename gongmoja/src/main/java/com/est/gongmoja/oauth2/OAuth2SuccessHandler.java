@@ -7,9 +7,11 @@ import com.est.gongmoja.jwt.CookieUtil;
 import com.est.gongmoja.jwt.JwtTokenUtil;
 import com.est.gongmoja.repository.RefreshTokenRepository;
 import com.est.gongmoja.repository.UserRepository;
+import com.est.gongmoja.service.RedisService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -25,9 +27,8 @@ import java.net.URI;
 @RequiredArgsConstructor
 @Component
 public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
-    private final UserRepository userRepository;
     private final JwtTokenUtil jwtTokenUtil;
-    private final RefreshTokenRepository refreshTokenRepository;
+    private final RedisService redisService;
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         //OAuth 2 인증에 성공했을 경우 여기로 들어온다
@@ -42,8 +43,14 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         CookieUtil.addCookie(response,"gongMoAccessToken",accessToken, (int) ((JwtTokenUtil.refreshTokenExpireMs/1000) + 10));
         CookieUtil.addCookie(response,"gongMoRefreshToken",refreshToken, (int) ((JwtTokenUtil.refreshTokenExpireMs/1000) + 10));
 
+        //redis 에 값 저장
+        redisService.setData(customOAuth2User.getEmail(),refreshToken);
 
-
+        //인증에 사용한 세션 삭제
+        HttpSession session = request.getSession(false);
+        if(session != null) {
+            session.invalidate();
+        }
 
         getRedirectStrategy().sendRedirect(request, response,"/");
     }
