@@ -97,4 +97,9 @@ public class UserService {
      public UserEntity getUser(String username){
         return userRepository.findByUserName(username).orElseThrow(()->new CustomException(ErrorCode.USERNAME_NOT_FOUND));
     }
+
+    public void saveUser(UserEntity user){
+        userRepository.save(user);
+    }
+
 }

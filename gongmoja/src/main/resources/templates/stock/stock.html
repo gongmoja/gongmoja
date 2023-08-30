@@ -60,7 +60,7 @@
 
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="/" data-toggle="collapse" data-target="#collapseTwo"
+            <a class="nav-link collapsed" href="/static" data-toggle="collapse" data-target="#collapseTwo"
                aria-expanded="true" aria-controls="collapseTwo">
                 <i class="fas fa-fw fa-cog"></i>
                 <span>공모주</span>
@@ -87,10 +87,10 @@
                  data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Custom Utilities:</h6>
-                    <a class="collapse-item" href="utilities-color.html">Colors</a>
-                    <a class="collapse-item" href="utilities-border.html">Borders</a>
-                    <a class="collapse-item" href="utilities-animation.html">Animations</a>
-                    <a class="collapse-item" href="utilities-other.html">Other</a>
+                    <a class="collapse-item" href="../utilities-color.html">Colors</a>
+                    <a class="collapse-item" href="../utilities-border.html">Borders</a>
+                    <a class="collapse-item" href="../utilities-animation.html">Animations</a>
+                    <a class="collapse-item" href="../utilities-other.html">Other</a>
                 </div>
             </div>
         </li>
@@ -112,13 +112,13 @@
             <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Login Screens:</h6>
-                    <a class="collapse-item" href="login.html">Login</a>
-                    <a class="collapse-item" href="register.html">Register</a>
-                    <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
+                    <a class="collapse-item" href="../login.html">Login</a>
+                    <a class="collapse-item" href="../register.html">Register</a>
+                    <a class="collapse-item" href="../forgot-password.html">Forgot Password</a>
                     <div class="collapse-divider"></div>
                     <h6 class="collapse-header">Other Pages:</h6>
-                    <a class="collapse-item" href="404.html">404 Page</a>
-                    <a class="collapse-item" href="blank.html">Blank Page</a>
+                    <a class="collapse-item" href="../404.html">404 Page</a>
+                    <a class="collapse-item" href="../blank.html">Blank Page</a>
                 </div>
             </div>
         </li>
@@ -454,7 +454,65 @@
                         <td th:text="${stock.price + '원'}"></td>
                     </tr>
                 </table>
+                <button id="favoriteButton"></button>
             </div>
         </div>
     </div>
 </div>
+<script th:inline="javascript">
+
+    var favoriteButton = document.getElementById('favoriteButton');
+    var stockId = /*[[${stock.id}]]*/ 0;
+
+    function updateFavoriteButton() {
+        fetch('/favorites/isFavorite/' + stockId, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json;charset=UTF-8'
+            }
+        })
+            .then(response => {
+                if (response.status === 200) {
+                    return response.json();
+                } else {
+                    console.error('오류 발생');
+                }
+            })
+            .then(isFavorite => {
+                favoriteButton.textContent = isFavorite ? '즐겨찾기 해제' : '즐겨찾기 등록';
+            })
+            .catch(error => {
+                console.error('오류 발생', error);
+            });
+    }
+    updateFavoriteButton();
+
+    favoriteButton.addEventListener('click', function () {
+        var method = 'POST';
+        var url = '/favorites/add/' + stockId;
+
+        if (favoriteButton.textContent === '즐겨찾기 해제') {
+            method = 'POST';
+            url = '/favorites/remove/' + stockId;
+        }
+
+        fetch(url, {
+            method: method,
+            headers: {
+                'Content-Type': 'application/json;charset=UTF-8'
+            }
+        })
+            .then(response => {
+                if (response.status === 200) {
+                    updateFavoriteButton();
+                } else {
+                    console.error('오류 발생');
+                }
+            })
+            .catch(error => {
+                console.error('오류 발생', error);
+            });
+    });
+
+</script>
+</body>

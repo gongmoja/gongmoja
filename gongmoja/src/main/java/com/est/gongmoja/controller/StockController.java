@@ -19,7 +19,6 @@ public class StockController {
     public String displayStock(Model model, @PathVariable("stockId")Long stockId){
         StockEntity stock = stockService.findStockById(stockId);
         model.addAttribute("stock", stock);
-        return "stock";
+        return "stock/stock";
     }
-
 }
