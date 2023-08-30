@@ -31,7 +31,6 @@ public class RedisService {
         redisTemplate.opsForValue().set(key,value);
         log.info("redis 값 들어감");
     }
-
     public void deleteData(String key){
         redisTemplate.delete(key);
     }
