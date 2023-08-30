@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>News Page</title>
+    <style>
+        .table td {
+            padding: 5px;
+        }
+        #favoriteButton {
+            font-size: 15px; /* 원하는 크기로 조절 */
+            padding: 5px 10px; /* 버튼 내용과 테두리 사이의 여백 */
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <h1 th:text="${stock.name}">Stock Name</h1>
+    <table class="table">
+        <tr>
+            <th>기관 경쟁률</th>
+            <th>산업</th>
+
+            <th>청약 시작일</th>
+            <th>청약 종료일</th>
+            <th>상장일</th>
+            <th>환불일</th>
+
+            <th>주간사</th>
+            <th>총 발행량</th>
+            <th>공모가</th>
+        </tr>
+        <tr>
+            <td th:text="${stock.competitionRate}"></td>
+            <td th:text="${stock.industry}"></td>
+
+            <td th:text="${#temporals.format(stock.startDate.toLocalDate(), 'yyyy-MM-dd')}"></td>
+            <td th:text="${#temporals.format(stock.endDate.toLocalDate(), 'yyyy-MM-dd')}"></td>
+            <td th:text="${#temporals.format(stock.ipoDate.toLocalDate(), 'yyyy-MM-dd')}"></td>
+            <td th:text="${#temporals.format(stock.refundDate.toLocalDate(), 'yyyy-MM-dd')}"></td>
+
+
+            <td th:text="${stock.sponsor}"></td>
+            <td th:text="${stock.shareAmount + '주'}"></td>
+            <td th:text="${stock.price + '원'}"></td>
+
+        </tr>
+        <button id="favoriteButton"></button>
+    </table>
+</div>
+<script th:inline="javascript">
+
+    var favoriteButton = document.getElementById('favoriteButton');
+    var stockId = /*[[${stock.id}]]*/ 0;
+
+    function updateFavoriteButton() {
+        fetch('/favorites/isFavorite/' + stockId, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json;charset=UTF-8'
+            }
+        })
+            .then(response => {
+                if (response.status === 200) {
+                    return response.json();
+                } else {
+                    console.error('오류 발생');
+                }
+            })
+            .then(isFavorite => {
+                favoriteButton.textContent = isFavorite ? '즐겨찾기 해제' : '즐겨찾기 등록';
+            })
+            .catch(error => {
+                console.error('오류 발생', error);
+            });
+    }
+    updateFavoriteButton();
+
+    favoriteButton.addEventListener('click', function () {
+        var method = 'POST';
+        var url = '/favorites/add/' + stockId;
+
+        if (favoriteButton.textContent === '즐겨찾기 해제') {
+            method = 'POST';
+            url = '/favorites/remove/' + stockId;
+        }
+
+        fetch(url, {
+            method: method,
+            headers: {
+                'Content-Type': 'application/json;charset=UTF-8'
+            }
+        })
+            .then(response => {
+                if (response.status === 200) {
+                    updateFavoriteButton();
+                } else {
+                    console.error('오류 발생');
+                }
+            })
+            .catch(error => {
+                console.error('오류 발생', error);
+            });
+    });
+
+</script>
+
+</body>
+</html>
