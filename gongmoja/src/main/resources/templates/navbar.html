@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
-
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -20,6 +17,7 @@
 
     <!-- Custom styles for this template-->
     <link href="/static/bootstrap/css/sb-admin-2.min.css" rel="stylesheet">
+
 
 </head>
 
@@ -60,7 +58,7 @@
 
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="/static" data-toggle="collapse" data-target="#collapseTwo"
+            <a class="nav-link collapsed" href="/" data-toggle="collapse" data-target="#collapseTwo"
                aria-expanded="true" aria-controls="collapseTwo">
                 <i class="fas fa-fw fa-cog"></i>
                 <span>공모주</span>
@@ -87,10 +85,10 @@
                  data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Custom Utilities:</h6>
-                    <a class="collapse-item" href="../utilities-color.html">Colors</a>
-                    <a class="collapse-item" href="../utilities-border.html">Borders</a>
-                    <a class="collapse-item" href="../utilities-animation.html">Animations</a>
-                    <a class="collapse-item" href="../utilities-other.html">Other</a>
+                    <a class="collapse-item" href="utilities-color.html">Colors</a>
+                    <a class="collapse-item" href="utilities-border.html">Borders</a>
+                    <a class="collapse-item" href="utilities-animation.html">Animations</a>
+                    <a class="collapse-item" href="utilities-other.html">Other</a>
                 </div>
             </div>
         </li>
@@ -112,13 +110,13 @@
             <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Login Screens:</h6>
-                    <a class="collapse-item" href="../login.html">Login</a>
-                    <a class="collapse-item" href="../register.html">Register</a>
-                    <a class="collapse-item" href="../forgot-password.html">Forgot Password</a>
+                    <a class="collapse-item" href="login.html">Login</a>
+                    <a class="collapse-item" href="register.html">Register</a>
+                    <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
                     <div class="collapse-divider"></div>
                     <h6 class="collapse-header">Other Pages:</h6>
-                    <a class="collapse-item" href="../404.html">404 Page</a>
-                    <a class="collapse-item" href="../blank.html">Blank Page</a>
+                    <a class="collapse-item" href="404.html">404 Page</a>
+                    <a class="collapse-item" href="blank.html">Blank Page</a>
                 </div>
             </div>
         </li>
@@ -161,14 +159,14 @@
             </div>
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="/login" data-toggle="collapse" data-target="#collapsePages"
+            <a class="nav-link collapsed" sec:authorize="isAnonymous()" href="/login" data-toggle="collapse" data-target="#collapsePages"
                aria-expanded="true" aria-controls="collapsePages">
                 <i class="fas fa-fw fa-folder"></i>
                 <span>로그인</span>
             </a>
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="/logout" data-toggle="collapse" data-target="#collapsePages"
+            <a class="nav-link collapsed"  sec:authorize="isAuthenticated()" href="/logout" data-toggle="collapse" data-target="#collapsePages"
                aria-expanded="true" aria-controls="collapsePages">
                 <i class="fas fa-fw fa-folder"></i>
                 <span>로그아웃</span>
@@ -412,107 +410,3 @@
                 </ul>
 
             </nav>
-            <!-- End of Topbar -->
-
-            <div class="container mt-4">
-                <h1 th:text="${stock.name}" style="color: black;">Stock Name</h1>
-                <table class="table">
-                    <tr class="category-row">
-                        <th>기관 경쟁률</th>
-                        <td th:text="${stock.competitionRate}"></td>
-                    </tr>
-                    <tr class="category-row">
-                        <th>산업</th>
-                        <td th:text="${stock.industry}"></td>
-                    </tr>
-                    <tr class="category-row">
-                        <th>청약 시작일</th>
-                        <td th:text="${#temporals.format(stock.startDate.toLocalDate(), 'yyyy-MM-dd')}"></td>
-                    </tr>
-                    <tr class="category-row">
-                        <th>청약 종료일</th>
-                        <td th:text="${#temporals.format(stock.endDate.toLocalDate(), 'yyyy-MM-dd')}"></td>
-                    </tr>
-                    <tr class="category-row">
-                        <th>상장일</th>
-                        <td th:text="${#temporals.format(stock.ipoDate.toLocalDate(), 'yyyy-MM-dd')}"></td>
-                    </tr>
-                    <tr class="category-row">
-                        <th>환불일</th>
-                        <td th:text="${#temporals.format(stock.refundDate.toLocalDate(), 'yyyy-MM-dd')}"></td>
-                    </tr>
-                    <tr class="category-row">
-                        <th>주간사</th>
-                        <td th:text="${stock.sponsor}"></td>
-                    </tr>
-                    <tr class="category-row">
-                        <th>총 발행량</th>
-                        <td th:text="${stock.shareAmount + '주'}"></td>
-                    </tr>
-                    <tr class="category-row">
-                        <th>공모가</th>
-                        <td th:text="${stock.price + '원'}"></td>
-                    </tr>
-                </table>
-                <button id="favoriteButton"></button>
-            </div>
-        </div>
-    </div>
-</div>
-<script th:inline="javascript">
-
-    var favoriteButton = document.getElementById('favoriteButton');
-    var stockId = /*[[${stock.id}]]*/ 0;
-
-    function updateFavoriteButton() {
-        fetch('/favorites/isFavorite/' + stockId, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json;charset=UTF-8'
-            }
-        })
-            .then(response => {
-                if (response.status === 200) {
-                    return response.json();
-                } else {
-                    console.error('오류 발생');
-                }
-            })
-            .then(isFavorite => {
-                favoriteButton.textContent = isFavorite ? '즐겨찾기 해제' : '즐겨찾기 등록';
-            })
-            .catch(error => {
-                console.error('오류 발생', error);
-            });
-    }
-    updateFavoriteButton();
-
-    favoriteButton.addEventListener('click', function () {
-        var method = 'POST';
-        var url = '/favorites/add/' + stockId;
-
-        if (favoriteButton.textContent === '즐겨찾기 해제') {
-            method = 'POST';
-            url = '/favorites/remove/' + stockId;
-        }
-
-        fetch(url, {
-            method: method,
-            headers: {
-                'Content-Type': 'application/json;charset=UTF-8'
-            }
-        })
-            .then(response => {
-                if (response.status === 200) {
-                    updateFavoriteButton();
-                } else {
-                    console.error('오류 발생');
-                }
-            })
-            .catch(error => {
-                console.error('오류 발생', error);
-            });
-    });
-
-</script>
-</body>
