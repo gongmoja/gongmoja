@@ -1,6 +1,7 @@
 package com.est.gongmoja.config;
 
 import com.est.gongmoja.entity.UserEntity;
+import com.est.gongmoja.jwt.CookieUtil;
 import com.est.gongmoja.jwt.JwtTokenUtil;
 import com.est.gongmoja.service.UserService;
 import jakarta.servlet.ServletException;
@@ -43,10 +44,9 @@ public class CustomLogoutHandler implements LogoutSuccessHandler {
         response.addCookie(refreshTokenCookie);
 
         //oauth2 인증시 사용한 세션 삭제
-        HttpSession session = request.getSession(false);
-        if(session != null) {
-            session.invalidate();
-        }
+        HttpSession httpSession = request.getSession(false);
+        if(httpSession != null) httpSession.invalidate();
+        CookieUtil.deleteCookie(request,response,"JSESSIONID");
 
         //로그아웃 시 메인페이지로 가게끔
         response.sendRedirect("/");
