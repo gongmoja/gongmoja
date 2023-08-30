@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>News Page</title>
+    <style>
+        .table td {
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <h1 th:text="${stock.name}">Stock Name</h1>
+    <table class="table">
+        <tr>
+            <th>기관 경쟁률</th>
+            <th>산업</th>
+
+            <th>청약 시작일</th>
+            <th>청약 종료일</th>
+            <th>상장일</th>
+            <th>환불일</th>
+
+            <th>주간사</th>
+            <th>총 발행량</th>
+            <th>공모가</th>
+        </tr>
+        <tr>
+            <td th:text="${stock.competitionRate}"></td>
+            <td th:text="${stock.industry}"></td>
+
+            <td th:text="${#temporals.format(stock.startDate.toLocalDate(), 'yyyy-MM-dd')}"></td>
+            <td th:text="${#temporals.format(stock.endDate.toLocalDate(), 'yyyy-MM-dd')}"></td>
+            <td th:text="${#temporals.format(stock.ipoDate.toLocalDate(), 'yyyy-MM-dd')}"></td>
+            <td th:text="${#temporals.format(stock.refundDate.toLocalDate(), 'yyyy-MM-dd')}"></td>
+
+
+            <td th:text="${stock.sponsor}"></td>
+            <td th:text="${stock.shareAmount + '주'}"></td>
+            <td th:text="${stock.price + '원'}"></td>
+
+        </tr>
+    </table>
+</div>
+</body>
+</html>
