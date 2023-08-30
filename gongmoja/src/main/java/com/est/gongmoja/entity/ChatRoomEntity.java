@@ -31,6 +31,8 @@ public class ChatRoomEntity {
     @JoinColumn(name = "stock_id", referencedColumnName = "id")
     private StockEntity stockId;
 
+//    @OneToOne(mappedBy = "chatRoom", fetch = FetchType.LAZY)
+//    private StockEntity stockId;
 
     @OneToMany(mappedBy = "chatRoom")
     final private List<ChatDataEntity> chatDataEntityList = new ArrayList<>();
