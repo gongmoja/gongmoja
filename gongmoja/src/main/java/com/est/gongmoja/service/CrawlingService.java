@@ -159,11 +159,13 @@ public class CrawlingService {
                         .updateTime(updateTime)
                         .build();
 
-                chatService.createChatRoomForStock(stock);
+
 
                 Optional<StockEntity> optionalStock = stockRepository.findByName(stockName);
                 if (optionalStock.isEmpty()){
-                    stockRepository.save(stock);}
+                    stockRepository.save(stock);
+                    chatService.createChatRoomForStock(stock);
+                }
                 else { // 기존 공모주 정보 업데이트 (id, name은 업데이트 안됨)
                     StockEntity updateStock = optionalStock.get();
                     updateStock.setStartDate(startDate);
@@ -177,7 +179,10 @@ public class CrawlingService {
                     updateStock.setRefundDate(refundDate);
                     updateStock.setUpdateTime(updateTime);
                     stockRepository.save(updateStock);
+                    chatService.createChatRoomForStock(updateStock);
                 }
+
+
             }
         } catch (Exception e) {
             e.printStackTrace();

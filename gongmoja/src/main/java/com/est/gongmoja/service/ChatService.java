@@ -70,11 +70,12 @@ public class ChatService {
 
         // 이미 채팅방이 있는지 확인
         Optional<ChatRoomEntity> existingChatRoom = chatRoomRepository.findByTitle(chatRoomName);
-        if (!existingChatRoom.isPresent()) {
+        if (existingChatRoom.isEmpty()) {
             ChatRoomEntity chatRoom =ChatRoomEntity.builder()
                     .title(chatRoomName)
                     .openDate(stock.getStartDate())
                     .closeDate(stock.getEndDate())
+                    .stockId(stock)
                     .userCount(0L)
                     .build();
             chatRoomRepository.save(chatRoom);
