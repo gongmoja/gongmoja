@@ -131,7 +131,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                         (int)((JwtTokenUtil.accessTokenExpireMs/1000)));
 
                 createContext(newAccessToken);
-                log.info("인증정보 재생성 완료");
+                log.info("인증됨");
                 filterChain.doFilter(request,response);
             }
         }
@@ -143,7 +143,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         //만약 정상적인 토큰이라면? > 컨텍스트 작성
         else if(atStatus.equals("ok")){
             createContext(accessToken);
-            log.info("인증정보 생성완료");
             filterChain.doFilter(request,response);
         }
     }
@@ -165,6 +164,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         //인증정보 저장
         context.setAuthentication(authToken);
         SecurityContextHolder.setContext(context);
-        log.info("인증정보 생성완료");
+        log.info("인증됨");
     }
 }
