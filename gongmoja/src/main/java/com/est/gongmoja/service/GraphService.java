@@ -19,7 +19,7 @@ import java.util.List;
 @Slf4j
 @Service
 public class GraphService {
-    private final String csvFile = "src\\main\\resources\\Book1.csv";
+    private final String csvFile = "src/main/resources/Book1.csv";
     private final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 
     @Scheduled(cron = "0 */10 * * * *") // 매 10분(600000밀리초)마다 실행
