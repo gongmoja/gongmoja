@@ -18,6 +18,7 @@
     <!-- Custom styles for this template-->
     <link href="/static/bootstrap/css/sb-admin-2.min.css" rel="stylesheet">
 
+
 </head>
 
 <body id="page-top">
@@ -409,41 +410,3 @@
                 </ul>
 
             </nav>
-
-    <div layout:fragment="content" class="container">
-    <h5 class="my-3 border-bottom pb-2">질문등록</h5>
-
-    <div class="alert alert-danger" role="alert" th:if="${errorMsg != null}" th:text="${errorMsg}"></div>
-
-    <!--multipart 추가 -->
-    <form th:action="@{/question/create}" method="post" enctype="multipart/form-data">
-
-        <!--제목-->
-        <div class="mb-3">
-            <label for="subject" class="form-label">제목</label>
-            <input type="text" name="subject" id="subject" class="form-control" placeholder="제목을 입력해주세요.">
-        </div>
-
-        <!--내용-->
-        <div class="mb-3">
-            <label for="content" class="form-label">내용</label>
-            <textarea name="content" id="content" class="form-control" rows="10" placeholder="내용을 입력해주세요."></textarea>
-        </div>
-
-        <!--파일 업로드 버튼-->
-        <div class="mb-3">
-            <label for="file" class="form-label">첨부 파일</label>
-            <input type="file" class="form-control" name="file" id="file">
-            <!--            <img id="preview" src="#" width=200 height=150 alt="선택된 이미지가 없습니다" style="align-content: flex-end; ">-->
-        </div>
-
-        <!--저장하기 버튼-->
-        <input type="submit" value="저장하기" class="btn btn-primary my-2">
-
-    </form>
-</div>
-        </div>
-    </div>
-</div>
-</body>
-</html>

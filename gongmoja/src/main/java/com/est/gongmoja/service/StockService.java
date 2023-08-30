@@ -22,4 +22,10 @@ public class StockService {
         if(byId.isEmpty()) throw new CustomException(ErrorCode.STOCK_NOT_FOUND);
         return byId.get().getName();
     }
+
+    public StockEntity findStockById(Long stockId){
+        Optional<StockEntity> byId = stockRepository.findById(stockId);
+        if(byId.isEmpty()) throw new CustomException(ErrorCode.STOCK_NOT_FOUND);
+        return byId.get();
+    }
 }

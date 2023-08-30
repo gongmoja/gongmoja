@@ -3,21 +3,27 @@
 <head>
     <meta charset='utf-8'/>
     <!-- fullcalendar css, js -->
-    <link href='/static/fullcalendar-5.11.5/main.css' rel='stylesheet'/>
+
+    <link href='/static/fullcalendar-5.11.5/main.css' rel='stylesheet' />
     <script src='/static/fullcalendar-5.11.5/main.js'></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth', // 초기 로드 될때 보이는 캘린더 화면(기본 설정: 달)
-                dateClick: function (info) { // click event
-                    alert('클릭! ' + info.dateStr + " 일정을 클릭했습니다");
-                },
-                eventClick: function(info) {
-                    alert("["+info.event.extendedProps.status+"] "+info.event.title+"의 "+info.event.extendedProps.status+"일입니다");
+                aspectRatio: 0.8,
 
-                },
+                // 클릭 이벤트
+                // dateClick: function (info) { // click event
+                //     alert('클릭! ' + info.dateStr + " 일정을 클릭했습니다");
+                // },
+                // eventClick: function(info) {
+                //     alert(info.event.title+"의 "+info.event.extendedProps.type+"일입니다 ("+info.event.extendedProps.status+"번)");
+                //
+                // },
+
                 locale: "ko", // 한국어 설정
                 displayEventTime: false, // 일정 시각 안보이도록
                 eventSources: { // 이벤트 목록
@@ -35,7 +41,7 @@
     </script>
 </head>
 <body>
-<div id='calendar-container' style='width: 60%;; margin: 0 auto;'>
+<div id='calendar-container' style='width: 85%;; margin: 0 auto;'>
     <div id='calendar'></div>
 </div>
 </body>
