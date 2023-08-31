@@ -1,48 +1,97 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>SB Admin 2 - Register</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="/static/bootstrap/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="/static/bootstrap/css/sb-admin-2.min.css" rel="stylesheet">
+
 </head>
 
-<body>
-<main class="flex-shrink-0">
-    <section class="py-5">
-        <div class="container px-5">
-            <!-- login form-->
-            <div class="bg-light rounded-3 py-5 px-4 px-md-5 mb-5">
-                <div class="row gx-5 justify-content-center">
-                    <div class="col-lg-8 col-xl-6">
-                        <h1 class="text-center mb-5">회원가입</h1>
-                        <form th:object="${userRegisterRequest}" th:method="post" th:action="@{/register}"  >
-                            <div class="form-floating mb-3">
-                                <label th:for="username">아이디(필수)</label>
-                                <input class="form-control" type="text" th:field="*{username}"/>
+<body class="bg-gradient-primary">
+
+    <div class="container">
+
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <!-- Nested Row within Card Body -->
+                <div class="row">
+                    <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+                    <div class="col-lg-7">
+<!--                        <div class="row">-->
+<!--                            <div class="text-center col-6 h4 text-gray-900">로그인</div>-->
+<!--                            <div class="text-center col-6 h4 text-gray-900">회원가입</div>-->
+<!--                        </div>-->
+                        <div class="p-5">
+                            <div class="text-center">
+                                <h1 class="h4 text-gray-900 mb-5">회원가입</h1>
                             </div>
-                            <div class="form-floating mb-3">
-                                <label th:for="password">패스워드(필수)</label>
-                                <input class="form-control" type="password" th:field="*{password}"/>
+                            <form class="user" th:method="post" th:action="@{/register}" th:object="${userRegisterRequest}">
+                                <div class="form-group">
+                                    <div>
+                                        <input type="text" th:field="*{username}" th:for="username" class="form-control form-control-user" id="exampleFirstName"
+                                            placeholder="사용할 아이디를 입력하세요..">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <input type="email" th:field="*{email}" th:for="email" class="form-control form-control-user" id="exampleInputEmail"
+                                        placeholder="Email 을 입력하세요..">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" th:field="*{nickname}" th:for="nickname" class="form-control form-control-user"
+                                           placeholder="사용할 닉네임을 입력하세요..">
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <input type="password" th:field="*{password}" th:for="password" class="form-control form-control-user"
+                                            id="exampleInputPassword" placeholder="사용할 패스워드를 입력하세요..">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input type="password" class="form-control form-control-user"
+                                            id="exampleRepeatPassword" placeholder="패스워드를 재입력 해주세요..">
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-user btn-block">
+                                    회원가입
+                                </button>
+
+                            </form>
+                            <hr>
+                            <div class="text-center">
+                                <a class="small" href="/login">다시 로그인 화면으로 돌아가시겠습니까?</a>
                             </div>
-                            <div class="form-floating mb-3">
-                                <label th:for="email">이메일</label>
-                                <input class="form-control" type="email" th:field="*{email}"/>
-                            </div>
-                            <div class="form-floating mb-3">
-                                <label th:for="nickname">닉네임</label>
-                                <input class="form-control" type="text" th:field="*{nickname}"/>
-                            </div>
-                            <div class="d-grid"><button class="btn btn-primary btn-lg" id="sign-in-button" type="submit">Submit</button></div>
-                            <div style="margin-top: 16px; text-align: right"><a href="/users/login">로그인</a></div>
-                        </form>
+                        </div>
                     </div>
                 </div>
-
             </div>
         </div>
-    </section>
-</main>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="/static/bootstrap/vendor/jquery/jquery.min.js"></script>
+    <script src="/static/bootstrap/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="/static/bootstrap/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="/static/bootstrap/js/sb-admin-2.min.js"></script>
+
 </body>
+
 </html>
