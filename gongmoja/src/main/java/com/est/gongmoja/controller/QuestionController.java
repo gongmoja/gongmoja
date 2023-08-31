@@ -66,7 +66,7 @@ public class QuestionController {
 
         model.addAttribute("message", "글 작성이 완료되었습니다.");
         log.info("질문 작성 완료");
-        log.info("upload file name = {}", imageFile.getOriginalFilename());
+//        log.info("upload file name = {}", imageFile.getOriginalFilename());
 
         return "redirect:/question/list";
     }
