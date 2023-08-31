@@ -2,6 +2,7 @@ package com.est.gongmoja.service;
 
 import com.est.gongmoja.dto.chat.ChatDataDto;
 import com.est.gongmoja.dto.chat.ChatRoomDto;
+import com.est.gongmoja.dto.chat.ChatRoomResponseDto;
 import com.est.gongmoja.entity.ChatDataEntity;
 import com.est.gongmoja.entity.ChatRoomEntity;
 import com.est.gongmoja.entity.StockEntity;
@@ -28,6 +29,7 @@ import java.net.Authenticator;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -47,22 +49,6 @@ public class ChatService {
 
 
 
-    public ChatRoomEntity createChatRoom(String stockName){
-        log.info(stockName);
-        Optional<StockEntity> optionalStock = stockRepository.findByName(stockName);
-        if(optionalStock.isEmpty()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "공모주가 존재하지 않습니다");
-        }
-        StockEntity stock = optionalStock.get();
-        ChatRoomEntity chatRoom =ChatRoomEntity.builder()
-                .title(stockName + " 채팅방")
-                .openDate(stock.getStartDate())
-                .closeDate(stock.getEndDate())
-                .userCount(0L)
-                .build();
-        chatRoomRepository.save(chatRoom);
-        return chatRoom;
-    }
 
     public void createChatRoomForStock(StockEntity stock) {
         // 주식id를 기반으로 채팅방 이름 생성
@@ -183,14 +169,26 @@ public class ChatService {
 //        chatRoom.setUserCount(chatRoom.getUserCount() + 1);
 //    }
 //
-//    public void sendMessage(ChatDataDto chatData){
-//        //joinChat(chatData);
-//        if(ChatDataEntity.MessageType.ENTER.equals(chatData.getType())){
-//            //현재 시간을 가져오는 줄 필요
-//            chatData.setMessage(chatData.getSender() + "님이 입장하셨습니다.");
-//        }
-//        messagingTemplate.convertAndSend("/sub/" + chatData.getChatRoomId(), chatData);
-//    }
+    public void sendMessage(ChatDataDto chatData){
+        if(ChatDataEntity.MessageType.ENTER.equals(chatData.getType())){
+            //현재 시간을 가져오는 줄 필요
+            chatData.setMessage(chatData.getSender() + "님이 입장하셨습니다.");
+        }
+        messagingTemplate.convertAndSend("/sub/chatrrom/" + chatData.getChatRoomId(), chatData);
+    }
+
+    public List<ChatRoomResponseDto> getAllChatRooms() {
+        List<ChatRoomEntity> chatRooms = chatRoomRepository.findAll(); // ChatRoomRepository는 DB에서 채팅방 정보를 가져오는 역할
+        return chatRooms.stream()
+                .map(ChatRoomResponseDto::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+
+    public boolean isFavorite(UserEntity userEntity, Long id) {
+        Optional<StockEntity> optionalStock = stockRepository.findById(id);
+        return optionalStock.isPresent();
+    }
 }
 
 
