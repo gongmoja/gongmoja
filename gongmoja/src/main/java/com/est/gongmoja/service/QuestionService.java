@@ -51,6 +51,13 @@ public class QuestionService {
         return questionRepository.findAll(pageable);
     }
 
+    public Page<QuestionEntity> getListByUser(int page, Long userId) {
+        List<Sort.Order> sorts = new ArrayList<>();
+        sorts.add(Sort.Order.desc("createDate"));
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
+        return questionRepository.findAllByUserId(pageable, userId);
+    }
+
     public void create(String subject, String content, MultipartFile imageFile, UserEntity user) throws IOException {
         QuestionEntity question = new QuestionEntity();
         question.setSubject(subject);

@@ -64,8 +64,10 @@ public class FavoriteController {
         } else {
             throw new CustomException(ErrorCode.USERNAME_NOT_FOUND);
         }
-        return "stock/favorite-stocks";
+//        return "stock/favorite-stocks";
+        return "/mypage";
     }
+
 
     @GetMapping("/isFavorite/{stockId}")
     @ResponseBody
