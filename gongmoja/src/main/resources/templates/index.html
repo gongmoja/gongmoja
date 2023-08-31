@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
 
 <head>
@@ -112,9 +112,9 @@
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Login Screens:</h6>
-                        <a class="collapse-item" href="login.html">Login</a>
-                        <a class="collapse-item" href="register.html">Register</a>
-                        <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
+                        <a class="collapse-item" href="users/login.html">Login</a>
+                        <a class="collapse-item" href="users/register.html">Register</a>
+                        <a class="collapse-item" href="users/forgot-password.html">Forgot Password</a>
                         <div class="collapse-divider"></div>
                         <h6 class="collapse-header">Other Pages:</h6>
                         <a class="collapse-item" href="404.html">404 Page</a>
@@ -189,10 +189,10 @@
                 </a>
 
 
-            <!-- Sidebar Toggler (Sidebar) -->
-            <div class="text-center d-none d-md-inline">
-                <button class="rounded-circle border-0" id="sidebarToggle"></button>
-            </div>
+<!--            &lt;!&ndash; Sidebar Toggler (Sidebar) &ndash;&gt;-->
+<!--            <div class="text-center d-none d-md-inline">-->
+<!--                <button class="rounded-circle border-0" id="sidebarToggle"></button>-->
+<!--            </div>-->
 
             <!-- 하단 메세지 추가 -->
 <!--            <div class="sidebar-card d-none d-lg-flex">-->
@@ -377,34 +377,35 @@
                         </li>
 
                         <div class="topbar-divider d-none d-sm-block"></div>
-
+<!--탑 네비게이션 바 - 로그인 로그아웃 사용자정보-->
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                            <a class="nav-link dropdown-toggle text-dark text-center" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
-                                <img class="img-profile rounded-circle"
-                                    src="img/undraw_profile.svg">
+                                <span class="mr-4 d-none d-lg-inline text-gray-600 small" th:if="${userEntity != null}"  th:text="${userEntity.nickName}+님"></span>
+                                <span class="mr-4 d-none d-lg-inline text-gray-600 small" th:unless="${userEntity != null}" >클릭하여 로그인</span>
+                                <img class="img-profile rounded-circle" src="/static/bootstrap/img/undraw_profile.svg">
+<!--                                    <button th:method="post" th:action="@{/logout}"></button>-->
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="/my">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Profile
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Settings
+                                    마이페이지
                                 </a>
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Activity Log
+                                    참여중인 채팅방
                                 </a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                <a class="dropdown-item" th:if="${userEntity == null}" href="/login">
+                                    <i class="fas fa-sign-in-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    로그인
+                                </a>
+                                <a class="dropdown-item" th:unless="${userEntity == null}" href="/logout">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
+                                    로그아웃
                                 </a>
                             </div>
                         </li>
@@ -678,4 +679,26 @@
                                 </div>
                             </div>
                         </div>
-                  </html>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Bootstrap core JavaScript-->
+    <script src="/static/bootstrap/vendor/jquery/jquery.min.js"></script>
+    <script src="/static/bootstrap/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="/static/bootstrap/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="/static/bootstrap/js/sb-admin-2.min.js"></script>
+
+    <!-- Page level plugins -->
+    <script src="/static/bootstrap/vendor/chart.js/Chart.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="/static/bootstrap/js/demo/chart-area-demo.js"></script>
+    <script src="/static/bootstrap/js/demo/chart-pie-demo.js"></script>
+</body>
+</html>

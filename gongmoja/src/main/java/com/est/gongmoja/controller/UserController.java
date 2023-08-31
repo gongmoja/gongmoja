@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,10 +26,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Slf4j
 public class UserController {
     private final UserService userService;
-    @GetMapping // 메인페이지 ( 추후 컨트롤러 다른 곳으로 이동해야함 임시로 )
-    public String mainPage(){
-        return "main";
-    }
 
     @GetMapping("/login") // 로그인 페이지로 이동
     public String loginPage(Model model){
@@ -92,6 +89,7 @@ public class UserController {
 
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/my")
     public String myPage(Authentication authentication){
         UserEntity userEntity = (UserEntity) authentication.getPrincipal();
@@ -99,5 +97,9 @@ public class UserController {
         return "mypage";
     }
 
+    @GetMapping("/forgot-password")
+    public String forgotPassword(){
+        return "users/forgot-password";
+    }
 
 }
