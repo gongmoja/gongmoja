@@ -20,6 +20,7 @@ import org.springframework.util.StringUtils;
 import java.security.AuthProvider;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 @Slf4j
@@ -53,15 +54,15 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         log.info("oauth2ID = {}",oAuth2UserInfo.getOAuth2Id());
 
         //User 객체 저장 , 생성
-        UserEntity userEntity = saveOrUpdateUser(authProvider,oAuth2UserInfo);
+        saveUser(authProvider,oAuth2UserInfo);
 
         return new CustomOAuth2User(
                 oAuth2User.getAttributes(),
                 Collections.singletonList(new SimpleGrantedAuthority("User")),
-                userEntity.getEmail());
+                oAuth2UserInfo.getEmail());
     }
 
-    private UserEntity saveOrUpdateUser(String authProvider, OAuth2UserInfo oAuth2UserInfo){
+    private UserEntity saveUser(String authProvider, OAuth2UserInfo oAuth2UserInfo){
         UserEntity user = UserEntity
                 .builder()
                 .userName(oAuth2UserInfo.getEmail()) //email 과 username 같게 설정함
@@ -71,6 +72,12 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 .providerId(oAuth2UserInfo.getOAuth2Id())
                 .role(1)
                 .build();
+
+        // 이미 존재하면 그냥 넘어가기
+        Optional<UserEntity> optionalUser = userRepository.findByUserName(user.getUserName());
+        if(optionalUser.isPresent()){
+            return null;
+        }
 
         return userRepository.save(user);
     }
