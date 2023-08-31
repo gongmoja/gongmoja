@@ -58,21 +58,11 @@ public class QuestionService {
         question.setUser(user);
         question.setCreateDate(LocalDateTime.now());
 
-//        String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/questionFiles";
 
         if (imageFile != null && !imageFile.isEmpty()) {
-            // 파일업로드시 userName별 디렉토리 생성
-//            String userDirectory = projectPath + "/" + user.getUserName();
-//            File userDirectoryFile = new File(userDirectory);
-//            if (!userDirectoryFile.exists()) {
-//                userDirectoryFile.mkdirs();
-//            }
 
             UUID uuid = UUID.randomUUID();
             String fileName = uuid + "_" + imageFile.getOriginalFilename();
-//            File saveFile = new File(userDirectory, fileName);
-
-//            imageFile.transferTo(saveFile);
 
             question.setFileName(fileName);
             question.setFilePath(user.getUserName() + "/" + fileName); // 수정된 파일 경로
