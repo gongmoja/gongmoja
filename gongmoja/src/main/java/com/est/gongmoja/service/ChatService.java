@@ -123,13 +123,13 @@ public class ChatService {
     }
 
 
-    /**
-     * 채팅방 입장
-     * <p>
-     * 입장하려는 채팅방이 존재하고, 그 채팅방이 공모주에 연결되어 있고, 해당 공모주를 즐겨찾기했는지 확인한다
-     *
-     * @param chatDataDto 해당 채팅방의 정보
-     */
+//    /**
+//     * 채팅방 입장
+//     * <p>
+//     * 입장하려는 채팅방이 존재하고, 그 채팅방이 공모주에 연결되어 있고, 해당 공모주를 즐겨찾기했는지 확인한다
+//     *
+//     * @param chatDataDto 해당 채팅방의 정보
+//     */
 //    public void joinChat(ChatDataDto chatDataDto) {
 //
 //
@@ -185,10 +185,10 @@ public class ChatService {
     }
 
 
-    public boolean isFavorite(UserEntity userEntity, Long id) {
-        Optional<StockEntity> optionalStock = stockRepository.findById(id);
-        return optionalStock.isPresent();
-    }
+//    public boolean isFavorite(UserEntity userEntity, Long id) {
+//        Optional<StockEntity> optionalStock = userEntity.getStocks().;
+//        return optionalStock.isPresent();
+//    }
 }
 
 
