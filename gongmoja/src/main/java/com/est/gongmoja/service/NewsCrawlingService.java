@@ -36,9 +36,11 @@ public class NewsCrawlingService {
     private final NewsRepository newsRepository;
     private final StockRepository stockRepository;
 
-    // 수정상항
-    //@PostConstruct
-    //@Scheduled(cron = "0 */10 * * * *")
+
+
+//    @PostConstruct
+//    @Scheduled(cron = "0 */10 * * * *")
+
     public void getCrawlNewsData() throws InterruptedException {
         List<StockEntity> stockEntityList = stockRepository.findAll(); // db에 있는 전체 주식
 

@@ -12,4 +12,6 @@ public interface QuestionRepository extends JpaRepository<QuestionEntity, Long> 
     QuestionEntity findBySubjectAndContent(String subject, String content);
     List<QuestionEntity> findBySubjectLike(String subject);
     Page<QuestionEntity> findAll(Pageable pageable);
+    Page<QuestionEntity> findAllByUserId(Pageable pageable, Long userId);
+
 }
