@@ -47,17 +47,17 @@ public class ChatController {
 //        return chatService.findAllRoom();
 //    }
 
-    @GetMapping("/{chatRoomId}")
-    public String joinChatRoom(@PathVariable Long chatRoomId, Model model, Authentication authentication) {
-        UserEntity user = (UserEntity) authentication.getPrincipal();
-        UserEntity userEntity = userService.getUser(user.getUserName());
-        if(chatService.isFavorite(userEntity, chatRoomId)) {
-            model.addAttribute("chatRoomId", chatRoomId);
-            return "chat/chat-room";
-        }
-        return "chat/list";
-
-    }
+//    @GetMapping("/{chatRoomId}")
+//    public String joinChatRoom(@PathVariable Long chatRoomId, Model model, Authentication authentication) {
+//        UserEntity user = (UserEntity) authentication.getPrincipal();
+//        UserEntity userEntity = userService.getUser(user.getUserName());
+//        if(chatService.isFavorite(userEntity, chatRoomId)) {
+//            model.addAttribute("chatRoomId", chatRoomId);
+//            return "chat/chat-room";
+//        }
+//        return "chat/list";
+//
+//    }
 
     @GetMapping("/list")
     public String showChatRoomList(Model model) {
