@@ -39,6 +39,20 @@ public class QuestionController {
         return "question/question_list";
     }
 
+    // 작성자 별 문의글 리스트
+    @GetMapping("/list-by-user")
+    public String listByUser(
+            Authentication authentication,
+            Model model,
+            @RequestParam(value="page", defaultValue="0") int page)
+    {
+        UserEntity user = (UserEntity) authentication.getPrincipal();
+        UserEntity userEntity = userService.getUser(user.getUserName());
+        Page<QuestionEntity> paging = questionService.getListByUser(page, userEntity.getId());
+        model.addAttribute("paging", paging);
+        return "question/question_list";
+    }
+
     @GetMapping("/detail/{id}")
     public String detail(Model model, @PathVariable("id") Long id, AnswerFormDto answerFormDto) {
         QuestionEntity question = questionService.getQuestion(id);
