@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>공모자들 메인페이지</title>
+    <title th:utext="${username}"+'님의 마이페이지' ></title>
 
     <!-- Custom fonts for this template-->
     <link href="/static/bootstrap/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -159,14 +160,16 @@
             </div>
 
         <li class="nav-item">
-            <a class="nav-link collapsed" sec:authorize="isAnonymous()" href="/login" data-toggle="collapse" data-target="#collapsePages"
+            <a class="nav-link collapsed" sec:authorize="isAnonymous()" href="/login" data-toggle="collapse"
+               data-target="#collapsePages"
                aria-expanded="true" aria-controls="collapsePages">
                 <i class="fas fa-fw fa-folder"></i>
                 <span>로그인</span>
             </a>
 
         <li class="nav-item">
-            <a class="nav-link collapsed"  sec:authorize="isAuthenticated()" href="/logout" data-toggle="collapse" data-target="#collapsePages"
+            <a class="nav-link collapsed" sec:authorize="isAuthenticated()" href="/logout" data-toggle="collapse"
+               data-target="#collapsePages"
                aria-expanded="true" aria-controls="collapsePages">
                 <i class="fas fa-fw fa-folder"></i>
                 <span>로그아웃</span>
@@ -330,7 +333,8 @@
                                 </div>
                                 <div class="font-weight-bold">
                                     <div class="text-truncate">Hi there! I am wondering if you can help me with a
-                                        problem I've been having.</div>
+                                        problem I've been having.
+                                    </div>
                                     <div class="small text-gray-500">Emily Fowler · 58m</div>
                                 </div>
                             </a>
@@ -342,7 +346,8 @@
                                 </div>
                                 <div>
                                     <div class="text-truncate">I have the photos that you ordered last month, how
-                                        would you like them sent to you?</div>
+                                        would you like them sent to you?
+                                    </div>
                                     <div class="small text-gray-500">Jae Chun · 1d</div>
                                 </div>
                             </a>
@@ -354,7 +359,8 @@
                                 </div>
                                 <div>
                                     <div class="text-truncate">Last month's report looks great, I am very happy with
-                                        the progress so far, keep up the good work!</div>
+                                        the progress so far, keep up the good work!
+                                    </div>
                                     <div class="small text-gray-500">Morgan Alvarez · 2d</div>
                                 </div>
                             </a>
@@ -366,7 +372,8 @@
                                 </div>
                                 <div>
                                     <div class="text-truncate">Am I a good boy? The reason I ask is because someone
-                                        told me that people say this to all dogs, even if they aren't good...</div>
+                                        told me that people say this to all dogs, even if they aren't good...
+                                    </div>
                                     <div class="small text-gray-500">Chicken the Dog · 2w</div>
                                 </div>
                             </a>
@@ -406,13 +413,92 @@
                             </a>
                         </div>
                     </li>
+                </ul>
+            </nav>
+            <!-- Page Heading -->
+            <div class="container-fluid">
+                <!--    마이페이지 타이틀-->
+                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                    <h1 class="h3 mb-0 text-gray-800">My Page</h1>
+                </div>
 
+                <!-- Pending Requests Card Example -->
+                <ul style="padding: 0">
+                    <th:block th:each="stock : ${favoriteStocks}">
+                        <li style="list-style: none">
+
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <div class="card border-left-warning shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                                    즐겨찾는 공모주
+                                                </div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800" id="dataFromDB">
+                                                    <a th:href="@{/stock/{stockId}(stockId=${stock.id})}"
+                                                       th:text="${stock.name}"
+                                                       style="text-decoration: none; color:#5a5c69"></a>
+                                                </div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <!--   TODO 현재는 각 주식의 상세 페이지로 이동하도록 함. 각 주식의 채팅 url로 변경 필요          -->
+                                                <a th:href="@{/stock/{stockId}(stockId=${stock.id})}">
+                                                    <i class="fas fa-comment fa-2x custom-icon"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </th:block>
                 </ul>
 
-            </nav>
-            <body>
-<form th:action="@{/logout}" th:method="post">
-    <button type="submit">로그아웃</button>
-</form>
+
+                <!--  버튼 -->
+                <div class="d-flex justify-content-end"> <!-- 버튼들을 오른쪽으로 정렬하는 부분 -->
+                    <div class="col-xl-3 mb-1">
+                        <form th:action="@{/question/create}" th:method="get">
+                            <button class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" type="submit">
+                                <i class="fas fa-question-circle fa-sm text-white-50">
+                                </i>
+                                &nbsp;&nbsp;&nbsp;문의하기&nbsp;&nbsp;
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end"> <!-- 버튼들을 오른쪽으로 정렬하는 부분 -->
+                    <div class="col-xl-3 mb-1">
+                        <form th:action="@{/question/list-by-user}" th:method="get">
+                            <button class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" type="submit">
+                                <i class="fas fa-poll-h fa-sm text-white-50">
+                                </i>
+                                &nbsp;내 문의내역
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end"> <!-- 버튼들을 오른쪽으로 정렬하는 부분 -->
+                    <div class="col-xl-3 mb-1">
+                        <form th:action="@{/logout}" th:method="post">
+                            <button class="d-sm-inline-block btn btn-sm btn-primary shadow-sm custom-icon" type="submit">
+                                <i class="fas fa-sign-out-alt fa-sm text-white-50">
+                                </i>
+                                &nbsp;&nbsp;&nbsp;로그아웃&nbsp;&nbsp;
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
+
+<style>
+    .custom-icon {
+        color: #f6c23e; /* 원하는 색상으로 변경 */
+    }
+</style>
