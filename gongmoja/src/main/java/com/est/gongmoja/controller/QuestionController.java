@@ -4,13 +4,20 @@ import com.est.gongmoja.dto.answer.AnswerFormDto;
 import com.est.gongmoja.dto.question.QuestionFormDto;
 import com.est.gongmoja.entity.QuestionEntity;
 import com.est.gongmoja.entity.UserEntity;
+import com.est.gongmoja.repository.QuestionRepository;
 import com.est.gongmoja.service.QuestionService;
 import com.est.gongmoja.service.UserService;
+import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -29,6 +36,7 @@ public class QuestionController {
 
     private final QuestionService questionService;
     private final UserService userService;
+    private final QuestionRepository questionRepository;
 
     @GetMapping("/list")
     public String list( Principal principal, Model model, @RequestParam(value="page", defaultValue="0") int page) {
@@ -84,4 +92,25 @@ public class QuestionController {
 
         return "redirect:/question/list";
     }
+
+    // 파일 다운로드 (수정예정)
+//    @GetMapping("/download/{questionId}")
+//    public ResponseEntity<Resource> downloadFile(@PathVariable Long questionId){
+//        QuestionEntity question = questionRepository.findById(questionId).orElse(null);
+//        if (question == null || question.getFilename() == null){
+//            return ResponseEntity.notFound().build();
+//        }
+//        byte[] fileData = question.getFileData();
+//
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentDisposition(ContentDisposition.builder("attachment").filename(question.getFilename()).build());
+//
+//        ByteArrayResource resource = new ByteArrayResource(fileData);
+//
+//        return ResponseEntity.ok()
+//                .headers(headers)
+//                .contentLength(fileData.length)
+//                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+//                .body((Resource) resource);
+//    }
 }

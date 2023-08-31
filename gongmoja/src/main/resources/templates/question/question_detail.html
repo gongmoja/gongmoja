@@ -449,6 +449,13 @@
     </div>
     <!-- 답변 반복 끝  -->
 
+<!--    &lt;!&ndash; 첨부파일 다운로드 버튼 &ndash;&gt;-->
+<!--    <div class="mt-3">-->
+<!--        <a th:if="${question.filename}" th:href="@{/question/download/{questionId}(questionId=${question.id})}" class="btn btn-primary">-->
+<!--            첨부파일 다운로드-->
+<!--        </a>-->
+<!--    </div>-->
+
     <!-- 답변 작성 -->
     <form th:action="@{|/answer/create/${question.id}|}" method="post" class="my-3">
         <textarea name="content" id="content" rows="10" class="form-control"></textarea>
