@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Chat Room List</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+</head>
+<body>
+<main class="flex-shrink-0">
+  <section class="py-5">
+    <div class="container px-5">
+      <h1 class="text-center mb-5">Chat Room List</h1>
+      <table class="table">
+        <thead>
+        <tr>
+          <th>채팅방 이름</th>
+          <th>동작</th> <!-- 버튼을 추가할 열 -->
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="chatRoom : ${chatRooms}">
+          <td th:text="${chatRoom.title}"></td>
+          <td>
+            <a th:href="@{/chat/{id}(id=${chatRoom.id})}" class="btn btn-primary">채팅방 입장</a> <!-- 채팅방으로 이동하는 버튼 -->
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+</body>
+</html>
