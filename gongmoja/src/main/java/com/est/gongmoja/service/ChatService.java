@@ -179,6 +179,7 @@ public class ChatService {
 //            chatData.setMessage(chatData.getSender() + "님이 입장하셨습니다.");
 //        }
 //        messagingTemplate.convertAndSend("/sub/chatrrom/" + chatData.getChatRoomId(), chatData);
+
 //    }
 
     public List<ChatRoomResponseDto> getAllChatRooms() {
@@ -220,5 +221,3 @@ public class ChatService {
 //        return optionalStock.isPresent();
 //    }
 }
-
-
