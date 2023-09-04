@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ChatDataDto {
 
-//    private ChatDataEntity.MessageType type;
+    //    private ChatDataEntity.MessageType type;
     private Long chatRoomId;
     private String sender;
     private String message;
