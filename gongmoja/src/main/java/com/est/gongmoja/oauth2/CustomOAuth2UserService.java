@@ -1,5 +1,6 @@
 package com.est.gongmoja.oauth2;
 
+import com.est.gongmoja.entity.Role;
 import com.est.gongmoja.entity.UserEntity;
 import com.est.gongmoja.repository.UserRepository;
 import com.sun.security.auth.UserPrincipal;
@@ -58,7 +59,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         return new CustomOAuth2User(
                 oAuth2User.getAttributes(),
-                Collections.singletonList(new SimpleGrantedAuthority("User")),
+                Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")),
                 oAuth2UserInfo.getEmail());
     }
 
@@ -70,7 +71,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 .provider(authProvider)
                 .nickName(oAuth2UserInfo.getName())
                 .providerId(oAuth2UserInfo.getOAuth2Id())
-                .role(1)
+                .role(Role.ROLE_USER)
                 .build();
 
         // 이미 존재하면 그냥 넘어가기

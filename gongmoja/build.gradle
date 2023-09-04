@@ -76,6 +76,11 @@ dependencies {
 	implementation 'org.webjars:sockjs-client:1.5.1'
 	implementation 'org.webjars:stomp-websocket:2.3.4'
 	implementation 'com.google.code.gson:gson:2.10.1'
+
+	//Google SMTP (email 인증)
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+
 }
 
 tasks.named('test') {
