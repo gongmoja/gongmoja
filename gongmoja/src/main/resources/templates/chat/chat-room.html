@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:text = "${stockName + ' 채팅방'}"></title>
+</head>
+<body>
+<h1 th:text = "${stockName + ' 채팅방'}"></h1>
+<div id="chat">
+
+  <input type="text" id="message" placeholder="메시지를 입력하세요.">
+  <button onclick="sendMessage()">보내기</button>
+  <div id="messages"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.2/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script>
+  const socket = new WebSocket('ws://localhost:8080/chatting');
+  const pathname = window.location.pathname;
+  const chatRoomId = parseInt(pathname.split("/")[2]);
+  const stompClient = Stomp.over(socket);
+
+  stompClient.connect({}, function (frame) {
+    console.log('Connected: ' + frame);
+    stompClient.subscribe(`/topic/${chatRoomId}`, function (message) {
+      showMessage(JSON.parse(message.body));
+    });
+  });
+
+  function sendMessage() {
+    const messageInput = document.getElementById('message');
+    const message = messageInput.value;
+    stompClient.send("/app/chat", {}, JSON.stringify({
+      "chatRoomId": chatRoomId,
+      "message": message
+    }));
+    messageInput.value = '';
+  }
+
+  function showMessage(message) {
+    const messagesDiv = document.getElementById('messages');
+    const messageP = document.createElement('p');
+    messageP.innerHTML = message.sentTime + "<br>" + message.sender + ": " + message.message;
+    messagesDiv.appendChild(messageP);
+  }
+</script>
+</body>
+</html>
