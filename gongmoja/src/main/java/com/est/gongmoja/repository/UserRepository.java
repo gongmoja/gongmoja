@@ -1,5 +1,7 @@
 package com.est.gongmoja.repository;
 
+import com.est.gongmoja.entity.ChatRoomEntity;
+import com.est.gongmoja.entity.StockEntity;
 import com.est.gongmoja.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.web.filter.OncePerRequestFilter;
