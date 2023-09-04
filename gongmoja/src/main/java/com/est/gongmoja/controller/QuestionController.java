@@ -90,27 +90,6 @@ public class QuestionController {
         log.info("질문 작성 완료");
         log.info("upload file name = {}", imageFile.getOriginalFilename());
 
-        return "redirect:/question/list";
+        return "redirect:/question/list-by-user";
     }
-
-    // 파일 다운로드 (수정예정)
-//    @GetMapping("/download/{questionId}")
-//    public ResponseEntity<Resource> downloadFile(@PathVariable Long questionId){
-//        QuestionEntity question = questionRepository.findById(questionId).orElse(null);
-//        if (question == null || question.getFilename() == null){
-//            return ResponseEntity.notFound().build();
-//        }
-//        byte[] fileData = question.getFileData();
-//
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentDisposition(ContentDisposition.builder("attachment").filename(question.getFilename()).build());
-//
-//        ByteArrayResource resource = new ByteArrayResource(fileData);
-//
-//        return ResponseEntity.ok()
-//                .headers(headers)
-//                .contentLength(fileData.length)
-//                .contentType(MediaType.APPLICATION_OCTET_STREAM)
-//                .body((Resource) resource);
-//    }
 }
