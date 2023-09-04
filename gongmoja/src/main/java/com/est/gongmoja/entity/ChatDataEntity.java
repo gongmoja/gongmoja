@@ -24,7 +24,7 @@ public class ChatDataEntity {
 
 
     private String message;
-    private LocalDateTime createdAt;
+    private String createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
