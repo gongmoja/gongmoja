@@ -20,6 +20,23 @@
 
     <!-- Custom styles for this template-->
     <link href="/static/bootstrap/css/sb-admin-2.min.css" rel="stylesheet">
+    <style>
+        .star-icon {
+            background: none;
+            border: none;
+            font-size: 24px; /* 별 아이콘의 크기 설정 */
+            color: gold; /* 별 아이콘의 색상 설정 */
+            cursor: pointer;
+        }
+
+        /* 별 모양 아이콘 설정 (Font Awesome 아이콘 사용 예) */
+        .star-icon::before {
+            content: "\f005"; /* 별 아이콘 코드 (Font Awesome에서 제공하는 코드 사용) */
+            font-family: 'Font Awesome 5 Free'; /* Font Awesome 아이콘 폰트 지정 */
+            transition: color 0.3s ease; /* 색상 전환 애니메이션 추가 */
+        }
+
+    </style>
 
 </head>
 
@@ -306,7 +323,8 @@
             <!-- 토글 바 끝 -->
 
             <div class="container mt-4">
-                <h1 th:text="${stock.name}" style="color: black;">Stock Name</h1>
+                <span th:text="${stock.name}" style="color: black; font-size: 32px; white-space: nowrap; display: inline;"></span>
+                <button id="favoriteButton" class="star-icon"></button>
                 <table class="table">
                     <tr class="category-row">
                         <th>기관 경쟁률</th>
@@ -345,8 +363,20 @@
                         <td th:text="${stock.price + '원'}"></td>
                     </tr>
                 </table>
-                <button id="favoriteButton"></button>
             </div>
+            <!--뉴스 항목-->
+            <div th:each="news : ${newsList}">
+                <div class="news-item">
+                    <p></p>
+                    <h2 style="display: inline;"><a th:href="${news.newsUrl}" target="_blank"  th:text="${news.title}" >News Title</a></h2>
+                    <p th:text="${news.publisher}" style="display: inline; margin: 0;">Publisher</p>
+                    <img th:src="${news.imageUrl}" alt="News Image" width="20" style="max-height: 20px; display: inline;">
+                    <span style="display: inline;">|</span>
+                    <p th:text="${#temporals.format(news.publishedTime, 'yyyy-MM-dd')}" style="display: inline; margin: 0;">Published Date</p>
+                    <p th:text="${news.content}">News Summary</p>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
@@ -354,6 +384,7 @@
 
     var favoriteButton = document.getElementById('favoriteButton');
     var stockId = /*[[${stock.id}]]*/ 0;
+    var isFavorite = false; // 즐겨찾기 상태 초기값 (별 아이콘 비움)
 
     function updateFavoriteButton() {
         fetch('/favorites/isFavorite/' + stockId, {
@@ -376,6 +407,7 @@
                 console.error('오류 발생', error);
             });
     }
+
     updateFavoriteButton();
 
     favoriteButton.addEventListener('click', function () {
