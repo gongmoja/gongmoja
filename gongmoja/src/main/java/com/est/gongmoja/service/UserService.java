@@ -2,7 +2,9 @@ package com.est.gongmoja.service;
 
 import com.est.gongmoja.dto.user.UserLoginRequestDto;
 import com.est.gongmoja.dto.user.UserLoginResponseDto;
+import com.est.gongmoja.dto.user.UserModifyPasswordRequestDto;
 import com.est.gongmoja.entity.RefreshTokenEntity;
+import com.est.gongmoja.entity.Role;
 import com.est.gongmoja.entity.UserEntity;
 import com.est.gongmoja.exception.CustomException;
 import com.est.gongmoja.exception.ErrorCode;
@@ -46,7 +48,7 @@ public class UserService {
                 .userName(requestDto.getUsername())
                 .password(passwordEncoder.encode(requestDto.getPassword())) //암호화하여 저장
                 .email(requestDto.getEmail())
-                .role(1) //1은 일반 유저, 2는 어드민은
+                .role(Role.ROLE_USER)
                 .nickName(requestDto.getNickname())
                 .build());
     }
@@ -100,6 +102,12 @@ public class UserService {
 
     public void saveUser(UserEntity user){
         userRepository.save(user);
+    }
+
+
+    public void modifyPassword(String newPassword ,UserEntity userEntity){
+        userEntity.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(userEntity);
     }
 
 }
