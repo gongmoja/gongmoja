@@ -1,23 +1,15 @@
 package com.est.gongmoja.controller;
 
-import com.est.gongmoja.dto.answer.AnswerFormDto;
 import com.est.gongmoja.dto.question.QuestionFormDto;
 import com.est.gongmoja.entity.QuestionEntity;
 import com.est.gongmoja.entity.UserEntity;
-import com.est.gongmoja.repository.QuestionRepository;
 import com.est.gongmoja.service.QuestionService;
 import com.est.gongmoja.service.UserService;
-import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.domain.Page;
-import org.springframework.http.ContentDisposition;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -36,10 +28,13 @@ public class QuestionController {
 
     private final QuestionService questionService;
     private final UserService userService;
-    private final QuestionRepository questionRepository;
 
     @GetMapping("/list")
-    public String list( Principal principal, Model model, @RequestParam(value="page", defaultValue="0") int page) {
+    public String list( Principal principal, Model model, @RequestParam(value="page", defaultValue="0") int page, Authentication authentication) {
+        UserEntity user = (UserEntity) authentication.getPrincipal();
+        UserEntity user1 = userService.getUser(user.getUserName());
+        model.addAttribute("userEntity", user1);
+
         Page<QuestionEntity> paging = questionService.getList(page);
         model.addAttribute("paging", paging);
 
@@ -55,22 +50,32 @@ public class QuestionController {
             @RequestParam(value="page", defaultValue="0") int page)
     {
         UserEntity user = (UserEntity) authentication.getPrincipal();
-        UserEntity userEntity = userService.getUser(user.getUserName());
-        Page<QuestionEntity> paging = questionService.getListByUser(page, userEntity.getId());
+        UserEntity user1 = userService.getUser(user.getUserName());
+        model.addAttribute("userEntity", user1);
+
+        Page<QuestionEntity> paging = questionService.getListByUser(page, user1.getId());
         model.addAttribute("paging", paging);
         return "question/question_list";
     }
 
     @GetMapping("/detail/{id}")
-    public String detail(Model model, @PathVariable("id") Long id, AnswerFormDto answerFormDto) {
+    public String detail(Model model, @PathVariable("id") Long id, Authentication authentication) {
+        UserEntity user = (UserEntity) authentication.getPrincipal();
+        UserEntity user1 = userService.getUser(user.getUserName());
+        model.addAttribute("userEntity", user1);
+
         QuestionEntity question = questionService.getQuestion(id);
         model.addAttribute("question", question);
         return "question/question_detail";
     }
 
+
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/create")
-    public String questionCreate(Model model) {
+    public String questionCreate(Model model, Authentication authentication) {
+        UserEntity user = (UserEntity) authentication.getPrincipal();
+        UserEntity user1 = userService.getUser(user.getUserName());
+        model.addAttribute("userEntity", user1);
         model.addAttribute("questionFormDto", new QuestionFormDto());
         return "question/question_form";
     }
