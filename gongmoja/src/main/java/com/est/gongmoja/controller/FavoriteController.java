@@ -61,6 +61,7 @@ public class FavoriteController {
         if (user != null) {
             model.addAttribute("username", user.getUserName());
             model.addAttribute("favoriteStocks", user.getStocks());
+            model.addAttribute("userEntity", user);
         } else {
             throw new CustomException(ErrorCode.USERNAME_NOT_FOUND);
         }
