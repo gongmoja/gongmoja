@@ -17,8 +17,5 @@ public class WebConfig implements WebMvcConfigurer {
                 .maxAge(3600);
     }
 
-    @Override
-    public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/chat/{chatRoomId}").setViewName("chat/chat-room");
-    }
+
 }

@@ -179,7 +179,7 @@ public class CrawlingService {
                     updateStock.setRefundDate(refundDate);
                     updateStock.setUpdateTime(updateTime);
                     stockRepository.save(updateStock);
-                    chatService.createChatRoomForStock(updateStock);
+//                    chatService.createChatRoomForStock(updateStock);
                 }
 
 

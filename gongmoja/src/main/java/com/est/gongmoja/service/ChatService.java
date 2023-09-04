@@ -72,42 +72,42 @@ public class ChatService {
 //        return new ArrayList<>(chatRooms.values());
 //    }
 
-    public ChatDataEntity keepMessage(String content,
-                                      UserEntity user,
-                                      Long chatRoomId
-//            , ChatRoomEntity chatRoom
-    ) {
-        Optional<ChatRoomEntity> optionalChatRoomEntity = chatRoomRepository.findById(chatRoomId);
-        if(optionalChatRoomEntity.isEmpty()){
-            throw new CustomException(ErrorCode.CHATROOM_NOT_FOUND);
-        }
-        ChatRoomEntity chatRoom = optionalChatRoomEntity.get();
+//    public ChatDataEntity keepMessage(String content,
+//                                      UserEntity user,
+//                                      Long chatRoomId
+////            , ChatRoomEntity chatRoom
+//    ) {
+//        Optional<ChatRoomEntity> optionalChatRoomEntity = chatRoomRepository.findById(chatRoomId);
+//        if(optionalChatRoomEntity.isEmpty()){
+//            throw new CustomException(ErrorCode.CHATROOM_NOT_FOUND);
+//        }
+//        ChatRoomEntity chatRoom = optionalChatRoomEntity.get();
+//
+//        Optional<ChatDataEntity> optionalChatDataEntity = chatDataRepository.findByUser(user);
+//        ChatDataEntity.MessageType messageType = optionalChatDataEntity.isEmpty() ?
+//                ChatDataEntity.MessageType.ENTER : ChatDataEntity.MessageType.TALK;
+//
+//        ChatDataEntity chatData = ChatDataEntity.builder()
+//                .type(messageType)
+//                .message(content)
+//                .createdAt(LocalDateTime.now())
+//                .user(user)
+//                .chatRoom(chatRoom)
+//                .build();
+//        chatDataRepository.save(chatData);
+//        return chatData;
+//
+//    }
 
-        Optional<ChatDataEntity> optionalChatDataEntity = chatDataRepository.findByUser(user);
-        ChatDataEntity.MessageType messageType = optionalChatDataEntity.isEmpty() ?
-                ChatDataEntity.MessageType.ENTER : ChatDataEntity.MessageType.TALK;
-
-        ChatDataEntity chatData = ChatDataEntity.builder()
-                .type(messageType)
-                .message(content)
-                .createdAt(LocalDateTime.now())
-                .user(user)
-                .chatRoom(chatRoom)
-                .build();
-        chatDataRepository.save(chatData);
-        return chatData;
-
-    }
-
-    public ChatDataDto entityToDto(ChatDataEntity entity){
-        ChatDataDto dto = new ChatDataDto();
-        dto.setType(entity.getType());
-        dto.setMessage(entity.getMessage());
-        dto.setSentTime(entity.getCreatedAt());
-        dto.setSender(entity.getUser().getNickName());
-
-        return dto;
-    }
+//    public ChatDataDto entityToDto(ChatDataEntity entity){
+//        ChatDataDto dto = new ChatDataDto();
+//        dto.setType(entity.getType());
+//        dto.setMessage(entity.getMessage());
+//        dto.setSentTime(entity.getCreatedAt());
+//        dto.setSender(entity.getUser().getNickName());
+//
+//        return dto;
+//    }
 
 
 
@@ -117,8 +117,12 @@ public class ChatService {
      * @param id 채팅방의 id
      * @return 해당 id에 일치하는 채팅방 객체
      */
-    public ChatRoomDto findRoomById(String id) {
-        return chatRooms.get(id);
+    public ChatRoomEntity findRoomById(Long id) {
+        Optional<ChatRoomEntity> optionalChatRoomEntity = chatRoomRepository.findById(id);
+        if(optionalChatRoomEntity.isEmpty()){
+            throw new CustomException(ErrorCode.CHATROOM_NOT_FOUND);
+        }
+        return optionalChatRoomEntity.get();
 
     }
 
@@ -169,19 +173,45 @@ public class ChatService {
 //        chatRoom.setUserCount(chatRoom.getUserCount() + 1);
 //    }
 //
-    public void sendMessage(ChatDataDto chatData){
-        if(ChatDataEntity.MessageType.ENTER.equals(chatData.getType())){
-            //현재 시간을 가져오는 줄 필요
-            chatData.setMessage(chatData.getSender() + "님이 입장하셨습니다.");
-        }
-        messagingTemplate.convertAndSend("/sub/chatrrom/" + chatData.getChatRoomId(), chatData);
-    }
+//    public void sendMessage(ChatDataDto chatData){
+//        if(ChatDataEntity.MessageType.ENTER.equals(chatData.getType())){
+//            //현재 시간을 가져오는 줄 필요
+//            chatData.setMessage(chatData.getSender() + "님이 입장하셨습니다.");
+//        }
+//        messagingTemplate.convertAndSend("/sub/chatrrom/" + chatData.getChatRoomId(), chatData);
+//    }
 
     public List<ChatRoomResponseDto> getAllChatRooms() {
         List<ChatRoomEntity> chatRooms = chatRoomRepository.findAll(); // ChatRoomRepository는 DB에서 채팅방 정보를 가져오는 역할
         return chatRooms.stream()
                 .map(ChatRoomResponseDto::fromEntity)
                 .collect(Collectors.toList());
+    }
+
+    public void saveChatMessage(ChatDataDto chatMessage) {
+        ChatDataEntity chatData = ChatDataEntity.builder()
+                .message(chatMessage.getMessage())
+                .createdAt(chatMessage.getSentTime())
+//                .user(chatMessage.getSender())
+//                .chatRoom(chatMessage.getChatRoomId())
+                .build();
+    }
+
+    public boolean isFavorite(UserEntity userEntity, Long chatRoomId) {
+        Optional<UserEntity> optionalUser = userRepository.findById(userEntity.getId());
+
+        if (optionalUser.isEmpty()) {
+            throw new CustomException(ErrorCode.USERNAME_NOT_FOUND);
+        }
+
+        UserEntity user = optionalUser.get();
+        List<StockEntity> favoriteStocks = user.getStocks();
+
+        // 주어진 chatRoomId를 가진 주식이 favoriteStocks에 있는지 확인
+        boolean isFavorite = favoriteStocks.stream()
+                .anyMatch(stock -> stock.getId().equals(chatRoomId));
+
+        return isFavorite;
     }
 
 
