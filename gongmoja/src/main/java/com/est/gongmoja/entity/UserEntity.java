@@ -22,7 +22,9 @@ public class UserEntity {
     private String password;
     private String email;
     private String nickName;
-    private int role;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     // 소셜로그인 제공자 문자값
     private String provider;
