@@ -132,15 +132,16 @@ public class ChatController {
         log.info(chatData.getMessage());
         simpMessagingTemplate.convertAndSend(String.format("/topic/%s", chatData.getChatRoomId()), chatData);
     }
-    @MessageMapping("/chatroom")
-    public void testSend(String data){
-        log.info("전송요청 받음");
 
-//        log.info("전송요청 받음" + chatData.getMessage());
-//        if(ChatDataEntity.MessageType.ENTER.equals(chatData.getType())){
-//            //현재 시간을 가져오는 줄 필요
-//            chatData.setMessage(chatData.getSender() + "님이 입장하셨습니다.");
-//        }
-        messagingTemplate.convertAndSend("/sub/chatroom/1", data);
-    }
+//    @MessageMapping("/chatroom")
+//    public void testSend(String data){
+//        log.info("전송요청 받음");
+//
+////        log.info("전송요청 받음" + chatData.getMessage());
+////        if(ChatDataEntity.MessageType.ENTER.equals(chatData.getType())){
+////            //현재 시간을 가져오는 줄 필요
+////            chatData.setMessage(chatData.getSender() + "님이 입장하셨습니다.");
+////        }
+//        messagingTemplate.convertAndSend("/sub/chatroom/1", data);
+//    }
 }
