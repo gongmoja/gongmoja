@@ -65,16 +65,27 @@ public class QuestionService {
         question.setUser(user);
         question.setCreateDate(LocalDateTime.now());
 
+        questionRepository.save(question); // QuestionEntity를 저장한 이후에 Id가 할당됨
+
+        String projectPath = System.getProperty("user.dir") + "/media";
 
         if (imageFile != null && !imageFile.isEmpty()) {
+            // 파일 업로드 시 userName 및 QuestionId 별 디렉토리 생성
+            String userDirectory = projectPath + "/" + user.getUserName() + "/" + question.getId();
+            File userDirectoryFile = new File(userDirectory);
+            if (!userDirectoryFile.exists()) {
+                userDirectoryFile.mkdirs();
+            }
 
             UUID uuid = UUID.randomUUID();
             String fileName = uuid + "_" + imageFile.getOriginalFilename();
+            File saveFile = new File(userDirectory, fileName);
+
+            imageFile.transferTo(saveFile);
 
             question.setFileName(fileName);
-            question.setFilePath(user.getUserName() + "/" + fileName); // 수정된 파일 경로
+            question.setFilePath("/media/" + user.getUserName() + "/" + question.getId() + "/" + fileName);
+            questionRepository.save(question); // 파일 정보 업데이트
         }
-
-        questionRepository.save(question);
     }
 }
