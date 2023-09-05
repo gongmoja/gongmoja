@@ -40,6 +40,25 @@
         }
     }
 
+    /* 공모자들 타이틀 폰트 */
+    @font-face {
+        font-family: 'yg-jalnan';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    .horizontal-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .sidebar-brand-text {
+        font-family: 'yg-jalnan', sans-serif;
+        font-size: 23px;
+        font-weight: bold;
+        color: black;
+    }
 
 </style>
 
@@ -76,10 +95,9 @@
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
             <div class="sidebar-brand-icon rotate-n-15">
                 <!--아이콘 변경-->
-                <!--                    <i class="fas fa-laugh-wink"></i>-->
             </div>
             <div class="horizontal-container">
-                <div class="sidebar-brand-text mx-3">공모자들<sup></sup></div>
+<!--                <div class="sidebar-brand-text mx-3">공모자들<sup></sup></div>-->
                 <div>GongMoJa</div>
             </div>
         </a>
@@ -87,13 +105,6 @@
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
 
-        <!-- 내비게이션 1 : 메인페이지 이동 -->
-        <!--        <li class="nav-item active">-->
-        <!--            <a class="nav-link" href="/">-->
-        <!--                &lt;!&ndash;로고모양&ndash;&gt;-->
-        <!--                <i class="fas fa-fw fa-laugh-wink"></i>-->
-        <!--                <span>Main Page</span></a>-->
-        <!--        </li>-->
 
         <!-- 내비게이션 2 : 공모주 관련 내용들 -->
         <hr class="sidebar-divider my-0">
@@ -125,27 +136,6 @@
                 </div>
             </li>
 
-            <!--내비게이션 2번 항목 (질문게시판)-->
-            <!--            <hr class="sidebar-divider d-none d-md-block">-->
-            <!--            <div class="sidebar-heading">Question</div>-->
-
-            <!--            <li class="nav-item">-->
-            <!--                <a class="nav-link collapsed" href="/display-graph" data-toggle="collapse" data-target="#collapseThree"-->
-            <!--                   aria-expanded="true" aria-controls="collapseThree">-->
-            <!--                    &lt;!&ndash;폴더아이콘&ndash;&gt;-->
-            <!--                    <i class="fas fa-fw fa-folder"></i>-->
-            <!--                    <span>질문 게시판</span>-->
-            <!--                </a>-->
-            <!--                <div id="collapseThree" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">-->
-            <!--                    <div class="bg-white py-2 collapse-inner rounded">-->
-            <!--                        <h6 class="collapse-header">질문 게시판입니다</h6>-->
-            <!--                        <a class="collapse-item" href="/question/create">질문 등록</a>-->
-            <!--                        <a class="collapse-item" href="/question/detail/1">내 질문 보기</a>-->
-            <!--                        <a class="collapse-item" href="/question/list">전체 질문 목록</a>-->
-            <!--                    </div>-->
-            <!--                </div>-->
-            <!--            </li>-->
-            <!--        </div>-->
             <!-- 구분선 -->
             <hr class="sidebar-divider d-none d-md-block">
         </div>
@@ -165,6 +155,12 @@
                 <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                     <i class="fa fa-bars"></i>
                 </button>
+
+            <!-- 공모자들 제목-->
+                <div class="horizontal-container">
+<!--                    <img src="/static/bootstrap/img/공모자들로고-002.png" alt="공모자들로고" style="width: 48px;">-->
+                    <div class="sidebar-brand-text mx-3">공모자들<sup></sup></div>
+                </div>
 
                 <!-- Topbar Navbar -->
                 <ul class="navbar-nav ml-auto">
@@ -193,122 +189,6 @@
                         </div>
                     </li>
 
-                    <!--                    &lt;!&ndash; 내비게이션 - 알람 종 모양&ndash;&gt;-->
-                    <!--                    <li class="nav-item dropdown no-arrow mx-1">-->
-                    <!--                        <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"-->
-                    <!--                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
-                    <!--                            <i class="fas fa-bell fa-fw"></i>-->
-                    <!--                            &lt;!&ndash; Counter - Alerts &ndash;&gt;-->
-                    <!--                            <span class="badge badge-danger badge-counter">3+</span>-->
-                    <!--                        </a>-->
-                    <!--                        &lt;!&ndash; 내비게이션 - 알람 종 모양 &ndash;&gt;-->
-                    <!--                        <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated&#45;&#45;grow-in"-->
-                    <!--                             aria-labelledby="alertsDropdown">-->
-                    <!--                            <h6 class="dropdown-header">-->
-                    <!--                                Alerts Center-->
-                    <!--                            </h6>-->
-                    <!--                            <a class="dropdown-item d-flex align-items-center" href="#">-->
-                    <!--                                <div class="mr-3">-->
-                    <!--                                    <div class="icon-circle bg-primary">-->
-                    <!--                                        <i class="fas fa-file-alt text-white"></i>-->
-                    <!--                                    </div>-->
-                    <!--                                </div>-->
-                    <!--                                <div>-->
-                    <!--                                    <div class="small text-gray-500">December 12, 2019</div>-->
-                    <!--                                    <span class="font-weight-bold">A new monthly report is ready to download!</span>-->
-                    <!--                                </div>-->
-                    <!--                            </a>-->
-                    <!--                            <a class="dropdown-item d-flex align-items-center" href="#">-->
-                    <!--                                <div class="mr-3">-->
-                    <!--                                    <div class="icon-circle bg-success">-->
-                    <!--                                        <i class="fas fa-donate text-white"></i>-->
-                    <!--                                    </div>-->
-                    <!--                                </div>-->
-                    <!--                                <div>-->
-                    <!--                                    <div class="small text-gray-500">December 7, 2019</div>-->
-                    <!--                                    $290.29 has been deposited into your account!-->
-                    <!--                                </div>-->
-                    <!--                            </a>-->
-                    <!--                            <a class="dropdown-item d-flex align-items-center" href="#">-->
-                    <!--                                <div class="mr-3">-->
-                    <!--                                    <div class="icon-circle bg-warning">-->
-                    <!--                                        <i class="fas fa-exclamation-triangle text-white"></i>-->
-                    <!--                                    </div>-->
-                    <!--                                </div>-->
-                    <!--                                <div>-->
-                    <!--                                    <div class="small text-gray-500">December 2, 2019</div>-->
-                    <!--                                    Spending Alert: We've noticed unusually high spending for your account.-->
-                    <!--                                </div>-->
-                    <!--                            </a>-->
-                    <!--                            <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>-->
-                    <!--                        </div>-->
-                    <!--                    </li>-->
-
-                    <!--내비게이션 - 메세지 모양 -->
-                    <!--                    <li class="nav-item dropdown no-arrow mx-1">-->
-                    <!--                        <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"-->
-                    <!--                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
-                    <!--                            <i class="fas fa-envelope fa-fw"></i>-->
-                    <!--                            &lt;!&ndash; Counter - Messages &ndash;&gt;-->
-                    <!--                            <span class="badge badge-danger badge-counter">7</span>-->
-                    <!--                        </a>-->
-                    <!--                        &lt;!&ndash; Dropdown - Messages &ndash;&gt;-->
-                    <!--                        <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated&#45;&#45;grow-in"-->
-                    <!--                             aria-labelledby="messagesDropdown">-->
-                    <!--                            <h6 class="dropdown-header">-->
-                    <!--                                Message Center-->
-                    <!--                            </h6>-->
-                    <!--                            <a class="dropdown-item d-flex align-items-center" href="#">-->
-                    <!--                                <div class="dropdown-list-image mr-3">-->
-                    <!--                                    <img class="rounded-circle" src="img/undraw_profile_1.svg"-->
-                    <!--                                         alt="...">-->
-                    <!--                                    <div class="status-indicator bg-success"></div>-->
-                    <!--                                </div>-->
-                    <!--                                <div class="font-weight-bold">-->
-                    <!--                                    <div class="text-truncate">Hi there! I am wondering if you can help me with a-->
-                    <!--                                        problem I've been having.</div>-->
-                    <!--                                    <div class="small text-gray-500">Emily Fowler · 58m</div>-->
-                    <!--                                </div>-->
-                    <!--                            </a>-->
-                    <!--                            <a class="dropdown-item d-flex align-items-center" href="#">-->
-                    <!--                                <div class="dropdown-list-image mr-3">-->
-                    <!--                                    <img class="rounded-circle" src="img/undraw_profile_2.svg"-->
-                    <!--                                         alt="...">-->
-                    <!--                                    <div class="status-indicator"></div>-->
-                    <!--                                </div>-->
-                    <!--                                <div>-->
-                    <!--                                    <div class="text-truncate">I have the photos that you ordered last month, how-->
-                    <!--                                        would you like them sent to you?</div>-->
-                    <!--                                    <div class="small text-gray-500">Jae Chun · 1d</div>-->
-                    <!--                                </div>-->
-                    <!--                            </a>-->
-                    <!--                            <a class="dropdown-item d-flex align-items-center" href="#">-->
-                    <!--                                <div class="dropdown-list-image mr-3">-->
-                    <!--                                    <img class="rounded-circle" src="img/undraw_profile_3.svg"-->
-                    <!--                                         alt="...">-->
-                    <!--                                    <div class="status-indicator bg-warning"></div>-->
-                    <!--                                </div>-->
-                    <!--                                <div>-->
-                    <!--                                    <div class="text-truncate">Last month's report looks great, I am very happy with-->
-                    <!--                                        the progress so far, keep up the good work!</div>-->
-                    <!--                                    <div class="small text-gray-500">Morgan Alvarez · 2d</div>-->
-                    <!--                                </div>-->
-                    <!--                            </a>-->
-                    <!--                            <a class="dropdown-item d-flex align-items-center" href="#">-->
-                    <!--                                <div class="dropdown-list-image mr-3">-->
-                    <!--                                    <img class="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60"-->
-                    <!--                                         alt="...">-->
-                    <!--                                    <div class="status-indicator bg-success"></div>-->
-                    <!--                                </div>-->
-                    <!--                                <div>-->
-                    <!--                                    <div class="text-truncate">Am I a good boy? The reason I ask is because someone-->
-                    <!--                                        told me that people say this to all dogs, even if they aren't good...</div>-->
-                    <!--                                    <div class="small text-gray-500">Chicken the Dog · 2w</div>-->
-                    <!--                                </div>-->
-                    <!--                            </a>-->
-                    <!--                            <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>-->
-                    <!--                        </div>-->
-                    <!--                    </li>-->
 
                     <div class="topbar-divider d-none d-sm-block"></div>
 
@@ -357,13 +237,16 @@
             <div class="container-fluid">
 
                 <!-- Page Heading -->
-                <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h1 class="h3 mb-0 text-gray-800">공모주 정보</h1>
-
-                    <!--버튼-->
-                    <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">-->
-                    <!-- <i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>-->
-                </div>
+<!--                <div class="d-sm-flex align-items-center justify-content-between mb-4">-->
+<!--                    <h1 class="h3 mb-0 text-gray-800">공모주 정보</h1>-->
+                <div id="div" class="row">
+                    <!-- 공모주 뉴스 부분 -->
+                    <div class="col-xl-8 col-lg-7">
+                        <!-- Project Card Example -->
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">공모주 정보</h6>
+                            </div>
 
                 <!-- Pending Requests Card Example -->
                 <ul class="custom-list">
@@ -413,6 +296,8 @@
                         </li>
                     </th:block>
                 </ul>
+            </div>
+
 
 
                 <!-- 공모주 일정 부분 -->
@@ -457,39 +342,39 @@
                         </div>
                     </div>
 
-<!--                    &lt;!&ndash; 경쟁률 차트 부분 &ndash;&gt;-->
-<!--                    <div id="div1" class="row">-->
-<!--                        <div class="col-xl-8 col-lg-7">-->
-<!--                            <div class="card shadow mb-4">-->
-<!--                                &lt;!&ndash; Card Header - Dropdown &ndash;&gt;-->
-<!--                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">-->
-<!--                                    <h6 class="m-0 font-weight-bold text-primary">공모주 경쟁률</h6>-->
-<!--                                    <div class="dropdown no-arrow">-->
-<!--                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"-->
-<!--                                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
-<!--                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>-->
-<!--                                        </a>-->
-<!--                                        <div class="dropdown-menu dropdown-menu-right shadow animated&#45;&#45;fade-in"-->
-<!--                                             aria-labelledby="dropdownMenuLink">-->
-<!--                                            <div class="dropdown-header">Dropdown Header:</div>-->
-<!--                                            <a class="dropdown-item" href="#">Action</a>-->
-<!--                                            <a class="dropdown-item" href="#">Another action</a>-->
-<!--                                            <div class="dropdown-divider"></div>-->
-<!--                                            <a class="dropdown-item" href="#">Something else here</a>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                </div>-->
+                    <!-- 경쟁률 차트 부분 -->
+                    <div id="div1" class="row">
+                        <div class="col-xl-8 col-lg-7">
+                            <div class="card shadow mb-4">
+                                <!-- Card Header - Dropdown -->
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">공모주 경쟁률</h6>
+                                    <div class="dropdown no-arrow">
+                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                             aria-labelledby="dropdownMenuLink">
+                                            <div class="dropdown-header">Dropdown Header:</div>
+                                            <a class="dropdown-item" href="#">Action</a>
+                                            <a class="dropdown-item" href="#">Another action</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="#">Something else here</a>
+                                        </div>
+                                    </div>
+                                </div>
 
 
-<!--                                &lt;!&ndash; Card Body &ndash;&gt;-->
-<!--                                <div class="card-body">-->
-<!--                                    <div class="chart-area">-->
-<!--                                        <canvas id="myAreaChart"></canvas>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <div class="chart-area">
+                                        <canvas id="myAreaChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
 
                     <!-- 경쟁률 차트 부분 -->
