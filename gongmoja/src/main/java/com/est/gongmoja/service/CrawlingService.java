@@ -132,7 +132,7 @@ public class CrawlingService {
                     ipoDate = LocalDateTime.parse(year + "." + strings.get(6).substring(0, dates[0].length() - 1) + ".09.00.00", formatter);
                 }
                 else { // 크롤링시 null값일 때
-//                  ipoDate = LocalDateTime.of(1, 1, 1, 0, 0);
+                    ipoDate = LocalDateTime.of(1, 1, 1, 0, 0);
                 }
 
                 // 공모가
