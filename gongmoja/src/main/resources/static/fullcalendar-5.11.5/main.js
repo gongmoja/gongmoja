@@ -1654,7 +1654,14 @@ var FullCalendar = (function (exports) {
         eventDragMinDistance: Number,
         expandRows: Boolean,
         height: identity,
-        contentHeight: identity,
+        // contentHeight: identity,
+        contentHeight:function(){
+            if(screen.width<800){
+                return 500;
+            }else{
+                return 850;
+            }
+        },
         direction: String,
         weekNumberFormat: createFormatter,
         eventResizableFromStart: Boolean,
