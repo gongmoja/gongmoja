@@ -71,9 +71,10 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>공모자들 메인페이지</title>
+    <title>공모자들</title>
 
     <!-- Custom fonts for this template-->
+    <link rel="shortcut icon" href="/static/favicon.ico">
     <link href="/static/bootstrap/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
             href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
@@ -95,6 +96,7 @@
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
             <div class="sidebar-brand-icon rotate-n-15">
                 <!--아이콘 변경-->
+                <!--                    <i class="fas fa-laugh-wink"></i>-->
             </div>
             <div class="horizontal-container">
 <!--                <div class="sidebar-brand-text mx-3">공모자들<sup></sup></div>-->
@@ -105,6 +107,13 @@
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
 
+        <!-- 내비게이션 1 : 메인페이지 이동 -->
+        <!--        <li class="nav-item active">-->
+        <!--            <a class="nav-link" href="/">-->
+        <!--                &lt;!&ndash;로고모양&ndash;&gt;-->
+        <!--                <i class="fas fa-fw fa-laugh-wink"></i>-->
+        <!--                <span>Main Page</span></a>-->
+        <!--        </li>-->
 
         <!-- 내비게이션 2 : 공모주 관련 내용들 -->
         <hr class="sidebar-divider my-0">
@@ -112,30 +121,59 @@
         <!-- 구분선 -->
         <hr class="sidebar-divider">
 
-        <!-- 내비게이션 1번 제목-->
-        <div id="stiky" class="sidebar-heading">GONGMOJA</div>
-
         <!--내비게이션 1번 항목 (공모주)-->
-        <div id="stiky">
+        <div id="stiky" >
+            <div  class="sidebar-heading">GONGMOJA</div>
+
+            <!-- 1. 공모주 일정 메뉴  -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="/display-graph" data-toggle="collapse" data-target="#collapseTwo"
+                <a class="nav-link collapsed" href="#" onclick="fnMove('3');" data-toggle="collapse" data-target="#collapseTwo"
+                   aria-expanded="true" aria-controls="collapseTwo">
+                    <!--폴더아이콘-->
+                    <i class="fas fa-fw fa-calendar-alt"></i>
+                    <span>공모주 일정</span>
+                </a>
+            </li>
+            <!-- 2. 공모주 경쟁률 메뉴  -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" onclick="fnMove('1');" data-toggle="collapse" data-target="#collapseTwo"
                    aria-expanded="true" aria-controls="collapseTwo">
                     <!--폴더아이콘-->
                     <i class="fas fa-fw fa-chart-area"></i>
-                    <span>공모주 정보</span>
+                    <span>공모주 경쟁률</span>
                 </a>
-                <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo"
-                     data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">공모주 관련 정보입니다</h6>
-                        <a class="collapse-item" href="#" onclick="fnMove('3');">공모주 일정</a> <!-- href="/calendar" -->
-                        <a class="collapse-item" href="#" onclick="fnMove('1');">공모주 경쟁률</a>
-                        <!-- href="/display-graph"-->
-                        <a class="collapse-item" href="#" onclick="fnMove('2');">공모주 뉴스</a> <!-- href="/news/1" -->
-                    </div>
-                </div>
+            </li>
+            <!-- 3. 공모주 뉴스 메뉴  -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" onclick="fnMove('2');" data-toggle="collapse" data-target="#collapseTwo"
+                   aria-expanded="true" aria-controls="collapseTwo">
+                    <!--폴더아이콘-->
+                    <i class="fas fa-fw fa-layer-group"></i>
+                    <span>공모주 뉴스</span>
+                </a>
             </li>
 
+            <!--내비게이션 2번 항목 (질문게시판)-->
+            <!--            <hr class="sidebar-divider d-none d-md-block">-->
+            <!--            <div class="sidebar-heading">Question</div>-->
+
+            <!--            <li class="nav-item">-->
+            <!--                <a class="nav-link collapsed" href="/display-graph" data-toggle="collapse" data-target="#collapseThree"-->
+            <!--                   aria-expanded="true" aria-controls="collapseThree">-->
+            <!--                    &lt;!&ndash;폴더아이콘&ndash;&gt;-->
+            <!--                    <i class="fas fa-fw fa-folder"></i>-->
+            <!--                    <span>질문 게시판</span>-->
+            <!--                </a>-->
+            <!--                <div id="collapseThree" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">-->
+            <!--                    <div class="bg-white py-2 collapse-inner rounded">-->
+            <!--                        <h6 class="collapse-header">질문 게시판입니다</h6>-->
+            <!--                        <a class="collapse-item" href="/question/create">질문 등록</a>-->
+            <!--                        <a class="collapse-item" href="/question/detail/1">내 질문 보기</a>-->
+            <!--                        <a class="collapse-item" href="/question/list">전체 질문 목록</a>-->
+            <!--                    </div>-->
+            <!--                </div>-->
+            <!--            </li>-->
+            <!--        </div>-->
             <!-- 구분선 -->
             <hr class="sidebar-divider d-none d-md-block">
         </div>
@@ -156,9 +194,9 @@
                     <i class="fa fa-bars"></i>
                 </button>
 
-            <!-- 공모자들 제목-->
+                <!-- 공모자들 제목-->
                 <div class="horizontal-container">
-<!--                    <img src="/static/bootstrap/img/공모자들로고-002.png" alt="공모자들로고" style="width: 48px;">-->
+                    <!--                    <img src="/static/bootstrap/img/공모자들로고-002.png" alt="공모자들로고" style="width: 48px;">-->
                     <div class="sidebar-brand-text mx-3">공모자들<sup></sup></div>
                 </div>
 
@@ -189,6 +227,122 @@
                         </div>
                     </li>
 
+                    <!--                    &lt;!&ndash; 내비게이션 - 알람 종 모양&ndash;&gt;-->
+                    <!--                    <li class="nav-item dropdown no-arrow mx-1">-->
+                    <!--                        <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"-->
+                    <!--                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+                    <!--                            <i class="fas fa-bell fa-fw"></i>-->
+                    <!--                            &lt;!&ndash; Counter - Alerts &ndash;&gt;-->
+                    <!--                            <span class="badge badge-danger badge-counter">3+</span>-->
+                    <!--                        </a>-->
+                    <!--                        &lt;!&ndash; 내비게이션 - 알람 종 모양 &ndash;&gt;-->
+                    <!--                        <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated&#45;&#45;grow-in"-->
+                    <!--                             aria-labelledby="alertsDropdown">-->
+                    <!--                            <h6 class="dropdown-header">-->
+                    <!--                                Alerts Center-->
+                    <!--                            </h6>-->
+                    <!--                            <a class="dropdown-item d-flex align-items-center" href="#">-->
+                    <!--                                <div class="mr-3">-->
+                    <!--                                    <div class="icon-circle bg-primary">-->
+                    <!--                                        <i class="fas fa-file-alt text-white"></i>-->
+                    <!--                                    </div>-->
+                    <!--                                </div>-->
+                    <!--                                <div>-->
+                    <!--                                    <div class="small text-gray-500">December 12, 2019</div>-->
+                    <!--                                    <span class="font-weight-bold">A new monthly report is ready to download!</span>-->
+                    <!--                                </div>-->
+                    <!--                            </a>-->
+                    <!--                            <a class="dropdown-item d-flex align-items-center" href="#">-->
+                    <!--                                <div class="mr-3">-->
+                    <!--                                    <div class="icon-circle bg-success">-->
+                    <!--                                        <i class="fas fa-donate text-white"></i>-->
+                    <!--                                    </div>-->
+                    <!--                                </div>-->
+                    <!--                                <div>-->
+                    <!--                                    <div class="small text-gray-500">December 7, 2019</div>-->
+                    <!--                                    $290.29 has been deposited into your account!-->
+                    <!--                                </div>-->
+                    <!--                            </a>-->
+                    <!--                            <a class="dropdown-item d-flex align-items-center" href="#">-->
+                    <!--                                <div class="mr-3">-->
+                    <!--                                    <div class="icon-circle bg-warning">-->
+                    <!--                                        <i class="fas fa-exclamation-triangle text-white"></i>-->
+                    <!--                                    </div>-->
+                    <!--                                </div>-->
+                    <!--                                <div>-->
+                    <!--                                    <div class="small text-gray-500">December 2, 2019</div>-->
+                    <!--                                    Spending Alert: We've noticed unusually high spending for your account.-->
+                    <!--                                </div>-->
+                    <!--                            </a>-->
+                    <!--                            <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>-->
+                    <!--                        </div>-->
+                    <!--                    </li>-->
+
+                    <!--내비게이션 - 메세지 모양 -->
+                    <!--                    <li class="nav-item dropdown no-arrow mx-1">-->
+                    <!--                        <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"-->
+                    <!--                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+                    <!--                            <i class="fas fa-envelope fa-fw"></i>-->
+                    <!--                            &lt;!&ndash; Counter - Messages &ndash;&gt;-->
+                    <!--                            <span class="badge badge-danger badge-counter">7</span>-->
+                    <!--                        </a>-->
+                    <!--                        &lt;!&ndash; Dropdown - Messages &ndash;&gt;-->
+                    <!--                        <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated&#45;&#45;grow-in"-->
+                    <!--                             aria-labelledby="messagesDropdown">-->
+                    <!--                            <h6 class="dropdown-header">-->
+                    <!--                                Message Center-->
+                    <!--                            </h6>-->
+                    <!--                            <a class="dropdown-item d-flex align-items-center" href="#">-->
+                    <!--                                <div class="dropdown-list-image mr-3">-->
+                    <!--                                    <img class="rounded-circle" src="img/undraw_profile_1.svg"-->
+                    <!--                                         alt="...">-->
+                    <!--                                    <div class="status-indicator bg-success"></div>-->
+                    <!--                                </div>-->
+                    <!--                                <div class="font-weight-bold">-->
+                    <!--                                    <div class="text-truncate">Hi there! I am wondering if you can help me with a-->
+                    <!--                                        problem I've been having.</div>-->
+                    <!--                                    <div class="small text-gray-500">Emily Fowler · 58m</div>-->
+                    <!--                                </div>-->
+                    <!--                            </a>-->
+                    <!--                            <a class="dropdown-item d-flex align-items-center" href="#">-->
+                    <!--                                <div class="dropdown-list-image mr-3">-->
+                    <!--                                    <img class="rounded-circle" src="img/undraw_profile_2.svg"-->
+                    <!--                                         alt="...">-->
+                    <!--                                    <div class="status-indicator"></div>-->
+                    <!--                                </div>-->
+                    <!--                                <div>-->
+                    <!--                                    <div class="text-truncate">I have the photos that you ordered last month, how-->
+                    <!--                                        would you like them sent to you?</div>-->
+                    <!--                                    <div class="small text-gray-500">Jae Chun · 1d</div>-->
+                    <!--                                </div>-->
+                    <!--                            </a>-->
+                    <!--                            <a class="dropdown-item d-flex align-items-center" href="#">-->
+                    <!--                                <div class="dropdown-list-image mr-3">-->
+                    <!--                                    <img class="rounded-circle" src="img/undraw_profile_3.svg"-->
+                    <!--                                         alt="...">-->
+                    <!--                                    <div class="status-indicator bg-warning"></div>-->
+                    <!--                                </div>-->
+                    <!--                                <div>-->
+                    <!--                                    <div class="text-truncate">Last month's report looks great, I am very happy with-->
+                    <!--                                        the progress so far, keep up the good work!</div>-->
+                    <!--                                    <div class="small text-gray-500">Morgan Alvarez · 2d</div>-->
+                    <!--                                </div>-->
+                    <!--                            </a>-->
+                    <!--                            <a class="dropdown-item d-flex align-items-center" href="#">-->
+                    <!--                                <div class="dropdown-list-image mr-3">-->
+                    <!--                                    <img class="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60"-->
+                    <!--                                         alt="...">-->
+                    <!--                                    <div class="status-indicator bg-success"></div>-->
+                    <!--                                </div>-->
+                    <!--                                <div>-->
+                    <!--                                    <div class="text-truncate">Am I a good boy? The reason I ask is because someone-->
+                    <!--                                        told me that people say this to all dogs, even if they aren't good...</div>-->
+                    <!--                                    <div class="small text-gray-500">Chicken the Dog · 2w</div>-->
+                    <!--                                </div>-->
+                    <!--                            </a>-->
+                    <!--                            <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>-->
+                    <!--                        </div>-->
+                    <!--                    </li>-->
 
                     <div class="topbar-divider d-none d-sm-block"></div>
 
@@ -231,14 +385,12 @@
 
             </nav>
             <!-- 토글 바 끝 -->
-
-
             <!-- 대시보드 부분 -->
             <div class="container-fluid">
 
                 <!-- Page Heading -->
-<!--                <div class="d-sm-flex align-items-center justify-content-between mb-4">-->
-<!--                    <h1 class="h3 mb-0 text-gray-800">공모주 정보</h1>-->
+                <!--                <div class="d-sm-flex align-items-center justify-content-between mb-4">-->
+                <!--                    <h1 class="h3 mb-0 text-gray-800">공모주 정보</h1>-->
                 <div id="div" class="row">
                     <!-- 공모주 뉴스 부분 -->
                     <div class="col-xl-8 col-lg-7">
@@ -248,156 +400,156 @@
                                 <h6 class="m-0 font-weight-bold text-primary">공모주 정보</h6>
                             </div>
 
-                <!-- Pending Requests Card Example -->
-                <ul class="custom-list">
-                    <!-- 현재 진행중인 공모주 -->
-                    <th:block th:each="stock, iterStat : ${progressStocks}">
-                        <li>
-                            <div class="card border-left-warning shadow h-100 py-2 flex-grow-1">
-                                <div class="card-body">
-                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                        청약 진행중인 공모주
-                                    </div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800" id="dataFromDB"
-                                         style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
-                                        <a th:href="@{/stock/{stockId}(stockId=${stock.id})}"
-                                           th:text="${stock.name}"
-                                           style="text-decoration: none; color: #5a5c69;"></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <!-- 3개 이상의 요소일 때 줄바꿈 -->
-                        <th:if test="${iterStat.index > 2}">
-                            <div style="flex-basis: 100%; height: 0;"></div>
-                        </th:if>
-                    </th:block>
-                </ul>
+                            <!-- Pending Requests Card Example -->
+                            <ul class="custom-list">
+                                <!-- 현재 진행중인 공모주 -->
+                                <th:block th:each="stock, iterStat : ${progressStocks}">
+                                    <li>
+                                        <div class="card border-left-warning shadow h-100 py-2 flex-grow-1">
+                                            <div class="card-body">
+                                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                                    청약 진행중인 공모주
+                                                </div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800" id="dataFromDB"
+                                                     style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                                    <a th:href="@{/stock/{stockId}(stockId=${stock.id})}"
+                                                       th:text="${stock.name}"
+                                                       style="text-decoration: none; color: #5a5c69;"></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <!-- 3개 이상의 요소일 때 줄바꿈 -->
+                                    <th:if test="${iterStat.index > 2}">
+                                        <div style="flex-basis: 100%; height: 0;"></div>
+                                    </th:if>
+                                </th:block>
+                            </ul>
 
-                <!-- 청약 예정 공모주 -->
-                <ul class="custom-list">
-                    <th:block th:each="stock, iterStat : ${scheduledStocks}">
-                        <li>
-                            <div class="card border-left-primary shadow h-100 py-2 flex-grow-1">
-                                <div class="card-body">
-                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                        청약 예정 공모주
-                                    </div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800"
-                                         style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
-                                        <a th:href="@{/stock/{stockId}(stockId=${stock.id})}"
-                                           th:text="${stock.name}"
-                                           style="text-decoration: none; color: #5a5c69; "></a>
-                                        <span th:text="${' ' + stock.getStartDate().getMonthValue() + ' / ' + stock.getStartDate().getDayOfMonth() + ' 예정'}"
-                                              style="text-decoration: none; color: #5a5c69; font-size: 14px; opacity: 0.7; text-align: right;"></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                    </th:block>
-                </ul>
-            </div>
-
-
-
-                <!-- 공모주 일정 부분 -->
-                <div>
-                    <div id="div3" class="row">
-                        <div class="col-xl-8 col-lg-7">
-                            <div class="card shadow mb-2">
-                                <h6 class="m-3 font-weight-bold text-primary">공모주 일정</h6>
-                                <div class="card shadow ">
-                                    <!-- Card Header - Dropdown -->
-                                    <link href='/static/fullcalendar-5.11.5/main.css' rel='stylesheet'/>
-                                    <script src='/static/fullcalendar-5.11.5/main.js'></script>
-                                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-                                    <script>
-                                        document.addEventListener('DOMContentLoaded', function () {
-                                            var calendarEl = document.getElementById('calendar');
-                                            var calendar = new FullCalendar.Calendar(calendarEl, {
-                                                initialView: 'dayGridMonth', // 초기 로드 될때 보이는 캘린더 화면(기본 설정: 달)
-                                                aspectRatio: 0.8,
-
-                                                locale: "ko", // 한국어 설정
-                                                displayEventTime: false, // 일정 시각 안보이도록
-                                                eventSources: { // 이벤트 목록
-                                                    url: '/calendar/event',
-                                                    method: 'GET',
-                                                    failure: function () {
-                                                        alert('there was an error while fetching events!');
-                                                    }
-                                                }
-                                            });
-                                            // 캘린더 렌더
-                                            calendar.render();
-                                        });
-                                    </script>
-                                    </head>
-                                    <div id='calendar-container' style='width: 95%; height: 20%; margin: 3%;'>
-                                        <div id='calendar'></div>
-                                    </div>
-                                </div>
-                            </div>
+                            <!-- 청약 예정 공모주 -->
+                            <ul class="custom-list">
+                                <th:block th:each="stock, iterStat : ${scheduledStocks}">
+                                    <li>
+                                        <div class="card border-left-primary shadow h-100 py-2 flex-grow-1">
+                                            <div class="card-body">
+                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                    청약 예정 공모주
+                                                </div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800"
+                                                     style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                                    <a th:href="@{/stock/{stockId}(stockId=${stock.id})}"
+                                                       th:text="${stock.name}"
+                                                       style="text-decoration: none; color: #5a5c69; "></a>
+                                                    <span th:text="${' ' + stock.getStartDate().getMonthValue() + ' / ' + stock.getStartDate().getDayOfMonth() + ' 예정'}"
+                                                          style="text-decoration: none; color: #5a5c69; font-size: 14px; opacity: 0.7; text-align: right;"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </th:block>
+                            </ul>
                         </div>
-                    </div>
 
-                    <!-- 경쟁률 차트 부분 -->
-                    <div class="row">
-                        <div class="col-xl-8 col-lg-7">
-                            <div class="card shadow mb-4">
-                                <!-- Card Header - Dropdown -->
-                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">공모주 경쟁률</h6>
-                                </div>
-                                <!-- Card Body -->
-                                <div class="custom-card-body">
-                                    <div>
-                                        <div style="max-width: 100%; height: auto; display: flex; flex-direction: column; align-items: center;">
-                                            <img th:src="@{'data:image/jpeg;base64,' + ${base64Image}}"
-                                                 alt="Graph Image" style="width: 100%; height: 100%;">
+
+
+                        <!-- 공모주 일정 부분 -->
+                        <div>
+                            <div id="div3" class="row">
+                                <div class="col-xl-8 col-lg-7">
+                                    <div class="card shadow mb-2">
+                                        <h6 class="m-3 font-weight-bold text-primary">공모주 일정</h6>
+                                        <div class="card shadow ">
+                                            <!-- Card Header - Dropdown -->
+                                            <link href='/static/fullcalendar-5.11.5/main.css' rel='stylesheet'/>
+                                            <script src='/static/fullcalendar-5.11.5/main.js'></script>
+                                            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+                                            <script>
+                                                document.addEventListener('DOMContentLoaded', function () {
+                                                    var calendarEl = document.getElementById('calendar');
+                                                    var calendar = new FullCalendar.Calendar(calendarEl, {
+                                                        initialView: 'dayGridMonth', // 초기 로드 될때 보이는 캘린더 화면(기본 설정: 달)
+                                                        aspectRatio: 0.8,
+
+                                                        locale: "ko", // 한국어 설정
+                                                        displayEventTime: false, // 일정 시각 안보이도록
+                                                        eventSources: { // 이벤트 목록
+                                                            url: '/calendar/event',
+                                                            method: 'GET',
+                                                            failure: function () {
+                                                                alert('there was an error while fetching events!');
+                                                            }
+                                                        }
+                                                    });
+                                                    // 캘린더 렌더
+                                                    calendar.render();
+                                                });
+                                            </script>
+                                            </head>
+                                            <div id='calendar-container' style='width: 95%; height: 20%; margin: 3%;'>
+                                                <div id='calendar'></div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
 
-
-                    <!-- Content Row -->
-                    <div id="div2" class="row">
-                        <!-- 공모주 뉴스 부분 -->
-                        <div class="col-xl-8 col-lg-7">
-                            <!-- Project Card Example -->
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">공모주 최신 뉴스</h6>
-                                </div>
-                                <!--뉴스 항목-->
-                                <div th:each="news : ${newsList}">
-                                    <div class="news-item">
-                                        <p></p>
-                                        <h6><a th:href="${news.newsUrl}" target="_blank" th:text="${news.title}">News
-                                            Title</a></h6>
-                                        <p th:text="${news.publisher}" style="display: inline; margin: 0;">Publisher</p>
-                                        <img th:src="${news.imageUrl}" alt="News Image" width="20"
-                                             style="max-height: 16px; display: inline;">
-                                        <span style="display: inline;">|</span>
-                                        <p th:text="${#temporals.format(news.publishedTime, 'yyyy-MM-dd')}"
-                                           style="display: inline; margin: 0;">Published Date</p>
-                                        <p th:text="${news.content}">News Summary</p>
+                            <!-- 경쟁률 차트 부분 -->
+                            <div class="row">
+                                <div class="col-xl-8 col-lg-7">
+                                    <div class="card shadow mb-4">
+                                        <!-- Card Header - Dropdown -->
+                                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                            <h6 class="m-0 font-weight-bold text-primary">공모주 경쟁률</h6>
+                                        </div>
+                                        <!-- Card Body -->
+                                        <div class="custom-car돌d-body">
+                                            <div>
+                                                <div style="max-width: 100%; height: auto; display: flex; flex-direction: column; align-items: center;">
+                                                    <img th:src="@{'data:image/jpeg;base64,' + ${base64Image}}"
+                                                         alt="Graph Image" style="width: 100%; height: 100%;">
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <hr class="sidebar-divider d-none d-md-block">
                                 </div>
                             </div>
+
+
+                            <!-- Content Row -->
+                            <div id="div2" class="row">
+                                <!-- 공모주 뉴스 부분 -->
+                                <div class="col-xl-8 col-lg-7">
+                                    <!-- Project Card Example -->
+                                    <div class="card shadow mb-4">
+                                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                            <h6 class="m-0 font-weight-bold text-primary">공모주 최신 뉴스</h6>
+                                        </div>
+                                        <!--뉴스 항목-->
+                                        <div th:each="news : ${newsList}">
+                                            <div class="news-item">
+                                                <p></p>
+                                                <h6><a th:href="${news.newsUrl}" target="_blank" th:text="${news.title}">News
+                                                    Title</a></h6>
+                                                <p th:text="${news.publisher}" style="display: inline; margin: 0;">Publisher</p>
+                                                <img th:src="${news.imageUrl}" alt="News Image" width="20"
+                                                     style="max-height: 16px; display: inline;">
+                                                <span style="display: inline;">|</span>
+                                                <p th:text="${#temporals.format(news.publishedTime, 'yyyy-MM-dd')}"
+                                                   style="display: inline; margin: 0;">Published Date</p>
+                                                <p th:text="${news.content}">News Summary</p>
+                                            </div>
+                                            <hr class="sidebar-divider d-none d-md-block">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
-    </div>
-</div>
 </body>
 <script>
     function fnMove(seq) {

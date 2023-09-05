@@ -10,9 +10,10 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>공모자들 메인페이지</title>
+    <title>공모자들</title>
 
     <!-- Custom fonts for this template-->
+    <link rel="shortcut icon" href="/static/favicon.ico">
     <link href="/static/bootstrap/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
             href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
@@ -30,6 +31,11 @@
             padding: 0; /* 패딩 제거 */
             border: none; /* 외각 박스 제거 */
             background: transparent; /* 배경 제거 */
+        }
+        #stiky {
+            position:sticky ;
+            top: 20px;
+            bottom: 20px;
         }
     </style>
 </head>
@@ -55,35 +61,45 @@
 
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
-
-        <!-- 내비게이션 2 : 공모주 관련 내용들 -->
         <hr class="sidebar-divider my-0">
 
         <!-- 구분선 -->
         <hr class="sidebar-divider">
 
         <!-- 내비게이션 1번 제목-->
-        <div class="sidebar-heading">GONGMOJA</div>
-
         <!--내비게이션 1번 항목 (공모주)-->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="/display-graph" data-toggle="collapse" data-target="#collapseTwo"
-               aria-expanded="true" aria-controls="collapseTwo">
-                <!--폴더아이콘-->
-                <i class="fas fa-fw fa-chart-area"></i>
-                <span>공모주 정보</span>
-            </a>
-            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">공모주 관련 정보입니다</h6>
-                    <a class="collapse-item" href="/display-graph">공모주 경쟁률</a>
-                    <a class="collapse-item" href="/news/1">공모주 뉴스</a>
-                    <a class="collapse-item" href="/calendar">공모주 일정</a>
-                </div>
-            </div>
-        </li>
+        <div id="stiky" >
+            <div  class="sidebar-heading">GONGMOJA</div>
 
-        <!-- 구분선 -->
+            <!-- 1. 공모주 일정 메뉴  -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" onclick="fnMoveIndex('/', '3');" data-toggle="collapse" data-target="#collapseTwo"
+                   aria-expanded="true" aria-controls="collapseTwo">
+                    <!--폴더아이콘-->
+                    <i class="fas fa-fw fa-calendar-alt"></i>
+                    <span>공모주 일정</span>
+                </a>
+            </li>
+            <!-- 2. 공모주 경쟁률 메뉴  -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" onclick="fnMoveIndex('/', '1');" data-toggle="collapse" data-target="#collapseTwo"
+                   aria-expanded="true" aria-controls="collapseTwo">
+                    <!--폴더아이콘-->
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>공모주 경쟁률</span>
+                </a>
+            </li>
+            <!-- 3. 공모주 뉴스 메뉴  -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" onclick="fnMoveIndex('/', '2');" data-toggle="collapse" data-target="#collapseTwo"
+                   aria-expanded="true" aria-controls="collapseTwo">
+                    <!--폴더아이콘-->
+                    <i class="fas fa-fw fa-layer-group"></i>
+                    <span>공모주 뉴스</span>
+                </a>
+            </li>
+
+            <!-- 구분선 -->
         <hr class="sidebar-divider d-none d-md-block">
 
     </ul>
@@ -198,7 +214,7 @@
                     <tr class="category-row">
                         <th>상장일</th>
                         <td th:text="${#temporals.format(stock.ipoDate.toLocalDate(), 'yyyy-MM-dd')}"></td>
-                    </tr>
+                       </tr>
                     <tr class="category-row">
                         <th>환불일</th>
                         <td th:text="${#temporals.format(stock.refundDate.toLocalDate(), 'yyyy-MM-dd')}"></td>
@@ -266,6 +282,14 @@
             .catch(error => {
                 console.error('오류 발생', error);
             });
+    }
+
+    function fnMoveIndex(targetPage, seq) {
+        // 이동할 대상 페이지의 URL
+        var targetURL = targetPage + "#div" + seq;
+
+        // 새로운 페이지로 이동
+        window.location.href = targetURL;
     }
 
     function updateStarIcon() {
