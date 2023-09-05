@@ -80,8 +80,7 @@
             </div>
             <div class="horizontal-container">
                 <div class="sidebar-brand-text mx-3">공모자들<sup></sup></div>
-                <div>GongMoJa</div>
-            </div>
+                <div>GongMoJa</div></div>
         </a>
 
         <!-- Divider -->
@@ -96,33 +95,43 @@
         <!--        </li>-->
 
         <!-- 내비게이션 2 : 공모주 관련 내용들 -->
-        <hr class="sidebar-divider my-0">
+        <hr class="sidebar-divider my-0" >
 
         <!-- 구분선 -->
         <hr class="sidebar-divider">
 
         <!-- 내비게이션 1번 제목-->
-        <div id="stiky" class="sidebar-heading">GONGMOJA</div>
 
         <!--내비게이션 1번 항목 (공모주)-->
-        <div id="stiky">
+        <div id="stiky" >
+            <div  class="sidebar-heading">GONGMOJA</div>
+
+            <!-- 1. 공모주 일정 메뉴  -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="/display-graph" data-toggle="collapse" data-target="#collapseTwo"
+                <a class="nav-link collapsed" href="#" onclick="fnMove('3');" data-toggle="collapse" data-target="#collapseTwo"
+                   aria-expanded="true" aria-controls="collapseTwo">
+                    <!--폴더아이콘-->
+                    <i class="fas fa-fw fa-calendar-alt"></i>
+                    <span>공모주 일정</span>
+                </a>
+            </li>
+            <!-- 2. 공모주 경쟁률 메뉴  -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" onclick="fnMove('1');" data-toggle="collapse" data-target="#collapseTwo"
                    aria-expanded="true" aria-controls="collapseTwo">
                     <!--폴더아이콘-->
                     <i class="fas fa-fw fa-chart-area"></i>
-                    <span>공모주 정보</span>
+                    <span>공모주 경쟁률</span>
                 </a>
-                <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo"
-                     data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">공모주 관련 정보입니다</h6>
-                        <a class="collapse-item" href="#" onclick="fnMove('3');">공모주 일정</a> <!-- href="/calendar" -->
-                        <a class="collapse-item" href="#" onclick="fnMove('1');">공모주 경쟁률</a>
-                        <!-- href="/display-graph"-->
-                        <a class="collapse-item" href="#" onclick="fnMove('2');">공모주 뉴스</a> <!-- href="/news/1" -->
-                    </div>
-                </div>
+            </li>
+            <!-- 3. 공모주 뉴스 메뉴  -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" onclick="fnMove('2');" data-toggle="collapse" data-target="#collapseTwo"
+                   aria-expanded="true" aria-controls="collapseTwo">
+                    <!--폴더아이콘-->
+                    <i class="fas fa-fw fa-layer-group"></i>
+                    <span>공모주 뉴스</span>
+                </a>
             </li>
 
             <!--내비게이션 2번 항목 (질문게시판)-->
