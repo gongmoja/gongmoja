@@ -206,6 +206,17 @@
                 <!--  버튼 -->
                 <div class="d-flex justify-content-end"> <!-- 버튼들을 오른쪽으로 정렬하는 부분 -->
                     <div class="col-xl-3 mb-1">
+                        <form th:action="@{/users/modify-password}" th:method="get">
+                            <button class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" type="submit">
+                                <i class="fas fa-poll-h fa-sm text-white-50">
+                                </i>
+                                &nbsp;비밀번호 수정
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end"> <!-- 버튼들을 오른쪽으로 정렬하는 부분 -->
+                    <div class="col-xl-3 mb-1">
                         <form th:action="@{/question/create}" th:method="get">
                             <button class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" type="submit">
                                 <i class="fas fa-question-circle fa-sm text-white-50">
