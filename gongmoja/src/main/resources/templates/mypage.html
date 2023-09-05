@@ -171,8 +171,8 @@
                     <th:block th:each="stock : ${favoriteStocks}">
                         <li style="list-style: none">
 
-                            <div class="col-xl-3 col-md-6 mb-4">
-                                <div class="card border-left-warning shadow h-100 py-2">
+                            <div class="col-xl-3 col-md-6 mb-4 d-flex"> <!-- d-flex 클래스 추가 -->
+                                <div class="card border-left-warning shadow h-100 py-2 flex-grow-1"> <!-- flex-grow-1 클래스 추가 -->
                                     <div class="card-body">
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
@@ -186,7 +186,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-auto">
-                                                <!--   TODO 현재는 각 주식의 상세 페이지로 이동하도록 함. 각 주식의 채팅 url로 변경 필요          -->
+                                                <!-- TODO 현재는 각 주식의 상세 페이지로 이동하도록 함. 각 주식의 채팅 url로 변경 필요 -->
                                                 <a th:href="@{/chat/{stockId}(stockId=${stock.id})}">
                                                     <i class="fas fa-comment fa-2x custom-icon"></i>
                                                 </a>
@@ -194,6 +194,9 @@
                                         </div>
                                     </div>
                                 </div>
+                                <button id="deleteFavoriteButton" class="trash-icon" th:data-stock-id="${stock.id}">
+                                    <i class="fas fa-trash"></i> <!-- 즐겨찾기 삭제 아이콘 -->
+                                </button>
                             </div>
                         </li>
                     </th:block>
@@ -254,11 +257,53 @@
 <!-- Page level custom scripts -->
 <script src="/static/bootstrap/js/demo/chart-area-demo.js"></script>
 <script src="/static/bootstrap/js/demo/chart-pie-demo.js"></script>
+<script th:inline="javascript">
+    document.addEventListener("DOMContentLoaded", function () {
+        var deleteButtons = document.querySelectorAll('.trash-icon');
+
+        deleteButtons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                // 해당 버튼의 data-stock-id 속성을 읽어와서 stockId 변수로 설정
+                var stockId = button.getAttribute('data-stock-id');
+
+                fetch('/favorites/remove/' + stockId, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json;charset=UTF-8'
+                    }
+                })
+                    .then(response => {
+                        if (response.status === 200) {
+                            // 삭제가 성공하면 해당 카드 또는 요소를 화면에서 제거
+                            var cardToDelete = button.closest('.col-xl-3');
+                            if (cardToDelete) {
+                                cardToDelete.remove();
+                            }
+                        } else {
+                            console.error('오류 발생');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('오류 발생', error);
+                    });
+            });
+        });
+    });
+</script>
+
 </body>
 </html>
 
 <style>
     .custom-icon {
         color: #f6c23e; /* 원하는 색상으로 변경 */
+    }
+    .trash-icon{
+        color: dimgray;
+        font-size: 20px;
+        padding: 0; /* 패딩 제거 */
+        border: none; /* 외각 박스 제거 */
+        background: transparent; /* 배경 제거 */
+        margin-left: 10px;
     }
 </style>
