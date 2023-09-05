@@ -20,7 +20,8 @@
   display: flex;
   flex-direction: column;
 
-  font-size: 1em
+  font-size: 13px;
+
 }
 .fc,
   .fc *,
@@ -1493,3 +1494,21 @@ A VERTICAL event
   background-color: var(--bs-gray-200);
 }
 
+/* 일요일 날짜 빨간색 */
+.fc-day-sun a {
+    color: #952323;
+    text-decoration: none;
+}
+
+/* 토요일 날짜 파란색 */
+.fc-day-sat a {
+    color: #1450A3;
+    text-decoration: none;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+a:hover { color: #36b9cc;}
