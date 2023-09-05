@@ -22,7 +22,7 @@ public class GraphService {
     private final String csvFile = "src/main/resources/Book1.csv";
     private final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 
-    @Scheduled(cron = "0 */10 * * * *") // 매 10분(600000밀리초)마다 실행
+    //@Scheduled(cron = "0 */10 * * * *") // 매 10분(600000밀리초)마다 실행
     public String generateGraph() {
         List<Date> xData = new ArrayList<>();
         List<Double> yData = new ArrayList<>();
@@ -56,6 +56,7 @@ public class GraphService {
 
     private String generateAndSaveChart(List<Date> xData, List<Double> yData) {
         XYChart chart = new XYChartBuilder().width(800).height(600).title("대신제16호스팩").xAxisTitle("Time").yAxisTitle("비례 경쟁률").build();
+        chart.getStyler().setChartBackgroundColor(java.awt.Color.WHITE);
         chart.getStyler().setXAxisLabelRotation(0);
         chart.getStyler().setXAxisLabelAlignment(Styler.TextAlignment.Right);
 

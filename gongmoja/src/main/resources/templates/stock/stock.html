@@ -219,19 +219,20 @@
             </div>
             <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h4 class="m-0 font-weight-bold text-primary" th:text="${stock.name + ' 뉴스기사'}">공모주 뉴스</h4>
+                    <h6 class="m-0 font-weight-bold text-primary" th:text="${stock.name + ' 뉴스기사'}">공모주 뉴스</h6>
                 </div>
                 <!--뉴스 항목-->
                 <div th:each="news : ${newsList}">
                     <div class="news-item">
                         <p></p>
-                        <h4><a th:href="${news.newsUrl}" target="_blank"  th:text="${news.title}" >News Title</a></h4>
+                        <h6><a th:href="${news.newsUrl}" target="_blank"  th:text="${news.title}" >News Title</a></h6>
                         <p th:text="${news.publisher}" style="display: inline; margin: 0;">Publisher</p>
                         <img th:src="${news.imageUrl}" alt="News Image" width="20" style="max-height: 16px; display: inline;">
                         <span style="display: inline;">|</span>
                         <p th:text="${#temporals.format(news.publishedTime, 'yyyy-MM-dd')}" style="display: inline; margin: 0;">Published Date</p>
                         <p th:text="${news.content}">News Summary</p>
                     </div>
+                    <hr class="sidebar-divider d-none d-md-block">
                 </div>
             </div>
         </div>

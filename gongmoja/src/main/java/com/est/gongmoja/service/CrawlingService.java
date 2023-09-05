@@ -29,9 +29,9 @@ public class CrawlingService {
     private final StockRepository stockRepository;
     private final ChatService chatService;
 
-    @PostConstruct
-    @Scheduled(cron = "0 * * * * *") // 1분마다 한번 업데이트 (정상작동 테스트용)
-//    @Scheduled(cron = "0 */10 * * * *") // 10분마다 한번 업데이트
+//    @PostConstruct
+//    @Scheduled(cron = "0 * * * * *") // 1분마다 한번 업데이트 (정상작동 테스트용)
+    @Scheduled(cron = "0 */10 * * * *") // 10분마다 한번 업데이트
     public void monthlyCrawl() throws IOException {
         // 크롤링 데이터 범위 [2023.6월~ 현재 month+1월]
         int currentMonth = LocalDate.now().getMonthValue(); // 현재 월(month)
@@ -131,9 +131,8 @@ public class CrawlingService {
                 if (!strings.get(6).equals("")) {
                     ipoDate = LocalDateTime.parse(year + "." + strings.get(6).substring(0, dates[0].length() - 1) + ".09.00.00", formatter);
                 }
-
                 else { // 크롤링시 null값일 때
-                  ipoDate = LocalDateTime.of(1, 1, 1, 0, 0);
+                    ipoDate = LocalDateTime.of(1, 1, 1, 0, 0);
                 }
 
                 // 공모가
