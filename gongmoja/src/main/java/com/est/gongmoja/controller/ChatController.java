@@ -73,6 +73,7 @@ public class ChatController {
         // 주식 이름을 모델에 추가
         model.addAttribute("chatRoomId", chatRoomId);
         model.addAttribute("stockName", stockName);
+        model.addAttribute("userEntity", userEntity); // top bar에서 이용
 
         if (!chatService.isFavorite(userEntity, chatRoomId)) {
             throw new CustomException(ErrorCode.NOT_FAVORITE_STOCK);
