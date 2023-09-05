@@ -20,7 +20,18 @@
 
     <!-- Custom styles for this template-->
     <link href="/static/bootstrap/css/sb-admin-2.min.css" rel="stylesheet">
-
+    <style>
+        .news-item{
+            margin: 10px;
+        }
+        .star-icon {
+            color: #ffcd39;
+            font-size: 28px;
+            padding: 0; /* 패딩 제거 */
+            border: none; /* 외각 박스 제거 */
+            background: transparent; /* 배경 제거 */
+        }
+    </style>
 </head>
 
 <body id="page-top">
@@ -160,8 +171,13 @@
             </nav>
             <!-- 토글 바 끝 -->
 
-            <div class="container mt-4">
-                <h1 th:text="${stock.name}" style="color: black;">Stock Name</h1>
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h4 class="m-0 font-weight-bold text-primary" th:text="${stock.name + ' '}">공모주</h4>
+                    <button id="favoriteButton" class="star-icon">
+                        <i class="fas fa-star"></i>
+                    </button>
+                </div>
                 <table class="table">
                     <tr class="category-row">
                         <th>기관 경쟁률</th>
@@ -200,7 +216,23 @@
                         <td th:text="${stock.price + '원'}"></td>
                     </tr>
                 </table>
-                <button id="favoriteButton"></button>
+            </div>
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h4 class="m-0 font-weight-bold text-primary" th:text="${stock.name + ' 뉴스기사'}">공모주 뉴스</h4>
+                </div>
+                <!--뉴스 항목-->
+                <div th:each="news : ${newsList}">
+                    <div class="news-item">
+                        <p></p>
+                        <h4><a th:href="${news.newsUrl}" target="_blank"  th:text="${news.title}" >News Title</a></h4>
+                        <p th:text="${news.publisher}" style="display: inline; margin: 0;">Publisher</p>
+                        <img th:src="${news.imageUrl}" alt="News Image" width="20" style="max-height: 16px; display: inline;">
+                        <span style="display: inline;">|</span>
+                        <p th:text="${#temporals.format(news.publishedTime, 'yyyy-MM-dd')}" style="display: inline; margin: 0;">Published Date</p>
+                        <p th:text="${news.content}">News Summary</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -209,58 +241,71 @@
 
     var favoriteButton = document.getElementById('favoriteButton');
     var stockId = /*[[${stock.id}]]*/ 0;
+    var isFavorite = false; // 즐겨찾기 상태 초기값 (별 아이콘 채움)
 
     function updateFavoriteButton() {
-        fetch('/favorites/isFavorite/' + stockId, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json;charset=UTF-8'
+    fetch('/favorites/isFavorite/' + stockId, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json;charset=UTF-8'
+        }
+    })
+        .then(response => {
+            if (response.status === 200) {
+                return response.json();
+            } else {
+                console.error('오류 발생');
             }
         })
-            .then(response => {
-                if (response.status === 200) {
-                    return response.json();
-                } else {
-                    console.error('오류 발생');
-                }
-            })
-            .then(isFavorite => {
-                favoriteButton.textContent = isFavorite ? '즐겨찾기 해제' : '즐겨찾기 등록';
-            })
 
-            .catch(error => {
-                console.error('오류 발생', error);
-            });
-    }
+        .then(newIsFavorite => {
+            isFavorite = newIsFavorite;
+            updateStarIcon();
+        })
+        .catch(error => {
+            console.error('오류 발생', error);
+        });
+}
+
+    function updateStarIcon() {
+    var starIcon = favoriteButton.querySelector('.fa-star');
+    if (isFavorite) {
+    starIcon.classList.add('fas'); // 별 아이콘 채워짐 스타일
+    starIcon.classList.remove('far'); // 비어있는 별 아이콘 스타일 제거
+} else {
+    starIcon.classList.remove('fas'); // 채워진 별 아이콘 스타일 제거
+    starIcon.classList.add('far'); // 비어있는 별 아이콘 스타일
+}
+}
     updateFavoriteButton();
 
     favoriteButton.addEventListener('click', function () {
-        var method = 'POST';
-        var url = '/favorites/add/' + stockId;
+    var method = 'POST';
+    var url = '/favorites/add/' + stockId;
 
-        if (favoriteButton.textContent === '즐겨찾기 해제') {
-            method = 'POST';
-            url = '/favorites/remove/' + stockId;
-        }
+    if (isFavorite) {
+    method = 'POST';
+    url = '/favorites/remove/' + stockId;
+}
 
-        fetch(url, {
-            method: method,
-            headers: {
-                'Content-Type': 'application/json;charset=UTF-8'
-            }
-        })
-            .then(response => {
-                if (response.status === 200) {
-                    updateFavoriteButton();
-                } else {
-                    console.error('오류 발생');
-                }
-            })
-            .catch(error => {
-                console.error('오류 발생', error);
-            });
-    });
-
+    fetch(url, {
+    method: method,
+    headers: {
+    'Content-Type': 'application/json;charset=UTF-8'
+}
+})
+    .then(response => {
+    if (response.status === 200) {
+    isFavorite = !isFavorite; // 토글 즐겨찾기 상태
+    updateStarIcon();
+} else {
+    console.error('오류 발생');
+}
+})
+    .catch(error => {
+    console.error('오류 발생', error);
+});
+});
 </script>
 
 <!-- Bootstrap core JavaScript-->
