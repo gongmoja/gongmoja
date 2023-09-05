@@ -261,28 +261,28 @@
     var isFavorite = false; // 즐겨찾기 상태 초기값 (별 아이콘 채움)
 
     function updateFavoriteButton() {
-    fetch('/favorites/isFavorite/' + stockId, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json;charset=UTF-8'
-        }
-    })
-        .then(response => {
-            if (response.status === 200) {
-                return response.json();
-            } else {
-                console.error('오류 발생');
+        fetch('/favorites/isFavorite/' + stockId, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json;charset=UTF-8'
             }
         })
+            .then(response => {
+                if (response.status === 200) {
+                    return response.json();
+                } else {
+                    console.error('오류 발생');
+                }
+            })
 
-        .then(newIsFavorite => {
-            isFavorite = newIsFavorite;
-            updateStarIcon();
-        })
-        .catch(error => {
-            console.error('오류 발생', error);
-        });
-}
+            .then(newIsFavorite => {
+                isFavorite = newIsFavorite;
+                updateStarIcon();
+            })
+            .catch(error => {
+                console.error('오류 발생', error);
+            });
+    }
 
     function fnMoveIndex(targetPage, seq) {
         // 이동할 대상 페이지의 URL
@@ -293,44 +293,44 @@
     }
 
     function updateStarIcon() {
-    var starIcon = favoriteButton.querySelector('.fa-star');
-    if (isFavorite) {
-    starIcon.classList.add('fas'); // 별 아이콘 채워짐 스타일
-    starIcon.classList.remove('far'); // 비어있는 별 아이콘 스타일 제거
-} else {
-    starIcon.classList.remove('fas'); // 채워진 별 아이콘 스타일 제거
-    starIcon.classList.add('far'); // 비어있는 별 아이콘 스타일
-}
-}
+        var starIcon = favoriteButton.querySelector('.fa-star');
+        if (isFavorite) {
+            starIcon.classList.add('fas'); // 별 아이콘 채워짐 스타일
+            starIcon.classList.remove('far'); // 비어있는 별 아이콘 스타일 제거
+        } else {
+            starIcon.classList.remove('fas'); // 채워진 별 아이콘 스타일 제거
+            starIcon.classList.add('far'); // 비어있는 별 아이콘 스타일
+        }
+    }
     updateFavoriteButton();
 
     favoriteButton.addEventListener('click', function () {
-    var method = 'POST';
-    var url = '/favorites/add/' + stockId;
+        var method = 'POST';
+        var url = '/favorites/add/' + stockId;
 
-    if (isFavorite) {
-    method = 'POST';
-    url = '/favorites/remove/' + stockId;
-}
+        if (isFavorite) {
+            method = 'POST';
+            url = '/favorites/remove/' + stockId;
+        }
 
-    fetch(url, {
-    method: method,
-    headers: {
-    'Content-Type': 'application/json;charset=UTF-8'
-}
-})
-    .then(response => {
-    if (response.status === 200) {
-    isFavorite = !isFavorite; // 토글 즐겨찾기 상태
-    updateStarIcon();
-} else {
-    console.error('오류 발생');
-}
-})
-    .catch(error => {
-    console.error('오류 발생', error);
-});
-});
+        fetch(url, {
+            method: method,
+            headers: {
+                'Content-Type': 'application/json;charset=UTF-8'
+            }
+        })
+            .then(response => {
+                if (response.status === 200) {
+                    isFavorite = !isFavorite; // 토글 즐겨찾기 상태
+                    updateStarIcon();
+                } else {
+                    console.error('오류 발생');
+                }
+            })
+            .catch(error => {
+                console.error('오류 발생', error);
+            });
+    });
 </script>
 
 <!-- Bootstrap core JavaScript-->

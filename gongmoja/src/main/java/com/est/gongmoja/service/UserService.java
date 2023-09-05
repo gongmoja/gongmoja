@@ -96,7 +96,7 @@ public class UserService {
         redisService.deleteData(username);
     }
 
-     public UserEntity getUser(String username){
+    public UserEntity getUser(String username){
         return userRepository.findByUserName(username).orElseThrow(()->new CustomException(ErrorCode.USERNAME_NOT_FOUND));
     }
 
