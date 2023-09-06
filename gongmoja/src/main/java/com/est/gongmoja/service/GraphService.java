@@ -27,7 +27,16 @@ public class GraphService {
         List<Date> xData = new ArrayList<>();
         List<Double> yData = new ArrayList<>();
 
+        // 오전 8시 이전에는 데이터 0으로 초기화
         Date currentTime = new Date();
+        Date eightAM = new Date();
+        eightAM.setHours(8);
+        eightAM.setMinutes(0);
+        eightAM.setSeconds(0);
+        if (currentTime.before(eightAM)){
+            xData.add(new Date(0));
+            yData.add(0.0);
+        }
 
         try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
             String line;
