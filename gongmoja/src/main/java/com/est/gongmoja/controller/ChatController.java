@@ -7,6 +7,7 @@ import com.est.gongmoja.dto.chat.ChatRoomResponseDto;
 import com.est.gongmoja.dto.user.UserDto;
 import com.est.gongmoja.entity.ChatDataEntity;
 import com.est.gongmoja.entity.ChatRoomEntity;
+import com.est.gongmoja.entity.StockEntity;
 import com.est.gongmoja.entity.UserEntity;
 import com.est.gongmoja.exception.CustomException;
 import com.est.gongmoja.exception.ErrorCode;
@@ -31,6 +32,7 @@ import javax.lang.model.element.NestingKind;
 import java.net.Authenticator;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -64,22 +66,30 @@ public class ChatController {
         UserEntity userEntity = userService.getUser(user.getUserName());
 
         // chatService를 사용하여 주식 이름 가져오기
-        String stockName = stockService.findStockNameById(chatRoomId);
+        StockEntity stock = stockService.findStockById(chatRoomId);
 
-        if (stockName == null) {
+        if (stock == null) {
             throw new CustomException(ErrorCode.STOCK_NOT_FOUND);
         }
+        List<ChatDataEntity> chatMessages = chatService.getMessagesByChatRoomId(chatRoomId);
+        LocalDateTime localDateTime = stock.getEndDate();
+        String endDateTimeStr = localDateTime.toString();
 
-        // 주식 이름을 모델에 추가
+        log.info(endDateTimeStr);
+        model.addAttribute("endDate", endDateTimeStr);
         model.addAttribute("chatRoomId", chatRoomId);
-        model.addAttribute("stockName", stockName);
-
-        if (!chatService.isFavorite(userEntity, chatRoomId)) {
-            throw new CustomException(ErrorCode.NOT_FAVORITE_STOCK);
-        }
+        model.addAttribute("stockName", stock.getName());
+        model.addAttribute("chatMessages", chatMessages);
+        model.addAttribute("currentUserId", userEntity.getId());
 
         return "chat/chat-room";
     }
+
+//    @GetMapping("/messages")
+//    public ResponseEntity<List<ChatDataEntity>> getChatMessages(@RequestParam("chatRoomId") Long chatRoomId) {
+//        List<ChatDataEntity> chatMessages = chatService.getChatMessages(chatRoomId);
+//        return ResponseEntity.ok(chatMessages);
+//    }
 
 
     @GetMapping("/list")
@@ -124,13 +134,8 @@ public class ChatController {
         UserEntity user = (UserEntity)authentication.getPrincipal();
         UserEntity userEntity = userService.getUser(user.getUserName());
         chatData.setSender(userEntity.getNickName());
-        String time = new SimpleDateFormat("HH:mm").format(new Date());
-        chatData.setSentTime(time);
-        log.info(chatData.getSender());
-        log.info(chatData.getSentTime());
-        log.info(String.valueOf(chatData.getChatRoomId()));
-        log.info(chatData.getMessage());
-        simpMessagingTemplate.convertAndSend(String.format("/topic/%s", chatData.getChatRoomId()), chatData);
+        chatService.sendChat(chatData);
+
     }
 
 //    @MessageMapping("/chatroom")

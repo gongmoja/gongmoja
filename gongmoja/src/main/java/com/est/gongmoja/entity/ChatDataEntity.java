@@ -17,10 +17,10 @@ public class ChatDataEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    public enum MessageType{
-        ENTER, TALK
-    }
-    private MessageType type;
+//    public enum MessageType{
+//        ENTER, TALK
+//    }
+//    private MessageType type;
 
 
     private String message;
