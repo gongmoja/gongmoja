@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.socket.TextMessage;
@@ -26,6 +27,7 @@ import org.springframework.web.socket.WebSocketSession;
 
 import java.io.IOException;
 import java.net.Authenticator;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -40,6 +42,8 @@ public class ChatService {
     private final SimpMessageSendingOperations messagingTemplate;
     private final UserRepository userRepository;
     private final StockRepository stockRepository;
+    private final SimpMessagingTemplate simpMessagingTemplate;
+
 
     //채팅방 별 연결된 웹소캣 세션의 집합
     private Map<String, ChatRoomDto> chatRooms = new LinkedHashMap<>();
@@ -66,6 +70,27 @@ public class ChatService {
                     .build();
             chatRoomRepository.save(chatRoom);
         }
+    }
+
+    public void sendChat(ChatDataDto chatData){
+        String time = new SimpleDateFormat("HH:mm").format(new Date());
+        chatData.setSentTime(time);
+        Optional<ChatRoomEntity> optionalChatRoomEntity = chatRoomRepository.findById(chatData.getChatRoomId());
+        ChatRoomEntity chatRoom = optionalChatRoomEntity.get();
+        Optional<UserEntity> optionalUser = userRepository.findByNickName(chatData.getSender());
+        UserEntity user = optionalUser.get();
+        ChatDataEntity chatDataEntity = ChatDataEntity.builder()
+                .message(chatData.getMessage())
+                .createdAt(time)
+                .user(user)
+                .chatRoom(chatRoom)
+                .build();
+        chatDataRepository.save(chatDataEntity);
+        log.info(chatData.getSender());
+        log.info(chatData.getSentTime());
+        log.info(String.valueOf(chatData.getChatRoomId()));
+        log.info(chatData.getMessage());
+        simpMessagingTemplate.convertAndSend(String.format("/topic/%s", chatData.getChatRoomId()), chatData);
     }
 
 //    public List<ChatRoomEntity> findAllRoom() {
@@ -213,6 +238,10 @@ public class ChatService {
                 .anyMatch(stock -> stock.getId().equals(chatRoomId));
 
         return isFavorite;
+    }
+
+    public List<ChatDataEntity> getMessagesByChatRoomId(Long chatRoomId) {
+        return chatDataRepository.findByChatRoom_IdOrderByIdAsc(chatRoomId);
     }
 
 
