@@ -214,6 +214,9 @@
             <div class="card-text" style="white-space: pre-line;" th:text="${question.content}"></div>
             <div class="d-flex justify-content-end">
                 <div class="badge bg-light text-dark p-2 text-start">
+                    <div class="mb-2">
+                        <span th:if="${question.user.nickName != null}" th:text="${question.user.nickName}"></span>
+                    </div>
 
                     <div th:text="${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm')}"></div>
                 </div>
@@ -230,7 +233,6 @@
             <div class="card-text" style="white-space: pre-line;" th:text="${answer.content}"></div>
             <div class="d-flex justify-content-end">
                 <div class="badge bg-light text-dark p-2 text-start">
-
                     <div th:text="${#temporals.format(answer.createDate, 'yyyy-MM-dd HH:mm')}"></div>
                 </div>
             </div>
@@ -238,12 +240,15 @@
     </div>
     <!-- 답변 반복 끝  -->
 
-    <!-- 답변 작성 -->
+    <!-- 답변 작성 : ROLE_ADMIN인 경우에만 답변폼 활성화 -->
     <div class="button-container">
     <form th:action="@{|/answer/create/${question.id}|}" method="post" class="my-3">
-        <textarea name="content" id="content" rows="10" class="form-control"></textarea>
-        <input type="submit" value="답변등록" class="btn btn-primary my-2">
-    </form>
+         <textarea name="content" id="content" rows="10" class="form-control"
+          th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"
+          th:attr="disabled=${#authorization.expression('!hasRole(''ROLE_ADMIN'')')}"></textarea>
+            <input type="submit" value="답변등록" class="btn btn-primary my-2"
+           th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+      </form>
 
      <!-- 문의내역 버튼 -->
     <form th:action="@{/question/list-by-user}" th:method="get">
