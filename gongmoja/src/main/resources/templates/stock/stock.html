@@ -211,11 +211,16 @@
             <!-- 토글 바 끝 -->
 
             <div class="card shadow mb-4">
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h4 class="m-0 font-weight-bold text-primary" th:text="${stock.name + ' '}">공모주</h4>
+                <div class="card-header py-3 d-flex flex-row align-content-center justify-content-between" >
+                    <div>
+                    <h4 class="m-0 font-weight-bold text-primary" th:text="${stock.name}" style="display: inline">공모주</h4>
                     <button id="favoriteButton" class="star-icon">
                         <i class="fas fa-star"></i>
                     </button>
+                    </div>
+                    <a th:href="@{/chat/{stockId}(stockId=${stock.id})}">
+                        <i class="fas fa-comment fa-2x custom-icon"></i>
+                    </a>
                 </div>
                 <table class="table">
                     <tr class="category-row">
