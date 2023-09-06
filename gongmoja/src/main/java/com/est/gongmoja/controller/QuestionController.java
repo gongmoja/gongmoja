@@ -31,19 +31,7 @@ public class QuestionController {
     private final QuestionService questionService;
     private final UserService userService;
 
-    //    @PreAuthorize("hasRole('ROLE_ADMIN')") // 전체 리스트 admin만 접근 가능하도록 설정
-    @GetMapping("/list")
-    public String list( Principal principal, Model model, @RequestParam(value="page", defaultValue="0") int page, Authentication authentication) {
-        UserEntity user = (UserEntity) authentication.getPrincipal();
-        UserEntity user1 = userService.getUser(user.getUserName());
-        model.addAttribute("userEntity", user1);
 
-        Page<QuestionEntity> paging = questionService.getList(page);
-        model.addAttribute("paging", paging);
-
-        log.info(principal.getName());
-        return "question/question_list";
-    }
 
     // 작성자 별 문의글 리스트
     @GetMapping("/list-by-user")
