@@ -31,7 +31,7 @@ public class QuestionController {
     private final QuestionService questionService;
     private final UserService userService;
 
-//    @PreAuthorize("hasRole('ROLE_ADMIN')") // 전체 리스트 admin만 접근 가능하도록 설정
+    //    @PreAuthorize("hasRole('ROLE_ADMIN')") // 전체 리스트 admin만 접근 가능하도록 설정
     @GetMapping("/list")
     public String list( Principal principal, Model model, @RequestParam(value="page", defaultValue="0") int page, Authentication authentication) {
         UserEntity user = (UserEntity) authentication.getPrincipal();
@@ -83,25 +83,21 @@ public class QuestionController {
         return "question/question_form";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/create")
     public String questionCreate(Model model,
                                  @Valid QuestionFormDto questionFormDto,
-                                 @RequestParam("file") MultipartFile imageFile,
-                                 Authentication authentication) throws IOException {
+                                 @RequestParam("file") MultipartFile imageFile, Authentication authentication) throws IOException {
 
-        try {
-            UserEntity user = (UserEntity) authentication.getPrincipal();
-            UserEntity userEntity = userService.getUser(user.getUserName());
+        UserEntity user = (UserEntity) authentication.getPrincipal();
+        UserEntity userEntity = userService.getUser(user.getUserName());
 
-            questionService.create(questionFormDto.getSubject(), questionFormDto.getContent(), imageFile, userEntity);
+        questionService.create(questionFormDto.getSubject(), questionFormDto.getContent(), imageFile, userEntity);
 
-            model.addAttribute("message", "글 작성이 완료되었습니다.");
-            log.info("질문 작성 완료");
-            log.info("upload file name = {}", imageFile.getOriginalFilename());
+        model.addAttribute("message", "글 작성이 완료되었습니다.");
+        log.info("질문 작성 완료");
+        log.info("upload file name = {}", imageFile.getOriginalFilename());
 
-            return "redirect:/question/list-by-user";
-        } catch (Exception e) {
-            throw new CustomException(ErrorCode.USERNAME_NOT_FOUND); // Throw CustomException with appropriate ErrorCode
-        }
+        return "redirect:/question/list-by-user";
     }
 }
