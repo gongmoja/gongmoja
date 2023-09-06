@@ -2,27 +2,18 @@ package com.est.gongmoja.service;
 
 import com.est.gongmoja.dto.user.UserLoginRequestDto;
 import com.est.gongmoja.dto.user.UserLoginResponseDto;
-import com.est.gongmoja.dto.user.UserModifyPasswordRequestDto;
-import com.est.gongmoja.entity.RefreshTokenEntity;
 import com.est.gongmoja.entity.Role;
 import com.est.gongmoja.entity.UserEntity;
 import com.est.gongmoja.exception.CustomException;
 import com.est.gongmoja.exception.ErrorCode;
-import com.est.gongmoja.repository.RefreshTokenRepository;
 import com.est.gongmoja.repository.UserRepository;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import com.est.gongmoja.dto.user.UserRegisterRequestDto;
 import com.est.gongmoja.jwt.JwtTokenUtil;
-import org.apache.catalina.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Arrays;
 import java.util.Optional;
 
 @Service
@@ -33,7 +24,6 @@ public class UserService {
     private final JwtTokenUtil jwtTokenUtil;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
-    private final RefreshTokenRepository refreshTokenRepository;
     private final RedisService redisService;
 
     //회원가입 로직
