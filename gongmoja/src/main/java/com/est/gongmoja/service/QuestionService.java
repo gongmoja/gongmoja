@@ -1,5 +1,6 @@
 package com.est.gongmoja.service;
 
+import com.est.gongmoja.entity.AnswerEntity;
 import com.est.gongmoja.entity.QuestionEntity;
 
 import com.est.gongmoja.entity.UserEntity;
@@ -8,11 +9,13 @@ import com.est.gongmoja.repository.QuestionRepository;
 
 import com.est.gongmoja.repository.UserRepository;
 import jakarta.persistence.Id;
+import jakarta.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -56,6 +59,25 @@ public class QuestionService {
         sorts.add(Sort.Order.desc("createDate"));
         Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
         return questionRepository.findAllByUserId(pageable, userId);
+    }
+
+
+    private Specification<QuestionEntity> search(String kw) {
+        return new Specification<>() {
+            private static final long serialVersionUID = 1L;
+            @Override
+            public Predicate toPredicate(Root<QuestionEntity> q, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                query.distinct(true);  // 중복을 제거
+                Join<QuestionEntity, UserEntity> u1 = q.join("username", JoinType.LEFT);
+                Join<QuestionEntity, AnswerEntity> a = q.join("answerList", JoinType.LEFT);
+                Join<AnswerEntity, UserEntity> u2 = a.join("username", JoinType.LEFT);
+                return cb.or(cb.like(q.get("subject"), "%" + kw + "%"), // 제목
+                        cb.like(q.get("content"), "%" + kw + "%"),      // 내용
+                        cb.like(u1.get("username"), "%" + kw + "%"),    // 질문 작성자
+                        cb.like(a.get("content"), "%" + kw + "%"),      // 답변 내용
+                        cb.like(u2.get("username"), "%" + kw + "%"));   // 답변 작성자
+            }
+        };
     }
 
     public void create(String subject, String content, MultipartFile imageFile, UserEntity user) throws IOException {

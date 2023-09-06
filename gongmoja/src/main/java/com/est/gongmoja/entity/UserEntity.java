@@ -33,6 +33,9 @@ public class UserEntity {
     @OneToMany(mappedBy = "user")
     private List<QuestionEntity> questionEntities;
 
+    @OneToMany(mappedBy = "user")
+    private List<AnswerEntity> answerEntityList;
+
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "favorites")
     private List<StockEntity> stocks;
