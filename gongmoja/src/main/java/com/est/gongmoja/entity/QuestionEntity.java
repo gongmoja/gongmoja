@@ -29,9 +29,6 @@ public class QuestionEntity {
 
     private String filepath; // 파일 경로
 
-//    @Column(name = "file_data", columnDefinition = "BLOB")
-//    private byte[] fileData;
-
     // userid
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -49,7 +46,4 @@ public class QuestionEntity {
         this.filepath = filePath;
     }
 
-//    public void setFileData(byte[] fileData) {
-//        this.fileData = fileData;
-//    }
 }

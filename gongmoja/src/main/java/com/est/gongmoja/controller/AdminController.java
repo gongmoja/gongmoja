@@ -33,6 +33,6 @@ public class AdminController {
         Page<QuestionEntity> paging = questionService.getList(page);
         model.addAttribute("paging", paging);
 
-        return "question/question_list";
+        return "question/question_list_admin";
     }
 }
