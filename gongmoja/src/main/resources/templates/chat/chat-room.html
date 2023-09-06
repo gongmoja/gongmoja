@@ -7,6 +7,26 @@
         top: 20px;
         bottom: 20px;
     }
+
+    /* 공모자들 타이틀 폰트 */
+    @font-face {
+        font-family: 'yg-jalnan';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    .horizontal-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .sidebar-brand-text {
+        font-family: 'yg-jalnan', sans-serif;
+        font-size: 23px;
+        font-weight: bold;
+        color: #5D5D5D;
+    }
 </style>
 <head>
     <meta charset="UTF-8">
@@ -31,7 +51,6 @@
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
             <div class="sidebar-brand-icon rotate-n-15"></div>
             <div class="horizontal-container">
-                <div class="sidebar-brand-text mx-3">공모자들<sup></sup></div>
                 <div>GongMoJa</div>
             </div>
         </a>
@@ -80,6 +99,13 @@
                 <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                     <i class="fa fa-bars"></i>
                 </button>
+
+                <!-- 공모자들 제목-->
+                <div class="horizontal-container">
+                    <!--                    <img src="/static/bootstrap/img/공모자들로고-002.png" alt="공모자들로고" style="width: 48px;">-->
+                    <div class="sidebar-brand-text mx-3">공모자들<sup></sup></div>
+                </div>
+
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item dropdown no-arrow d-sm-none">
                         <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
@@ -147,6 +173,14 @@
             </div>
           </div>
         </div>
+        <!-- Footer -->
+        <footer class="sticky-footer bg-white">
+            <div class="container my-auto">
+                <div class="copyright text-center my-auto">
+                    <span>Copyright &copy; gongmoja 2023</span>
+                </div>
+            </div>
+        </footer>
     </div>
 </div>
 
