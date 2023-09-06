@@ -1,13 +1,10 @@
 package com.est.gongmoja.jwt;
 
-import com.est.gongmoja.entity.RefreshTokenEntity;
 import com.est.gongmoja.entity.UserEntity;
 import com.est.gongmoja.exception.CustomException;
 import com.est.gongmoja.exception.ErrorCode;
-import com.est.gongmoja.repository.RefreshTokenRepository;
 import com.est.gongmoja.repository.UserRepository;
 import com.est.gongmoja.service.RedisService;
-import com.est.gongmoja.service.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -15,7 +12,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -25,8 +21,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
