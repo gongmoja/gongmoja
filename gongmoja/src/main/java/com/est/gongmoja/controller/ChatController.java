@@ -1,41 +1,28 @@
 package com.est.gongmoja.controller;
 
-import com.est.gongmoja.dto.StockDto;
 import com.est.gongmoja.dto.chat.ChatDataDto;
-import com.est.gongmoja.dto.chat.ChatRoomDto;
 import com.est.gongmoja.dto.chat.ChatRoomResponseDto;
-import com.est.gongmoja.dto.user.UserDto;
 import com.est.gongmoja.entity.ChatDataEntity;
 import com.est.gongmoja.entity.ChatRoomEntity;
 import com.est.gongmoja.entity.StockEntity;
 import com.est.gongmoja.entity.UserEntity;
 import com.est.gongmoja.exception.CustomException;
 import com.est.gongmoja.exception.ErrorCode;
+import com.est.gongmoja.repository.UserRepository;
 import com.est.gongmoja.service.ChatService;
 import com.est.gongmoja.service.StockService;
 import com.est.gongmoja.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.handler.annotation.Header;
-import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.simp.SimpMessageSendingOperations;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.lang.model.element.NestingKind;
-import java.net.Authenticator;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -46,19 +33,9 @@ public class ChatController {
     private final ChatService chatService;
     private final UserService userService;
     private final StockService stockService;
-    private final SimpMessageSendingOperations messagingTemplate;
-    private final SimpMessagingTemplate simpMessagingTemplate;
 
-//    @PostMapping
-//    public ChatRoomEntity createRoom(@RequestBody StockDto dto) {
-//        return chatService.createChatRoom(dto.getName());
-//
-//    }
 
-//    @GetMapping("/list")
-//    public List<ChatRoomDto> findAllRoom() {
-//        return chatService.findAllRoom();
-//    }
+    private final UserRepository userRepository;
 
     @GetMapping("/{chatRoomId}")
     public String joinChatRoom(@PathVariable Long chatRoomId, Model model, Authentication authentication) {
@@ -75,6 +52,7 @@ public class ChatController {
         LocalDateTime localDateTime = stock.getEndDate();
         String endDateTimeStr = localDateTime.toString();
 
+
         log.info(endDateTimeStr);
         model.addAttribute("endDate", endDateTimeStr);
         model.addAttribute("chatRoomId", chatRoomId);
@@ -83,18 +61,8 @@ public class ChatController {
         model.addAttribute("currentUserId", userEntity.getId());
         model.addAttribute("userEntity", userEntity); // top bar에서 이용
 
-        if (!chatService.isFavorite(userEntity, chatRoomId)) {
-            throw new CustomException(ErrorCode.NOT_FAVORITE_STOCK);
-        }
-
         return "chat/chat-room";
     }
-
-//    @GetMapping("/messages")
-//    public ResponseEntity<List<ChatDataEntity>> getChatMessages(@RequestParam("chatRoomId") Long chatRoomId) {
-//        List<ChatDataEntity> chatMessages = chatService.getChatMessages(chatRoomId);
-//        return ResponseEntity.ok(chatMessages);
-//    }
 
 
     @GetMapping("/list")
@@ -104,54 +72,20 @@ public class ChatController {
         return "chat/list";
     }
 
-//    @GetMapping("rooms/{id}/name")
-//    public ResponseEntity<ChatRoomEntity> getRoomName(@PathVariable("id") Long roomId) {
-//        return ResponseEntity.ok(chatService.findRoomById(roomId));
-//    }
-//
-//    @GetMapping("{chatRoomId}/{userId}")
-//    public String enterRoom(){
-//        return "chat/chat-room";
-//    }
-
-//    @MessageMapping("/chat")
-//    public void sendChat(
-//            @Payload ChatDataDto chatMessage,
-//            // STOMP over WebSocket은 Header를 포함할 수 있다
-//            @Headers Map<String, Object> headers,
-//            @Header("nativeHeaders") Map<String, String> nativeHeaders
-//    ){
-//        log.info(chatMessage.toString());
-//        log.info(headers.toString());
-//        log.info(nativeHeaders.toString());
-//        String time = new SimpleDateFormat("HH:mm").format(new Date());
-//        chatMessage.setSentTime(time);
-//        chatService.saveChatMessage(chatMessage);
-//        simpMessagingTemplate.convertAndSend(
-//                String.format("/topic/%s", chatMessage.getChatRoomId()),
-//                chatMessage
-//        );
-//    }
-
-
     @MessageMapping("/chat")
+    @Transactional
     public void sendChat(ChatDataDto chatData, Authentication authentication){
         UserEntity user = (UserEntity)authentication.getPrincipal();
         UserEntity userEntity = userService.getUser(user.getUserName());
         chatData.setSender(userEntity.getNickName());
+        ChatRoomEntity chatRoom = chatService.findRoomById(chatData.getChatRoomId());
+        Optional<UserEntity> optionalUser =
+                userRepository.findByIdAndChatRooms(userEntity.getId(),chatRoom);
+        if(optionalUser.isEmpty()){
+            userEntity.getChatRooms().add(chatRoom);
+            userService.saveUser(userEntity);
+        }
         chatService.sendChat(chatData);
-
     }
 
-//    @MessageMapping("/chatroom")
-//    public void testSend(String data){
-//        log.info("전송요청 받음");
-//
-////        log.info("전송요청 받음" + chatData.getMessage());
-////        if(ChatDataEntity.MessageType.ENTER.equals(chatData.getType())){
-////            //현재 시간을 가져오는 줄 필요
-////            chatData.setMessage(chatData.getSender() + "님이 입장하셨습니다.");
-////        }
-//        messagingTemplate.convertAndSend("/sub/chatroom/1", data);
-//    }
 }
