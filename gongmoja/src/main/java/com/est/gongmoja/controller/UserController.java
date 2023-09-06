@@ -111,10 +111,13 @@ public class UserController {
         return "redirect:/login";
     }
 
-
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify-password")//비밀번호 변경 요청
-    public String modifyPassword(Model model){
+    public String modifyPassword(Model model, Authentication authentication){
+        UserEntity user = (UserEntity) authentication.getPrincipal();
+        UserEntity userEntity = userService.getUser(user.getUserName());
         model.addAttribute("userModifyPasswordRequest",new UserModifyPasswordRequestDto());
+        model.addAttribute("userEntity", userEntity);
         return "users/modify-password";
     }
 
