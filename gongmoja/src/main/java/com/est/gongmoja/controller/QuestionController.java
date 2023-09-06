@@ -12,12 +12,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.security.Principal;
@@ -49,6 +52,8 @@ public class QuestionController {
 
     @GetMapping("/detail/{id}")
     public String detail(Model model, @PathVariable("id") Long id, Authentication authentication) {
+
+
         UserEntity user = (UserEntity) authentication.getPrincipal();
         UserEntity user1 = userService.getUser(user.getUserName());
         model.addAttribute("userEntity", user1);

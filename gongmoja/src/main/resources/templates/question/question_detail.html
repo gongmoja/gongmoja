@@ -206,42 +206,46 @@
 
             </nav>
             <!-- 토글 바 끝 -->
-
-    <!-- 질문 -->
-    <h2 class="border-bottom py-6" th:text="${question.subject}"></h2>
-    <div class="card my-4">
-        <div class="card-body">
-            <div class="card-text" style="white-space: pre-line;" th:text="${question.content}"></div>
-            <div class="d-flex justify-content-end">
-                <div class="badge bg-light text-dark p-2 text-start">
-                    <div class="mb-2">
-                        <span th:if="${question.user.nickName != null}" th:text="${question.user.nickName}"></span>
+            <!-- 질문 -->
+            <h2 class="border-bottom py-6" th:text="${question.subject}"></h2>
+            <div class="card my-4">
+                <div class="card-body">
+                    <div class="card-text" style="white-space: pre-line;" th:text="${question.content}"></div>
+                    <div class="d-flex justify-content-end">
+                        <div class="badge bg-light text-dark p-2 text-start">
+                            <div class="mb-2">
+                                <span th:if="${question.user.nickName != null}" th:text="${question.user.nickName}"></span>
+                            </div>
+                            <div th:text="${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm')}"></div>
+                        </div>
                     </div>
-
-                    <div th:text="${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm')}"></div>
                 </div>
             </div>
-        </div>
+
+    <!--첨부파일 확인-->
+    <div>
+    <h6 class="border-bottom my-3 py-3">첨부파일</h6>
+    <img th:if="${question.filepath}" th:src="@{'/media/' + user.userName + '/' + question.id + '/' + question.filePath}" alt="Image">
     </div>
 
     <!-- 답변의 갯수 표시 -->
-    <h5 class="border-bottom my-3 py-2" th:text="|${#lists.size(question.answerEntityList)}개의 답변이 있습니다.|"></h5>
+    <h6 class="border-bottom my-3 py-3" th:text="|${#lists.size(question.answerEntityList)}개의 답변이 있습니다.|"></h6>
 
-    <!-- 답변 반복 시작 -->
-    <div class="card my-3" th:each="answer : ${question.answerEntityList}">
-        <div class="card-body">
-            <div class="card-text" style="white-space: pre-line;" th:text="${answer.content}"></div>
-            <div class="d-flex justify-content-end">
-                <div class="badge bg-light text-dark p-2 text-start">
-                    <div class="mb-2">
-                        <span th:if="${answer.user.nickName != null}" th:text="${answer.user.nickName}"></span>
+        <!-- 답변 반복 시작 -->
+        <div class="card my-3" th:each="answer : ${question.answerEntityList}">
+            <div class="card-body">
+                <div class="card-text" style="white-space: pre-line;" th:text="${answer.content}"></div>
+                <div class="d-flex justify-content-end">
+                    <div class="badge bg-light text-dark p-2 text-start">
+                        <div class="mb-2">
+                            <span th:if="${answer.user.nickName != null}" th:text="${answer.user.nickName}"></span>
+                        </div>
+                        <div th:text="${#temporals.format(answer.createDate, 'yyyy-MM-dd HH:mm')}"></div>
                     </div>
-                    <div th:text="${#temporals.format(answer.createDate, 'yyyy-MM-dd HH:mm')}"></div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- 답변 반복 끝  -->
+        <!-- 답변 반복 끝  -->
 
     <!-- 답변 작성 : ROLE_ADMIN인 경우에만 답변폼 활성화 -->
     <div class="button-container">
