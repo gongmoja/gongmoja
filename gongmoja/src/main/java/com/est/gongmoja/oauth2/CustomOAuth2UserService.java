@@ -67,7 +67,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         UserEntity user = UserEntity
                 .builder()
                 .userName(oAuth2UserInfo.getEmail()) //email 과 username 같게 설정함
-                .email(oAuth2UserInfo.getEmail()) //email 과 username 같게 설정함
+//                .email(oAuth2UserInfo.getEmail()) //email 과 username 같게 설정함
                 .provider(authProvider)
                 .nickName(oAuth2UserInfo.getName())
                 .providerId(oAuth2UserInfo.getOAuth2Id())
