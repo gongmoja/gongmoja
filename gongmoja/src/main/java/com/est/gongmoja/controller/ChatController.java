@@ -81,6 +81,11 @@ public class ChatController {
         model.addAttribute("stockName", stock.getName());
         model.addAttribute("chatMessages", chatMessages);
         model.addAttribute("currentUserId", userEntity.getId());
+        model.addAttribute("userEntity", userEntity); // top bar에서 이용
+
+        if (!chatService.isFavorite(userEntity, chatRoomId)) {
+            throw new CustomException(ErrorCode.NOT_FAVORITE_STOCK);
+        }
 
         return "chat/chat-room";
     }

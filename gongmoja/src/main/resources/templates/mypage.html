@@ -1,5 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<style>
+    #stiky {
+        position:sticky ;
+        top: 20px;
+        bottom: 20px;
+    }
+</style>
 
 <head>
     <meta charset="utf-8">
@@ -8,9 +15,10 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title th:utext="${username}" + '님의 마이페이지' ></title>
+    <title>공모자들</title>
 
     <!-- Custom fonts for this template-->
+    <link rel="shortcut icon" href="/static/favicon.ico">
     <link href="/static/bootstrap/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
             href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
@@ -42,62 +50,44 @@
 
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
-
-        <!-- 내비게이션 1 : 메인페이지 이동 -->
-        <li class="nav-item active">
-            <a class="nav-link" href="/">
-                <!--로고모양-->
-                <i class="fas fa-fw fa-laugh-wink"></i>
-                <span>Main Page</span></a>
-        </li>
-
-        <!-- 내비게이션 2 : 공모주 관련 내용들 -->
-        <hr class="sidebar-divider my-0">
+        <hr class="sidebar-divider my-0" >
 
         <!-- 구분선 -->
         <hr class="sidebar-divider">
 
         <!-- 내비게이션 1번 제목-->
-        <div class="sidebar-heading">GONGMOJA</div>
 
         <!--내비게이션 1번 항목 (공모주)-->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="/display-graph" data-toggle="collapse" data-target="#collapseTwo"
-               aria-expanded="true" aria-controls="collapseTwo">
-                <!--폴더아이콘-->
-                <i class="fas fa-fw fa-chart-area"></i>
-                <span>공모주 정보</span>
-            </a>
-            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">공모주 관련 정보입니다</h6>
-                    <a class="collapse-item" href="/display-graph">공모주 경쟁률</a>
-                    <a class="collapse-item" href="/news/1">공모주 뉴스</a>
-                    <a class="collapse-item" href="/calendar">공모주 일정</a>
-                </div>
-            </div>
-        </li>
+        <div id="stiky" >
+            <div  class="sidebar-heading">GONGMOJA</div>
 
-        <!--내비게이션 2번 항목 (질문게시판)-->
-        <hr class="sidebar-divider d-none d-md-block">
-        <div class="sidebar-heading">Question</div>
-
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="/display-graph" data-toggle="collapse" data-target="#collapseThree"
-               aria-expanded="true" aria-controls="collapseThree">
-                <!--폴더아이콘-->
-                <i class="fas fa-fw fa-folder"></i>
-                <span>질문 게시판</span>
-            </a>
-            <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">질문 게시판입니다</h6>
-                    <a class="collapse-item" href="/question/create">질문 등록</a>
-                    <a class="collapse-item" href="/question/detail/1">내 질문 보기</a>
-                    <a class="collapse-item" href="/question/list">전체 질문 목록</a>
-                </div>
-            </div>
-        </li>
+            <!-- 1. 공모주 일정 메뉴  -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" onclick="fnMoveIndex('/', '3');" data-toggle="collapse" data-target="#collapseTwo"
+                   aria-expanded="true" aria-controls="collapseTwo">
+                    <!--폴더아이콘-->
+                    <i class="fas fa-fw fa-calendar-alt"></i>
+                    <span>공모주 일정</span>
+                </a>
+            </li>
+            <!-- 2. 공모주 경쟁률 메뉴  -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" onclick="fnMoveIndex('/', '1');" data-toggle="collapse" data-target="#collapseTwo"
+                   aria-expanded="true" aria-controls="collapseTwo">
+                    <!--폴더아이콘-->
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>공모주 경쟁률</span>
+                </a>
+            </li>
+            <!-- 3. 공모주 뉴스 메뉴  -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" onclick="fnMoveIndex('/', '2');" data-toggle="collapse" data-target="#collapseTwo"
+                   aria-expanded="true" aria-controls="collapseTwo">
+                    <!--폴더아이콘-->
+                    <i class="fas fa-fw fa-layer-group"></i>
+                    <span>공모주 뉴스</span>
+                </a>
+            </li>
 
         <!-- 구분선 -->
         <hr class="sidebar-divider d-none d-md-block">
@@ -146,122 +136,6 @@
                         </div>
                     </li>
 
-                    <!-- 내비게이션 - 알람 종 모양-->
-                    <li class="nav-item dropdown no-arrow mx-1">
-                        <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-bell fa-fw"></i>
-                            <!-- Counter - Alerts -->
-                            <span class="badge badge-danger badge-counter">3+</span>
-                        </a>
-                        <!-- 내비게이션 - 알람 종 모양 -->
-                        <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                             aria-labelledby="alertsDropdown">
-                            <h6 class="dropdown-header">
-                                Alerts Center
-                            </h6>
-                            <a class="dropdown-item d-flex align-items-center" href="#">
-                                <div class="mr-3">
-                                    <div class="icon-circle bg-primary">
-                                        <i class="fas fa-file-alt text-white"></i>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="small text-gray-500">December 12, 2019</div>
-                                    <span class="font-weight-bold">A new monthly report is ready to download!</span>
-                                </div>
-                            </a>
-                            <a class="dropdown-item d-flex align-items-center" href="#">
-                                <div class="mr-3">
-                                    <div class="icon-circle bg-success">
-                                        <i class="fas fa-donate text-white"></i>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="small text-gray-500">December 7, 2019</div>
-                                    $290.29 has been deposited into your account!
-                                </div>
-                            </a>
-                            <a class="dropdown-item d-flex align-items-center" href="#">
-                                <div class="mr-3">
-                                    <div class="icon-circle bg-warning">
-                                        <i class="fas fa-exclamation-triangle text-white"></i>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="small text-gray-500">December 2, 2019</div>
-                                    Spending Alert: We've noticed unusually high spending for your account.
-                                </div>
-                            </a>
-                            <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
-                        </div>
-                    </li>
-
-                    <!--내비게이션 - 메세지 모양 -->
-                    <li class="nav-item dropdown no-arrow mx-1">
-                        <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-envelope fa-fw"></i>
-                            <!-- Counter - Messages -->
-                            <span class="badge badge-danger badge-counter">7</span>
-                        </a>
-                        <!-- Dropdown - Messages -->
-                        <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                             aria-labelledby="messagesDropdown">
-                            <h6 class="dropdown-header">
-                                Message Center
-                            </h6>
-                            <a class="dropdown-item d-flex align-items-center" href="#">
-                                <div class="dropdown-list-image mr-3">
-                                    <img class="rounded-circle" src="img/undraw_profile_1.svg"
-                                         alt="...">
-                                    <div class="status-indicator bg-success"></div>
-                                </div>
-                                <div class="font-weight-bold">
-                                    <div class="text-truncate">Hi there! I am wondering if you can help me with a
-                                        problem I've been having.</div>
-                                    <div class="small text-gray-500">Emily Fowler · 58m</div>
-                                </div>
-                            </a>
-                            <a class="dropdown-item d-flex align-items-center" href="#">
-                                <div class="dropdown-list-image mr-3">
-                                    <img class="rounded-circle" src="img/undraw_profile_2.svg"
-                                         alt="...">
-                                    <div class="status-indicator"></div>
-                                </div>
-                                <div>
-                                    <div class="text-truncate">I have the photos that you ordered last month, how
-                                        would you like them sent to you?</div>
-                                    <div class="small text-gray-500">Jae Chun · 1d</div>
-                                </div>
-                            </a>
-                            <a class="dropdown-item d-flex align-items-center" href="#">
-                                <div class="dropdown-list-image mr-3">
-                                    <img class="rounded-circle" src="img/undraw_profile_3.svg"
-                                         alt="...">
-                                    <div class="status-indicator bg-warning"></div>
-                                </div>
-                                <div>
-                                    <div class="text-truncate">Last month's report looks great, I am very happy with
-                                        the progress so far, keep up the good work!</div>
-                                    <div class="small text-gray-500">Morgan Alvarez · 2d</div>
-                                </div>
-                            </a>
-                            <a class="dropdown-item d-flex align-items-center" href="#">
-                                <div class="dropdown-list-image mr-3">
-                                    <img class="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60"
-                                         alt="...">
-                                    <div class="status-indicator bg-success"></div>
-                                </div>
-                                <div>
-                                    <div class="text-truncate">Am I a good boy? The reason I ask is because someone
-                                        told me that people say this to all dogs, even if they aren't good...</div>
-                                    <div class="small text-gray-500">Chicken the Dog · 2w</div>
-                                </div>
-                            </a>
-                            <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
-                        </div>
-                    </li>
 
                     <div class="topbar-divider d-none d-sm-block"></div>
 
@@ -304,18 +178,24 @@
             <!-- 토글 바 끝 -->
             <!-- Page Heading -->
             <div class="container-fluid">
-                <!--    마이페이지 타이틀-->
+                <!--마이페이지 타이틀-->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h1 class="h3 mb-0 text-gray-800">My Page</h1>
+                    <h1 class="h4 mb-0 text-gray-800" th:text="${username} + '님의 마이페이지'"></h1>
+                    <hr style="color: #A6A6A6; height: 0.5px;">
                 </div>
+
+                <div class="d-sm-flex align-items-center justify-content-between mb-3">
+                    <h1 class="h5 mb-2 text-gray-800">즐겨찾는 공모주</h1>
+                </div>
+
 
                 <!-- Pending Requests Card Example -->
                 <ul style="padding: 0">
                     <th:block th:each="stock : ${favoriteStocks}">
                         <li style="list-style: none">
 
-                            <div class="col-xl-3 col-md-6 mb-4">
-                                <div class="card border-left-warning shadow h-100 py-2">
+                            <div class="col-xl-3 col-md-6 mb-4 d-flex"> <!-- d-flex 클래스 추가 -->
+                                <div class="card border-left-warning shadow h-100 py-2 flex-grow-1"> <!-- flex-grow-1 클래스 추가 -->
                                     <div class="card-body">
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
@@ -329,7 +209,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-auto">
-                                                <!--   TODO 현재는 각 주식의 상세 페이지로 이동하도록 함. 각 주식의 채팅 url로 변경 필요          -->
+                                                <!-- TODO 현재는 각 주식의 상세 페이지로 이동하도록 함. 각 주식의 채팅 url로 변경 필요 -->
                                                 <a th:href="@{/chat/{stockId}(stockId=${stock.id})}">
                                                     <i class="fas fa-comment fa-2x custom-icon"></i>
                                                 </a>
@@ -337,13 +217,29 @@
                                         </div>
                                     </div>
                                 </div>
+                                <button id="deleteFavoriteButton" class="trash-icon" th:data-stock-id="${stock.id}">
+                                    <i class="fas fa-trash"></i> <!-- 즐겨찾기 삭제 아이콘 -->
+                                </button>
                             </div>
                         </li>
                     </th:block>
                 </ul>
 
+                <hr style="color: #A6A6A6; height: 0.5px;">
 
                 <!--  버튼 -->
+                <div class="d-flex justify-content-end"> <!-- 버튼들을 오른쪽으로 정렬하는 부분 -->
+                    <div class="col-xl-3 mb-1">
+                        <form th:action="@{/users/modify-password}" th:method="get">
+                            <button class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" type="submit">
+                                <i class="fas fa-poll-h fa-sm text-white-50">
+                                </i>
+                                &nbsp;비밀번호 수정
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
                 <div class="d-flex justify-content-end"> <!-- 버튼들을 오른쪽으로 정렬하는 부분 -->
                     <div class="col-xl-3 mb-1">
                         <form th:action="@{/question/create}" th:method="get">
@@ -355,6 +251,7 @@
                         </form>
                     </div>
                 </div>
+
                 <div class="d-flex justify-content-end"> <!-- 버튼들을 오른쪽으로 정렬하는 부분 -->
                     <div class="col-xl-3 mb-1">
                         <form th:action="@{/question/list-by-user}" th:method="get">
@@ -366,6 +263,7 @@
                         </form>
                     </div>
                 </div>
+
                 <div class="d-flex justify-content-end"> <!-- 버튼들을 오른쪽으로 정렬하는 부분 -->
                     <div class="col-xl-3 mb-1">
                         <form th:action="@{/logout}" th:method="post">
@@ -377,10 +275,22 @@
                         </form>
                     </div>
                 </div>
+
             </div>
             </div>
         </div>
     </div>
+
+<script>
+        function fnMoveIndex(targetPage, seq) {
+        // 이동할 대상 페이지의 URL
+        var targetURL = targetPage + "#div" + seq;
+
+        // 새로운 페이지로 이동
+        window.location.href = targetURL;
+    }
+
+</script>
 <!-- Bootstrap core JavaScript-->
 <script src="/static/bootstrap/vendor/jquery/jquery.min.js"></script>
 <script src="/static/bootstrap/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -397,11 +307,53 @@
 <!-- Page level custom scripts -->
 <script src="/static/bootstrap/js/demo/chart-area-demo.js"></script>
 <script src="/static/bootstrap/js/demo/chart-pie-demo.js"></script>
+<script th:inline="javascript">
+    document.addEventListener("DOMContentLoaded", function () {
+        var deleteButtons = document.querySelectorAll('.trash-icon');
+
+        deleteButtons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                // 해당 버튼의 data-stock-id 속성을 읽어와서 stockId 변수로 설정
+                var stockId = button.getAttribute('data-stock-id');
+
+                fetch('/favorites/remove/' + stockId, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json;charset=UTF-8'
+                    }
+                })
+                    .then(response => {
+                        if (response.status === 200) {
+                            // 삭제가 성공하면 해당 카드 또는 요소를 화면에서 제거
+                            var cardToDelete = button.closest('.col-xl-3');
+                            if (cardToDelete) {
+                                cardToDelete.remove();
+                            }
+                        } else {
+                            console.error('오류 발생');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('오류 발생', error);
+                    });
+            });
+        });
+    });
+</script>
+
 </body>
 </html>
 
 <style>
     .custom-icon {
         color: #f6c23e; /* 원하는 색상으로 변경 */
+    }
+    .trash-icon{
+        color: dimgray;
+        font-size: 20px;
+        padding: 0; /* 패딩 제거 */
+        border: none; /* 외각 박스 제거 */
+        background: transparent; /* 배경 제거 */
+        margin-left: 10px;
     }
 </style>

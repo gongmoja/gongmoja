@@ -37,7 +37,6 @@ public class AnswerController {
         }
 
         AnswerEntity answer = this.answerService.create(question, answerFormDto.getContent());
-//        return String.format("redirect:/question/detail/%s#answer_%s", answer.getId(), answer.getId());
         return "redirect:/question/detail/" + id + "#answer_" + answer.getId();
     }
 }

@@ -9,6 +9,7 @@ import com.est.gongmoja.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -54,6 +55,7 @@ public class FavoriteController {
         }
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/list")
     public String getFavoriteStocks(Model model, Authentication authentication) {
         UserEntity user = getCurrentUser(authentication);
