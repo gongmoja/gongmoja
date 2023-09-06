@@ -1,9 +1,12 @@
 package com.est.gongmoja.config;
 
+import com.est.gongmoja.entity.Role;
+import com.est.gongmoja.entity.UserEntity;
 import com.est.gongmoja.jwt.JwtTokenFilter;
 import com.est.gongmoja.jwt.JwtTokenUtil;
 import com.est.gongmoja.oauth2.CustomOAuth2UserService;
 import com.est.gongmoja.oauth2.OAuth2SuccessHandler;
+import com.est.gongmoja.repository.UserRepository;
 import com.est.gongmoja.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +20,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.intercept.AuthorizationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -35,6 +39,8 @@ public class WebSecurityConfig {
     private final CustomLogoutHandler customLogoutHandler;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
     private final CustomOAuth2UserService customOAuth2UserService;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
@@ -83,5 +89,16 @@ public class WebSecurityConfig {
         return logout -> logout
                 .logoutUrl("/logout")
                 .logoutSuccessHandler(customLogoutHandler);
+    }
+
+    @Bean
+    public void makeAdmin(){
+        userRepository.save(UserEntity
+                .builder()
+                .userName("ADMIN0000")
+                .password(passwordEncoder.encode("1234"))
+                .nickName("ADMIN")
+                .role(Role.ROLE_ADMIN)
+                .build());
     }
 }

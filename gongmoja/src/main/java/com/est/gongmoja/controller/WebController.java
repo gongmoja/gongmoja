@@ -26,14 +26,6 @@ public class WebController {
 
     @GetMapping("/")
     public String mainPage(Model model, Authentication authentication){
-        //비 로그인이면 바로 메인페이지 리턴
-        if(authentication == null){
-            return "index";
-        }
-
-        //만일 로그인 했으면 user 객체를 가져온다
-        UserEntity user = (UserEntity) authentication.getPrincipal();
-        UserEntity userEntity = userService.getUser(user.getUserName());
         //공모주 최신 뉴스
         List<UpdatedNewsEntity> newsList = newsService.findAll();
         //청약 진행중인 공모주
@@ -42,7 +34,6 @@ public class WebController {
         //청약 예정인 공모주
         List<StockEntity> scheduledStocks = stockService.findStockByAfterDate(now);
         //model 에 userEntity,newsList 객체 넣는다
-        model.addAttribute("userEntity",userEntity);
         model.addAttribute("newsList", newsList);
         model.addAttribute("progressStocks", progressStocks);
         model.addAttribute("scheduledStocks", scheduledStocks);
@@ -54,6 +45,22 @@ public class WebController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        //비 로그인이면 바로 메인페이지 리턴
+        if(authentication == null){
+            return "index";
+        }
+
+        //만일 로그인 했으면 user 객체를 가져온다
+        UserEntity user = (UserEntity) authentication.getPrincipal();
+        UserEntity userEntity = userService.getUser(user.getUserName());
+
+        //role 테스트
+        log.info(userEntity.getUserName());
+        log.info(userEntity.getRole().name());
+
+        //model 에 userEntity,newsList 객체 넣는다
+        model.addAttribute("userEntity",userEntity);
 
         return "index";
     }
