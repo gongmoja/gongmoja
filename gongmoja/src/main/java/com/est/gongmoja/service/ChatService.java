@@ -1,7 +1,6 @@
 package com.est.gongmoja.service;
 
 import com.est.gongmoja.dto.chat.ChatDataDto;
-import com.est.gongmoja.dto.chat.ChatRoomDto;
 import com.est.gongmoja.dto.chat.ChatRoomResponseDto;
 import com.est.gongmoja.entity.ChatDataEntity;
 import com.est.gongmoja.entity.ChatRoomEntity;
@@ -11,25 +10,15 @@ import com.est.gongmoja.exception.CustomException;
 import com.est.gongmoja.exception.ErrorCode;
 import com.est.gongmoja.repository.ChatDataRepository;
 import com.est.gongmoja.repository.ChatRoomRepository;
-import com.est.gongmoja.repository.StockRepository;
 import com.est.gongmoja.repository.UserRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.WebSocketSession;
 
-import java.io.IOException;
-import java.net.Authenticator;
+
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -39,9 +28,7 @@ import java.util.stream.Collectors;
 public class ChatService {
     private final ChatRoomRepository chatRoomRepository;
     private final ChatDataRepository chatDataRepository;
-    private final SimpMessageSendingOperations messagingTemplate;
     private final UserRepository userRepository;
-    private final StockRepository stockRepository;
     private final SimpMessagingTemplate simpMessagingTemplate;
 
 
@@ -77,6 +64,8 @@ public class ChatService {
                 .chatRoom(chatRoom)
                 .build();
         chatDataRepository.save(chatDataEntity);
+
+
 //        log.info(chatData.getSender());
 //        log.info(chatData.getSentTime());
 //        log.info(String.valueOf(chatData.getChatRoomId()));
@@ -102,7 +91,7 @@ public class ChatService {
 
 
     public List<ChatRoomResponseDto> getAllChatRooms() {
-        List<ChatRoomEntity> chatRooms = chatRoomRepository.findAll(); // ChatRoomRepository는 DB에서 채팅방 정보를 가져오는 역할
+        List<ChatRoomEntity> chatRooms = chatRoomRepository.findAll();
         return chatRooms.stream()
                 .map(ChatRoomResponseDto::fromEntity)
                 .collect(Collectors.toList());

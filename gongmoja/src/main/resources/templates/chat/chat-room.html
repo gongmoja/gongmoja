@@ -188,8 +188,8 @@
                   </p>
                 </div>
               </div>
-              <input type="text" id="message" placeholder="메시지를 입력하세요.">
-              <button onclick="sendMessage()">보내기</button>
+                <input type="text" id="message" placeholder="메시지를 입력하세요.">
+                <button class="send-button" onclick="sendMessage()">보내기</button>
             </div>
           </div>
         </div>
@@ -206,7 +206,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.2/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-<script>
+<script th:inline="javascript">
   const socket = new WebSocket('ws://localhost:8080/chatting');
   const pathname = window.location.pathname;
   const chatRoomId = parseInt(pathname.split("/")[2]);
@@ -258,27 +258,33 @@
     scrollToBottom();
   });
 
-  const endDateTimeStr = /*[[${endDate}]]*/ '';
-  const endDateTime = new Date(endDateTimeStr);
+  var endDateTimeStr = /*[[${endDate}]]*/ '';
+  var endDateTime = new Date(endDateTimeStr);
 
   function disableChat() {
     // 메시지 입력 상자 비활성화
     const messageInput = document.getElementById('message');
     messageInput.disabled = true;
-    messageInput.placeholder = "채팅이 비활성화되었습니다.";
+    messageInput.placeholder = "만료된 채팅방입니다.";
 
-    // 보내기 버튼 비활성화
-    const sendButton = document.querySelector('button');
-    sendButton.disabled = true;
+    const sendButton = document.querySelector('.send-button');
+    sendButton.style.display = 'none';
   }
 
   setInterval(function() {
-    const currentDateTime = new Date();
+    var currentDateTime = new Date();
     if (currentDateTime >= endDateTime) {
       disableChat();
     }
   }, 1000);
 
+  function fnMoveIndex(targetPage, seq) {
+      // 이동할 대상 페이지의 URL
+      var targetURL = targetPage + "#div" + seq;
+
+      // 새로운 페이지로 이동
+      window.location.href = targetURL;
+  }
 
 </script>
 

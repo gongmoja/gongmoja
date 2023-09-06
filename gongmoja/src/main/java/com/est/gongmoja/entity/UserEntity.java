@@ -37,4 +37,8 @@ public class UserEntity {
     @JoinTable(name = "favorites")
     private List<StockEntity> stocks;
 
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "userChat")
+    private List<ChatRoomEntity> chatRooms;
+
 }
