@@ -2,13 +2,6 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
 <style>
-    #wrapper {
-        position: sticky;
-        top: 10px;
-        bottom: 10px;
-
-    }
-
     #stiky {
         position: sticky;
         top: 10px;
@@ -53,6 +46,7 @@
         justify-content: center;
         align-items: center;
     }
+
     .sidebar-brand-text {
         font-family: 'yg-jalnan', sans-serif;
         font-size: 23px;
@@ -99,7 +93,7 @@
                 <!--                    <i class="fas fa-laugh-wink"></i>-->
             </div>
             <div class="horizontal-container">
-<!--                <div class="sidebar-brand-text mx-3">공모자들<sup></sup></div>-->
+                <!--                <div class="sidebar-brand-text mx-3">공모자들<sup></sup></div>-->
                 <div>GongMoJa</div>
             </div>
         </a>
@@ -122,12 +116,13 @@
         <hr class="sidebar-divider">
 
         <!--내비게이션 1번 항목 (공모주)-->
-        <div id="stiky" >
-            <div  class="sidebar-heading">GONGMOJA</div>
+        <div id="stiky">
+            <div class="sidebar-heading">GONGMOJA</div>
 
             <!-- 1. 공모주 일정 메뉴  -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" onclick="fnMove('3');" data-toggle="collapse" data-target="#collapseTwo"
+                <a class="nav-link collapsed" href="#" onclick="fnMove('3');" data-toggle="collapse"
+                   data-target="#collapseTwo"
                    aria-expanded="true" aria-controls="collapseTwo">
                     <!--폴더아이콘-->
                     <i class="fas fa-fw fa-calendar-alt"></i>
@@ -136,7 +131,8 @@
             </li>
             <!-- 2. 공모주 경쟁률 메뉴  -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" onclick="fnMove('1');" data-toggle="collapse" data-target="#collapseTwo"
+                <a class="nav-link collapsed" href="#" onclick="fnMove('1');" data-toggle="collapse"
+                   data-target="#collapseTwo"
                    aria-expanded="true" aria-controls="collapseTwo">
                     <!--폴더아이콘-->
                     <i class="fas fa-fw fa-chart-area"></i>
@@ -145,7 +141,8 @@
             </li>
             <!-- 3. 공모주 뉴스 메뉴  -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" onclick="fnMove('2');" data-toggle="collapse" data-target="#collapseTwo"
+                <a class="nav-link collapsed" href="#" onclick="fnMove('2');" data-toggle="collapse"
+                   data-target="#collapseTwo"
                    aria-expanded="true" aria-controls="collapseTwo">
                     <!--폴더아이콘-->
                     <i class="fas fa-fw fa-layer-group"></i>
@@ -271,176 +268,174 @@
 
             <!-- 대시보드 부분 -->
             <div class="container-fluid">
-
-                <!-- Page Heading -->
-                <!--                <div class="d-sm-flex align-items-center justify-content-between mb-4">-->
-                <!--                    <h1 class="h3 mb-0 text-gray-800">공모주 정보</h1>-->
                 <div id="div" class="row">
-                    <div class="col-xl-8 col-lg-7">
-                        <!-- Project Card Example -->
-                        <div class="card shadow mb-2">
+                    <div class="col-xl-10 col-lg-7">
+                        <div class="card shadow mb-2 ">
                             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                 <h6 class="m-0 font-weight-bold text-primary">공모주 정보</h6>
                             </div>
-
-                            <!-- Pending Requests Card Example -->
-                            <ul class="custom-list">
-                                <!-- 현재 진행중인 공모주 -->
-                                <th:block th:each="stock, iterStat : ${progressStocks}">
-                                    <li>
-                                        <div class="card border-left-warning shadow h-100 py-2 flex-grow-1">
-                                            <div class="card-body">
-                                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                    청약 진행중인 공모주
-                                                </div>
-                                                <div class="h5 mb-0 font-weight-bold text-gray-800" id="dataFromDB"
-                                                     style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
-                                                    <a th:href="@{/stock/{stockId}(stockId=${stock.id})}"
-                                                       th:text="${stock.name}"
-                                                       style="text-decoration: none; color: #5a5c69;"></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <!-- 3개 이상의 요소일 때 줄바꿈 -->
-                                    <th:if test="${iterStat.index > 2}">
-                                        <div style="flex-basis: 100%; height: 0;"></div>
-                                    </th:if>
-                                </th:block>
-                            </ul>
-
-                            <!-- 청약 예정 공모주 -->
-                            <ul class="custom-list">
-                                <th:block th:each="stock, iterStat : ${scheduledStocks}">
-                                    <li>
-                                        <div class="card border-left-primary shadow h-100 py-2 flex-grow-1">
-                                            <div class="card-body">
-                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                    청약 예정 공모주
-                                                </div>
-                                                <div class="h5 mb-0 font-weight-bold text-gray-800"
-                                                     style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
-                                                    <a th:href="@{/stock/{stockId}(stockId=${stock.id})}"
-                                                       th:text="${stock.name}"
-                                                       style="text-decoration: none; color: #5a5c69; "></a>
-                                                    <span th:text="${' ' + stock.getStartDate().getMonthValue() + ' / ' + stock.getStartDate().getDayOfMonth() + ' 예정'}"
-                                                          style="text-decoration: none; color: #5a5c69; font-size: 14px; opacity: 0.7; text-align: right;"></span>
+                            <div class="ml-2">
+                                <!-- Pending Requests Card Example -->
+                                <ul class="custom-list">
+                                    <!-- 현재 진행중인 공모주 -->
+                                    <th:block th:each="stock, iterStat : ${progressStocks}">
+                                        <li class="mb-2 mt-3 ml-2">
+                                            <div class="card border-left-warning shadow h-100 py-2 flex-grow-1">
+                                                <div class="card-body">
+                                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                                        청약 진행중인 공모주
+                                                    </div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800" id="dataFromDB"
+                                                         style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                                        <a th:href="@{/stock/{stockId}(stockId=${stock.id})}"
+                                                           th:text="${stock.name}"
+                                                           style="text-decoration: none; color: #5a5c69;"></a>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </li>
-                                </th:block>
-                            </ul>
+                                        </li>
+                                        <!-- 3개 이상의 요소일 때 줄바꿈 -->
+                                        <th:if test="${iterStat.index > 2}">
+                                            <div style="flex-basis: 100%; height: 0;"></div>
+                                        </th:if>
+                                    </th:block>
+                                </ul>
+
+                                <!-- 청약 예정 공모주 -->
+                                <ul class="custom-list">
+                                    <th:block th:each="stock, iterStat : ${scheduledStocks}">
+                                        <li class="mb-2 ml-2">
+                                            <div class="card border-left-primary shadow h-100 py-2 flex-grow-1">
+                                                <div class="card-body">
+                                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                        청약 예정 공모주
+                                                    </div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800"
+                                                         style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                                        <a th:href="@{/stock/{stockId}(stockId=${stock.id})}"
+                                                           th:text="${stock.name}"
+                                                           style="text-decoration: none; color: #5a5c69; "></a>
+                                                        <span th:text="${' ' + stock.getStartDate().getMonthValue() + ' / ' + stock.getStartDate().getDayOfMonth() + ' 예정'}"
+                                                              style="text-decoration: none; color: #5a5c69; font-size: 14px; opacity: 0.7; text-align: right;"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </th:block>
+                                </ul>
+                            </div>
                         </div>
+                    </div>
+                </div>
 
-                        <!-- 공모주 일정 부분 -->
-                        <div>
-                            <div id="div3" class="row">
-                                <div class="col-xl-8 col-lg-7">
-                                    <div class="card shadow mb-2">
-                                        <h6 class="m-3 font-weight-bold text-primary">공모주 일정</h6>
-                                        <div class="card shadow ">
-                                            <!-- Card Header - Dropdown -->
-                                            <link href='/static/fullcalendar-5.11.5/main.css' rel='stylesheet'/>
-                                            <script src='/static/fullcalendar-5.11.5/main.js'></script>
-                                            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                <!-- 공모주 일정 부분 -->
+                <div id="div3" class="row">
+                    <div class="col-xl-10 col-lg-7">
+                        <div class="card shadow mb-2">
+                            <h6 class="m-3 font-weight-bold text-primary">공모주 일정</h6>
+                            <div class="card shadow ">
+                                <!-- Card Header - Dropdown -->
+                                <link href='/static/fullcalendar-5.11.5/main.css' rel='stylesheet'/>
+                                <script src='/static/fullcalendar-5.11.5/main.js'></script>
+                                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-                                            <script>
-                                                document.addEventListener('DOMContentLoaded', function () {
-                                                    var calendarEl = document.getElementById('calendar');
-                                                    var calendar = new FullCalendar.Calendar(calendarEl, {
-                                                        initialView: 'dayGridMonth', // 초기 로드 될때 보이는 캘린더 화면(기본 설정: 달)
-                                                        aspectRatio: 0.8,
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', function () {
+                                        var calendarEl = document.getElementById('calendar');
+                                        var calendar = new FullCalendar.Calendar(calendarEl, {
+                                            initialView: 'dayGridMonth', // 초기 로드 될때 보이는 캘린더 화면(기본 설정: 달)
+                                            aspectRatio: 0.8,
 
-                                                        locale: "ko", // 한국어 설정
-                                                        displayEventTime: false, // 일정 시각 안보이도록
-                                                        eventSources: { // 이벤트 목록
-                                                            url: '/calendar/event',
-                                                            method: 'GET',
-                                                            failure: function () {
-                                                                alert('there was an error while fetching events!');
-                                                            }
-                                                        }
-                                                    });
-                                                    // 캘린더 렌더
-                                                    calendar.render();
-                                                });
-                                            </script>
-                                            </head>
-                                            <div id='calendar-container' style='width: 95%; height: 20%; margin: 3%;'>
-                                                <div id='calendar'></div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                            locale: "ko", // 한국어 설정
+                                            displayEventTime: false, // 일정 시각 안보이도록
+                                            eventSources: { // 이벤트 목록
+                                                url: '/calendar/event',
+                                                method: 'GET',
+                                                failure: function () {
+                                                    alert('there was an error while fetching events!');
+                                                }
+                                            }
+                                        });
+                                        // 캘린더 렌더
+                                        calendar.render();
+                                    });
+                                </script>
+                                </head>
+                                <div id='calendar-container' style='width: 95%; height: 20%; margin: 3%;'>
+                                    <div id='calendar'></div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
 
-                            <!-- 경쟁률 차트 부분 -->
-                            <div id="div1" class="row">
-                                <div class="col-xl-8 col-lg-7">
-                                    <div class="card shadow mb-4">
-                                        <!-- Card Header - Dropdown -->
-                                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                            <h6 class="m-0 font-weight-bold text-primary">공모주 경쟁률</h6>
-                                        </div>
-                                        <!-- Card Body -->
-                                        <div class="custom-car돌d-body">
-                                            <div>
-                                                <div style="max-width: 100%; height: auto; display: flex; flex-direction: column; align-items: center;">
-                                                    <img th:src="@{'data:image/jpeg;base64,' + ${base64Image}}"
-                                                         alt="Graph Image" style="width: 100%; height: 100%;">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                <!-- 경쟁률 차트 부분 -->
+                <div id="div1" class="row">
+                    <div class="col-xl-10 col-lg-7">
+                        <div class="card shadow mb-4">
+                            <!-- Card Header - Dropdown -->
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">공모주 경쟁률</h6>
                             </div>
-
-
-                            <!-- Content Row -->
-                            <div id="div2" class="row">
-                                <!-- 공모주 뉴스 부분 -->
-                                <div class="col-xl-8 col-lg-7">
-                                    <!-- Project Card Example -->
-                                    <div class="card shadow mb-4">
-                                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                            <h6 class="m-0 font-weight-bold text-primary">공모주 최신 뉴스</h6>
-                                        </div>
-                                        <!--뉴스 항목-->
-                                        <div th:each="news : ${newsList}">
-                                            <div class="news-item">
-                                                <p></p>
-                                                <h6><a th:href="${news.newsUrl}" target="_blank" th:text="${news.title}">News
-                                                    Title</a></h6>
-                                                <p th:text="${news.publisher}" style="display: inline; margin: 0;">Publisher</p>
-                                                <img th:src="${news.imageUrl}" alt="News Image" width="20"
-                                                     style="max-height: 16px; display: inline;">
-                                                <span style="display: inline;">|</span>
-                                                <p th:text="${#temporals.format(news.publishedTime, 'yyyy-MM-dd')}"
-                                                   style="display: inline; margin: 0;">Published Date</p>
-                                                <p th:text="${news.content}">News Summary</p>
-                                            </div>
-                                            <hr class="sidebar-divider d-none d-md-block">
-                                        </div>
+                            <!-- Card Body -->
+                            <div class="custom-car돌d-body">
+                                <div>
+                                    <div style="max-width: 100%; height: auto; display: flex; flex-direction: column; align-items: center;">
+                                        <img th:src="@{'data:image/jpeg;base64,' + ${base64Image}}"
+                                             alt="Graph Image" style="width: 100%; height: 100%;">
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <!-- Footer -->
-        <footer class="sticky-footer bg-white">
-            <div class="container my-auto">
-                <div class="copyright text-center my-auto">
-                    <span>Copyright &copy; gongmoja 2023</span>
+
+                <!-- Content Row -->
+                <div id="div2" class="row">
+                    <!-- 공모주 뉴스 부분 -->
+                    <div class="col-xl-10 col-lg-7">
+                        <!-- Project Card Example -->
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">공모주 최신 뉴스</h6>
+                            </div>
+                            <!--뉴스 항목-->
+                            <div th:each="news : ${newsList}">
+                                <div class="news-item">
+                                    <p></p>
+                                    <h6><a th:href="${news.newsUrl}" target="_blank"
+                                           th:text="${news.title}">News
+                                        Title</a></h6>
+                                    <p th:text="${news.publisher}" style="display: inline; margin: 0;">
+                                        Publisher</p>
+                                    <img th:src="${news.imageUrl}" alt="News Image" width="20"
+                                         style="max-height: 16px; display: inline;">
+                                    <span style="display: inline;">|</span>
+                                    <p th:text="${#temporals.format(news.publishedTime, 'yyyy-MM-dd')}"
+                                       style="display: inline; margin: 0;">Published Date</p>
+                                    <p th:text="${news.content}">News Summary</p>
+                                </div>
+                                <hr class="sidebar-divider d-none d-md-block">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </footer>
-
+        </div>
     </div>
+</div>
+
+<!-- Footer -->
+<footer class="sticky-footer bg-white">
+    <div class="container my-auto">
+        <div class="copyright text-center my-auto">
+            <span>Copyright &copy; gongmoja 2023</span>
+        </div>
+    </div>
+</footer>
+
+</div>
 </div>
 </body>
 <script>
