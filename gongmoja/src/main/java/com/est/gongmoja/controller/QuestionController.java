@@ -31,8 +31,6 @@ public class QuestionController {
     private final QuestionService questionService;
     private final UserService userService;
 
-
-
     // 작성자 별 문의글 리스트
     @GetMapping("/list-by-user")
     public String listByUser(

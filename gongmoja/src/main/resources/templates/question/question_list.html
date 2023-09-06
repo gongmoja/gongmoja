@@ -201,6 +201,13 @@
             <!-- 토글 바 끝 -->
 
             <div class="container my-3">
+
+                <!--마이페이지 타이틀-->
+                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                    <h1 class="h4 mb-0 text-gray-800" th:text="${userEntity.nickName} + '님의 문의내역'"></h1>
+                    <hr style="color: #A6A6A6; height: 0.5px;">
+                </div>
+
     <table class="table">
         <thead class="table-dark">
         <tr class="text-center">
