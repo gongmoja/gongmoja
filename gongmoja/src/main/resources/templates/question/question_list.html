@@ -106,8 +106,8 @@
                     <span>공모주 뉴스</span>
                 </a>
             </li>
-        <!-- 구분선 -->
-        <hr class="sidebar-divider d-none d-md-block">
+            <!-- 구분선 -->
+            <hr class="sidebar-divider d-none d-md-block">
 
     </ul>
     <!-- 왼쪽 사이드바 종료 -->
@@ -218,58 +218,58 @@
                     </tr>
                     </thead>
 
-        <tbody>
+                    <tbody>
 
-        <tr th:each="questionEntity, index : ${questionEntity}">
-        <tr class="text-center" th:each="questionEntity, loop : ${paging}">
+                    <tr th:each="questionEntity, index : ${questionEntity}">
+                    <tr class="text-center" th:each="questionEntity, loop : ${paging}">
 
-            <!--번호-->
-            <td th:text="${loop.count}"></td>
+                        <!--번호-->
+                        <td th:text="${loop.count}"></td>
 
-            <!--제목-->
-            <td class="text-center">
-                <a th:href="@{|/question/detail/${questionEntity.id}|}" th:text="${questionEntity.subject}"></a>
+                        <!--제목-->
+                        <td class="text-center">
+                            <a th:href="@{|/question/detail/${questionEntity.id}|}" th:text="${questionEntity.subject}"></a>
 
-                <span class="text-danger small ms-2"
-                      th:if="${#lists.size(questionEntity.answerEntityList) > 0}"
-                      th:text="${#lists.size(questionEntity.answerEntityList)}">
+                            <span class="text-danger small ms-2"
+                                  th:if="${#lists.size(questionEntity.answerEntityList) > 0}"
+                                  th:text="${#lists.size(questionEntity.answerEntityList)}">
                     </span>
-            </td>
+                        </td>
 
-            <!--작성자-->
-            <td><span th:if="${questionEntity.user != null}" th:text="${questionEntity.user.userName}"></span></td>
+                        <!--작성자-->
+                        <td><span th:if="${questionEntity.user != null}" th:text="${questionEntity.user.userName}"></span></td>
 
-            <!--일시-->
-            <td th:text="${#temporals.format(questionEntity.createDate, 'yy-MM-dd HH:mm')}"></td>
-        </tr>
-        </tbody>
-    </table>
+                        <!--일시-->
+                        <td th:text="${#temporals.format(questionEntity.createDate, 'yy-MM-dd HH:mm')}"></td>
+                    </tr>
+                    </tbody>
+                </table>
 
-    <!-- 페이징처리 시작 -->
-    <div th:if="${!paging.isEmpty()}">
-        <ul class="pagination justify-content-center">
-            <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
-                <a class="page-link"
-                   th:href="@{|?page=${paging.number-1}|}">
-                    <span>이전</span>
-                </a>
-            </li>
-            <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
-                th:if="${page >= paging.number-5 and page <= paging.number+5}"
-                th:classappend="${page == paging.number} ? 'active'"
-                class="page-item">
-                <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
-            </li>
-            <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
-                <a class="page-link" th:href="@{|?page=${paging.number+1}|}">
-                    <span>다음</span>
-                </a>
-            </li>
-        </ul>
-    </div>
-    <!-- 페이징처리 끝 -->
+                <!-- 페이징처리 시작 -->
+                <div th:if="${!paging.isEmpty()}">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
+                            <a class="page-link"
+                               th:href="@{|?page=${paging.number-1}|}">
+                                <span>이전</span>
+                            </a>
+                        </li>
+                        <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
+                            th:if="${page >= paging.number-5 and page <= paging.number+5}"
+                            th:classappend="${page == paging.number} ? 'active'"
+                            class="page-item">
+                            <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
+                        </li>
+                        <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
+                            <a class="page-link" th:href="@{|?page=${paging.number+1}|}">
+                                <span>다음</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- 페이징처리 끝 -->
 
-</div>
+            </div>
         </div>
         <!-- Footer -->
         <footer class="sticky-footer bg-white">

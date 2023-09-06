@@ -14,17 +14,17 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-        <title>공모자들</title>
+    <title>공모자들</title>
 
-        <!-- Custom fonts for this template-->
+    <!-- Custom fonts for this template-->
     <link rel="shortcut icon" href="/static/favicon.ico">
     <link href="/static/bootstrap/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-        <link
-                href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-                rel="stylesheet">
+    <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
 
-        <!-- Custom styles for this template-->
-        <link href="/static/bootstrap/css/sb-admin-2.min.css" rel="stylesheet">
+    <!-- Custom styles for this template-->
+    <link href="/static/bootstrap/css/sb-admin-2.min.css" rel="stylesheet">
 
     <style>
         #accordionSidebar {
@@ -53,7 +53,7 @@
         }
     </style>
 
-    </head>
+</head>
 
 <body id="page-top">
 
@@ -113,8 +113,8 @@
                     <span>공모주 뉴스</span>
                 </a>
             </li>
-        <!-- 구분선 -->
-        <hr class="sidebar-divider d-none d-md-block">
+            <!-- 구분선 -->
+            <hr class="sidebar-divider d-none d-md-block">
         </div>
     </ul>
     <!-- 왼쪽 사이드바 종료 -->
@@ -222,47 +222,47 @@
                 </div>
             </div>
 
-    <!--첨부파일 확인-->
-    <div>
-    <h6 class="border-bottom my-3 py-3">첨부파일</h6>
-    <img th:if="${question.filepath}" th:src="@{'/media/' + user.userName + '/' + question.id + '/' + question.filePath}" alt="Image">
-    </div>
+            <!--첨부파일 확인-->
+            <div>
+                <h6 class="border-bottom my-3 py-3">첨부파일</h6>
+                <img th:if="${question.filepath}" th:src="@{'/media/' + user.userName + '/' + question.id + '/' + question.filePath}" alt="Image">
+            </div>
 
-    <!-- 답변의 갯수 표시 -->
-    <h6 class="border-bottom my-3 py-3" th:text="|${#lists.size(question.answerEntityList)}개의 답변이 있습니다.|"></h6>
+            <!-- 답변의 갯수 표시 -->
+            <h6 class="border-bottom my-3 py-3" th:text="|${#lists.size(question.answerEntityList)}개의 답변이 있습니다.|"></h6>
 
-        <!-- 답변 반복 시작 -->
-        <div class="card my-3" th:each="answer : ${question.answerEntityList}">
-            <div class="card-body">
-                <div class="card-text" style="white-space: pre-line;" th:text="${answer.content}"></div>
-                <div class="d-flex justify-content-end">
-                    <div class="badge bg-light text-dark p-2 text-start">
-                        <div class="mb-2">
-                            <span th:if="${answer.user.nickName != null}" th:text="${answer.user.nickName}"></span>
+            <!-- 답변 반복 시작 -->
+            <div class="card my-3" th:each="answer : ${question.answerEntityList}">
+                <div class="card-body">
+                    <div class="card-text" style="white-space: pre-line;" th:text="${answer.content}"></div>
+                    <div class="d-flex justify-content-end">
+                        <div class="badge bg-light text-dark p-2 text-start">
+                            <div class="mb-2">
+                                <span th:if="${answer.user.nickName != null}" th:text="${answer.user.nickName}"></span>
+                            </div>
+                            <div th:text="${#temporals.format(answer.createDate, 'yyyy-MM-dd HH:mm')}"></div>
                         </div>
-                        <div th:text="${#temporals.format(answer.createDate, 'yyyy-MM-dd HH:mm')}"></div>
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- 답변 반복 끝  -->
+            <!-- 답변 반복 끝  -->
 
-    <!-- 답변 작성 : ROLE_ADMIN인 경우에만 답변폼 활성화 -->
-    <div class="button-container">
-    <form th:action="@{|/answer/create/${question.id}|}" method="post" class="my-3">
+            <!-- 답변 작성 : ROLE_ADMIN인 경우에만 답변폼 활성화 -->
+            <div class="button-container">
+                <form th:action="@{|/answer/create/${question.id}|}" method="post" class="my-3">
          <textarea name="content" id="content" rows="10" class="form-control"
-          th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"
-          th:attr="disabled=${#authorization.expression('!hasRole(''ROLE_ADMIN'')')}"></textarea>
-            <input type="submit" value="답변등록" class="btn btn-primary my-2"
-           th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
-      </form>
+                   th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"
+                   th:attr="disabled=${#authorization.expression('!hasRole(''ROLE_ADMIN'')')}"></textarea>
+                    <input type="submit" value="답변등록" class="btn btn-primary my-2"
+                           th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+                </form>
 
-     <!-- 문의내역 버튼 -->
-    <form th:action="@{/question/list-by-user}" th:method="get">
-        <input type="submit" value="목록보기" class="btn btn-primary my-2">
-    </form>
-    </div>
-</div>
+                <!-- 문의내역 버튼 -->
+                <form th:action="@{/question/list-by-user}" th:method="get">
+                    <input type="submit" value="목록보기" class="btn btn-primary my-2">
+                </form>
+            </div>
+        </div>
         <!-- Footer -->
         <footer class="sticky-footer bg-white">
             <div class="container my-auto">

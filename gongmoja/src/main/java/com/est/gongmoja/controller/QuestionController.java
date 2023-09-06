@@ -63,7 +63,6 @@ public class QuestionController {
         return "question/question_detail";
     }
 
-
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/create")
     public String questionCreate(Model model, Authentication authentication) {

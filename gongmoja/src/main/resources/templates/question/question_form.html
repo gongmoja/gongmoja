@@ -101,8 +101,8 @@
                     <span>공모주 뉴스</span>
                 </a>
             </li>
-        <!-- 구분선 -->
-        <hr class="sidebar-divider d-none d-md-block">
+            <!-- 구분선 -->
+            <hr class="sidebar-divider d-none d-md-block">
 
     </ul>
     <!-- 왼쪽 사이드바 종료 -->
@@ -194,38 +194,38 @@
             </nav>
             <!-- 토글 바 끝 -->
 
-    <div layout:fragment="content" class="container">
-    <h5 class="my-3 border-bottom pb-2">문의사항 등록</h5>
+            <div layout:fragment="content" class="container">
+                <h5 class="my-3 border-bottom pb-2">문의사항 등록</h5>
 
-    <div class="alert alert-danger" role="alert" th:if="${errorMsg != null}" th:text="${errorMsg}"></div>
+                <div class="alert alert-danger" role="alert" th:if="${errorMsg != null}" th:text="${errorMsg}"></div>
 
-    <!--multipart 추가 -->
-    <form th:action="@{/question/create}" method="post" enctype="multipart/form-data">
+                <!--multipart 추가 -->
+                <form th:action="@{/question/create}" method="post" enctype="multipart/form-data">
 
-        <!--제목-->
-        <div class="mb-3">
-            <label for="subject" class="form-label">제목</label>
-            <input type="text" name="subject" id="subject" class="form-control" placeholder="제목을 입력해주세요.">
+                    <!--제목-->
+                    <div class="mb-3">
+                        <label for="subject" class="form-label">제목</label>
+                        <input type="text" name="subject" id="subject" class="form-control" placeholder="제목을 입력해주세요.">
+                    </div>
+
+                    <!--내용-->
+                    <div class="mb-3">
+                        <label for="content" class="form-label">내용</label>
+                        <textarea name="content" id="content" class="form-control" rows="10" placeholder="내용을 입력해주세요."></textarea>
+
+                    </div>
+
+                    <!--첨부파일 업로드-->
+                    <div class="mb-3">
+                        <label for="file" class="form-label">첨부 파일</label>
+                        <input type="file" class="form-control" name="file" id="file">
+                        <!--첨부파일 삭제-->
+                    </div>
+                    <!--제출하기 버튼-->
+                    <input type="submit" value="제출하기" class="btn btn-primary my-2">
+                </form>
+            </div>
         </div>
-
-        <!--내용-->
-        <div class="mb-3">
-            <label for="content" class="form-label">내용</label>
-            <textarea name="content" id="content" class="form-control" rows="10" placeholder="내용을 입력해주세요."></textarea>
-
-        </div>
-
-        <!--첨부파일 업로드-->
-        <div class="mb-3">
-            <label for="file" class="form-label">첨부 파일</label>
-            <input type="file" class="form-control" name="file" id="file">
-        <!--첨부파일 삭제-->
-        </div>
-        <!--제출하기 버튼-->
-        <input type="submit" value="제출하기" class="btn btn-primary my-2">
-        </form>
-    </div>
-</div>
         <!-- Footer -->
         <footer class="sticky-footer bg-white">
             <div class="container my-auto">
