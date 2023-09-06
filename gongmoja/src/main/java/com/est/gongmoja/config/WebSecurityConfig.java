@@ -97,7 +97,7 @@ public class WebSecurityConfig {
                 .builder()
                 .userName("ADMIN0000")
                 .password(passwordEncoder.encode("1234"))
-                .nickName("ADMIN")
+                .nickName("관리자")
                 .role(Role.ROLE_ADMIN)
                 .build());
     }
