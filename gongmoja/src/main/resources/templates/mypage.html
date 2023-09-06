@@ -277,13 +277,27 @@
                     </div>
                 </div>
 
-                <div class="d-flex justify-content-end"> <!-- 버튼들을 오른쪽으로 정렬하는 부분 -->
-                    <div class="col-xl-3 mb-1">
+                <!--ROLE_USER인 경우에만 내 문의내역 버튼 활성화-->
+                <div class="d-flex justify-content-end">
+                    <div class="col-xl-3 mb-1" th:if="${#authorization.expression('hasRole(''ROLE_USER'')')}">
                         <form th:action="@{/question/list-by-user}" th:method="get">
                             <button class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" type="submit">
                                 <i class="fas fa-poll-h fa-sm text-white-50">
                                 </i>
-                                &nbsp;내 문의내역
+                                내 문의내역
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!--ROLE_ADMIN인 경우에만 전체 문의내역 버튼 활성화-->
+                <div class="d-flex justify-content-end">
+                    <div class="col-xl-3 mb-1" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+                        <form th:action="@{/admin}" th:method="get">
+                            <button class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" type="submit">
+                                <i class="fas fa-poll-h fa-sm text-white-50">
+                                </i>
+                                전체 문의내역
                             </button>
                         </form>
                     </div>
