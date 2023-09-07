@@ -186,12 +186,11 @@
             <div id="chat">
               <div id="messages">
                 <div th:each="message : ${chatMessages}">
-                    <p th:class="${message.user.id eq currentUserId} ? 'my-message' : (${message.user.id eq 1} ? 'admin-message' : 'other-message')">
-                        <span th:if="${message.type.toString() != 'DATE'}" th:text="${#temporals.format(message.createdAt, 'HH:mm')}"></span>
-                        <span th:if="${message.type.toString() == 'DATE'}" th:text="${message.message}"></span><br>
-                        <span th:unless="${message.type.toString() == 'DATE'}" th:text="${message.user.nickName + ': ' + message.message}"></span>
+                    <p th:class="${message.user.id eq 1} ? 'admin-message' : (${message.user.id eq currentUserId} ? 'my-message' : 'other-message')">
+                        <span th:if="${message.type != 'DATE'}" th:text="${#temporals.format(message.createdAt, 'HH:mm')}"></span>
+                        <span th:if="${message.type == 'DATE'}" th:text="${message.message}"></span><br>
+                        <span th:unless="${message.type == 'DATE'}" th:text="${message.user.nickName + ': ' + message.message}"></span>
                     </p>
-
                 </div>
               </div>
                 <input type="text" id="message" placeholder="메시지를 입력하세요.">
@@ -240,7 +239,6 @@
   function sendMessageWithDateCheck() {
       // 여기에서 날짜 검증 로직을 수행합니다.
       dateCheck(chatRoomId, function (isValid) {
-          console.log(isValid);
           if (isValid) {
               // 날짜 메시지를 보냅니다.
               sendDateMessage();
@@ -268,7 +266,6 @@
           })
           .then(dateNeeded => {
               const isValid = dateNeeded;
-              console.log(isValid);
               callback(isValid); // 콜백 함수 호출
           })
           .catch(error => {
@@ -282,7 +279,8 @@
       stompClient.send("/app/date", {}, JSON.stringify({
           "chatRoomId": chatRoomId,
           "message": formattedDate,
-          "sentTime": today.toISOString()
+          "sentTime": today.toISOString(),
+          "type" : MessageType.DATE
       }));
   }
 
@@ -293,7 +291,8 @@
           stompClient.send("/app/chat", {}, JSON.stringify({
               "chatRoomId": chatRoomId,
               "message": message,
-              "sentTime": today.toISOString()
+              "sentTime": today.toISOString(),
+              "type" : MessageType.CHAT
           }));
           messageInput.value = '';
       }
@@ -316,8 +315,9 @@
   function showMessage(message) {
       const messagesDiv = document.getElementById('messages');
       const messageP = document.createElement('p');
+      const type = message.type;
 
-      if (message.type === MessageType.DATE) {
+      if (type === "DATE") {
           // 센드데이트메시지인 경우 별도로 처리
           processDateMessage(message);
       } else {
@@ -347,7 +347,7 @@
   const messageInput = document.getElementById('message');
   messageInput.addEventListener('keydown', function(event) {
     if (event.key === 'Enter') {
-      sendMessage();
+        sendMessageWithDateCheck();
     }
   });
 
