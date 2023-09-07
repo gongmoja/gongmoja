@@ -100,4 +100,8 @@ public class UserService {
         userRepository.save(userEntity);
     }
 
+    public boolean checkPassword(String nowPassword,UserEntity userEntity){
+        return passwordEncoder.matches(nowPassword,userEntity.getPassword());
+    }
+
 }

@@ -130,29 +130,6 @@
                 <!-- Topbar Navbar -->
                 <ul class="navbar-nav ml-auto">
 
-                    <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-                    <li class="nav-item dropdown no-arrow d-sm-none">
-                        <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-search fa-fw"></i>
-                        </a>
-                        <!-- Dropdown - Messages -->
-                        <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-                             aria-labelledby="searchDropdown">
-                            <form class="form-inline mr-auto w-100 navbar-search">
-                                <div class="input-group">
-                                    <input type="text" class="form-control bg-light border-0 small"
-                                           placeholder="Search for..." aria-label="Search"
-                                           aria-describedby="basic-addon2">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-primary" type="button">
-                                            <i class="fas fa-search fa-sm"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </li>
 
                     <div class="topbar-divider d-none d-sm-block"></div>
 
@@ -193,39 +170,46 @@
 
             </nav>
             <!-- 토글 바 끝 -->
+            <!-- Basic Card Example -->
+            <div class="card shadow mb-4" style="margin:0 20px;">
+                <div class="card-header py-3">
+                    <h5 class="m-0 font-weight-bold text-primary">문의사항 등록</h5>
+                </div>
+                <div class="card-body">
+                    <div layout:fragment="content" class="container">
 
-            <div layout:fragment="content" class="container">
-                <h5 class="my-3 border-bottom pb-2">문의사항 등록</h5>
+                        <div class="alert alert-danger" role="alert" th:if="${errorMsg != null}" th:text="${errorMsg}"></div>
 
-                <div class="alert alert-danger" role="alert" th:if="${errorMsg != null}" th:text="${errorMsg}"></div>
+                        <!--multipart 추가 -->
+                        <form th:action="@{/question/create}" method="post" enctype="multipart/form-data">
 
-                <!--multipart 추가 -->
-                <form th:action="@{/question/create}" method="post" enctype="multipart/form-data">
+                            <!--제목-->
+                            <div class="mb-3">
+                                <label for="subject" class="form-label">제목</label>
+                                <input type="text" name="subject" id="subject" class="form-control" placeholder="제목을 입력해주세요.">
+                            </div>
 
-                    <!--제목-->
-                    <div class="mb-3">
-                        <label for="subject" class="form-label">제목</label>
-                        <input type="text" name="subject" id="subject" class="form-control" placeholder="제목을 입력해주세요.">
+                            <!--내용-->
+                            <div class="mb-3">
+                                <label for="content" class="form-label">내용</label>
+                                <textarea name="content" id="content" class="form-control" rows="10" placeholder="내용을 입력해주세요."></textarea>
+                            </div>
+
+                            <!--첨부파일 업로드-->
+                            <div class="mb-3">
+                                <label for="file" class="form-label">첨부 파일</label>
+                                <input type="file" class="form-control" name="file" id="file">
+                                <!--첨부파일 삭제-->
+                            </div>
+
+                            <!--제출하기 버튼-->
+                            <input type="submit" value="제출하기" class="btn btn-primary my-2">
+                        </form>
                     </div>
-
-                    <!--내용-->
-                    <div class="mb-3">
-                        <label for="content" class="form-label">내용</label>
-                        <textarea name="content" id="content" class="form-control" rows="10" placeholder="내용을 입력해주세요."></textarea>
-
-                    </div>
-
-                    <!--첨부파일 업로드-->
-                    <div class="mb-3">
-                        <label for="file" class="form-label">첨부 파일</label>
-                        <input type="file" class="form-control" name="file" id="file">
-                        <!--첨부파일 삭제-->
-                    </div>
-                    <!--제출하기 버튼-->
-                    <input type="submit" value="제출하기" class="btn btn-primary my-2">
-                </form>
+                </div>
+                </div>
             </div>
-        </div>
+
         <!-- Footer -->
         <footer class="sticky-footer bg-white">
             <div class="container my-auto">

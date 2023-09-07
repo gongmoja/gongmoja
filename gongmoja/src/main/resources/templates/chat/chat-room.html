@@ -177,19 +177,25 @@
                   .other-message {
                       text-align: left;
                   }
+                  .admin-message {
+                      text-align: center;
+                      font-weight: bold;
+                  }
+
               </style>
             <div id="chat">
               <div id="messages">
                 <div th:each="message : ${chatMessages}">
-                  <!-- 현재 사용자가 보낸 메시지인 경우 -->
-                  <p th:class="${message.user.id eq currentUserId} ? 'my-message' : 'other-message'">
-                    <span th:text="${message.createdAt}"></span><br>
-                    <span th:text="${message.user.nickName + ': ' + message.message}"></span>
-                  </p>
+                    <p th:class="${message.user.id eq currentUserId} ? 'my-message' : (${message.user.id eq 1} ? 'admin-message' : 'other-message')">
+                        <span th:if="${message.type.toString() != 'DATE'}" th:text="${#temporals.format(message.createdAt, 'HH:mm')}"></span>
+                        <span th:if="${message.type.toString() == 'DATE'}" th:text="${message.message}"></span><br>
+                        <span th:unless="${message.type.toString() == 'DATE'}" th:text="${message.user.nickName + ': ' + message.message}"></span>
+                    </p>
+
                 </div>
               </div>
                 <input type="text" id="message" placeholder="메시지를 입력하세요.">
-                <button class="send-button" onclick="sendMessage()">보내기</button>
+                <button class="send-button" onclick="sendMessageWithDateCheck()">보내기</button>
             </div>
           </div>
         </div>
@@ -211,6 +217,13 @@
   const pathname = window.location.pathname;
   const chatRoomId = parseInt(pathname.split("/")[2]);
   const stompClient = Stomp.over(socket);
+  const today = new Date(); // 현재 날짜 가져오기
+  var currentUserId = /*[[${currentUserId}]]*/ 0;
+  let isValid = false;
+  const MessageType = {
+      CHAT: 'CHAT',
+      DATE: 'DATE',
+  };
 
   function scrollToBottom() {
     const messagesDiv = document.getElementById('messages');
@@ -224,29 +237,110 @@
     });
   });
 
-  function sendMessage() {
-    const messageInput = document.getElementById('message');
-    const message = messageInput.value;
-    if (message.trim() !== '') {
-      stompClient.send("/app/chat", {}, JSON.stringify({
-        "chatRoomId": chatRoomId,
-        "message": message
+  function sendMessageWithDateCheck() {
+      // 여기에서 날짜 검증 로직을 수행합니다.
+      dateCheck(chatRoomId);
+      console.log(isValid);
+          if (isValid) {
+              // 날짜 메시지를 보냅니다.
+              sendDateMessage();
+          }
+
+          // 그리고 메시지를 보냅니다.
+          sendMessage();
+  }
+
+  function dateCheck(chatRoomId) {
+      return fetch(`/chat/date-check?chatRoomId=${chatRoomId}`, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+      })
+          .then(response => {
+              if (response.status === 200) {
+                  return response.json();
+              } else {
+                  console.error('오류 발생');
+              }
+          })
+
+          .then(dateNeeded => {
+              isValid = dateNeeded;
+              console.log(isValid);
+          })
+          .catch(error => {
+              console.error('오류 발생', error);
+          });
+  }
+
+  function sendDateMessage() {
+      const formattedDate = `${today.getFullYear()}년 ${today.getMonth() + 1}월 ${today.getDate()}일`;
+      stompClient.send("/app/date", {}, JSON.stringify({
+          "chatRoomId": chatRoomId,
+          "message": formattedDate,
+          "sentTime": today.toISOString()
       }));
-      messageInput.value = '';
-    }
   }
 
+  function sendMessage() {
+      const messageInput = document.getElementById('message');
+      const message = messageInput.value;
+      if (message.trim() !== '') {
+          stompClient.send("/app/chat", {}, JSON.stringify({
+              "chatRoomId": chatRoomId,
+              "message": message,
+              "sentTime": today.toISOString()
+          }));
+          messageInput.value = '';
+      }
+  }
+
+
+
+  function formatTime(dateString) {
+      const date = new Date(dateString);
+      const hours = date.getHours();
+      const minutes = date.getMinutes();
+
+      // 시간과 분을 원하는 형식으로 포맷팅
+      const formattedTime = `${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
+      return formattedTime;
+  }
+
+
+  // showMessage 함수에서 메시지 유형을 확인하여 처리합니다.
   function showMessage(message) {
-    const messagesDiv = document.getElementById('messages');
-    const messageP = document.createElement('p');
-    messageP.innerHTML = message.sentTime + "<br>" + message.sender + ": " + message.message;
-    messageP.className = "my-message";
+      const messagesDiv = document.getElementById('messages');
+      const messageP = document.createElement('p');
 
-    messagesDiv.appendChild(messageP);
-    scrollToBottom();
+      if (message.type === MessageType.DATE) {
+          // 센드데이트메시지인 경우 별도로 처리
+          processDateMessage(message);
+      } else {
+          // 일반 메시지인 경우
+          const formattedTime = formatTime(message.sentTime);
+          messageP.innerHTML = formattedTime + "<br>" + message.sender + ": " + message.message;
+          if (currentUserId === 1) {
+              messageP.className = "admin-message";
+          } else {
+              messageP.className = "my-message";
+          }
+          messagesDiv.appendChild(messageP);
+          scrollToBottom();
+      }
   }
 
-  // 엔터 키로 메시지 전송을 가능하게 하는 코드
+  function processDateMessage(message) {
+      const messagesDiv = document.getElementById('messages');
+      const messageP = document.createElement('p');
+      messageP.innerHTML = message.message;
+      messageP.className = "admin-message";
+      messagesDiv.appendChild(messageP);
+      scrollToBottom();
+  }
+
+      // 엔터 키로 메시지 전송을 가능하게 하는 코드
   const messageInput = document.getElementById('message');
   messageInput.addEventListener('keydown', function(event) {
     if (event.key === 'Enter') {
@@ -290,24 +384,6 @@
       window.location.href = targetURL;
   }
 
-  function onUserMessageInput() {
-      const today = new Date(); // 현재 날짜 가져오기
-      const messagesDiv = document.getElementById('messages');
-
-      // 이미 메시지가 하나 이상 있는지 확인
-      if (messagesDiv.children.length === 0) {
-          // 채팅방에 아직 메시지가 없는 경우, 날짜 메시지 생성
-          const messageP = document.createElement('p');
-          messageP.innerHTML = today.getFullYear() + "년" + (today.getMonth() + 1) + "월" + today.getDate() + "일";
-          messageP.className = "my-message";
-
-          messagesDiv.appendChild(messageP);
-          scrollToBottom(); // 스크롤을 아래로 이동
-      }
-  }
-
-  // 사용자가 메시지 입력하는 input 요소에 이벤트 리스너 추가
-  messageInput.addEventListener('input', onUserMessageInput);
 
 </script>
 
