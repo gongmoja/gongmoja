@@ -79,17 +79,15 @@ public class QuestionService {
             }
         };
     }
-
     public void create(String subject, String content, MultipartFile imageFile, UserEntity user) throws IOException {
         QuestionEntity question = new QuestionEntity();
         question.setSubject(subject);
         question.setContent(content);
         question.setUser(user);
         question.setCreateDate(LocalDateTime.now());
+        questionRepository.save(question);
 
-        questionRepository.save(question); // QuestionEntity를 저장한 이후에 Id가 할당됨
-
-        String projectPath = System.getProperty("user.dir") + "/static/questionFiles"; // Update the base directory
+        String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/questionFiles"; // Update the base directory
 
         if (imageFile != null && !imageFile.isEmpty()) {
             // 파일 업로드 시 userName 및 QuestionId 별 디렉토리 생성
@@ -99,14 +97,15 @@ public class QuestionService {
                 userDirectoryFile.mkdirs();
             }
 
-            UUID uuid = UUID.randomUUID();
-            String fileName = uuid + "_" + imageFile.getOriginalFilename();
-            File saveFile = new File(userDirectory, fileName);
+            String originalFileName = imageFile.getOriginalFilename();
+            File saveFile = new File(userDirectory, originalFileName);
+
 
             imageFile.transferTo(saveFile);
 
-            question.setFileName(fileName);
-            question.setFilePath("/static/questionFiles/" + user.getUserName() + "/" + question.getId() + "/" + fileName); // Update the file path
+            question.setFilePath("/static/questionFiles/" + user.getUserName() + "/" + question.getId() + "/" + originalFileName); // Update the file path
+            question.setOriginalFileName(originalFileName); // Set the original file name
+
             questionRepository.save(question); // 파일 정보 업데이트
         }
     }

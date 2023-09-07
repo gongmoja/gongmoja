@@ -2,12 +2,7 @@ package com.est.gongmoja.dto.question;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.security.Principal;
-import java.util.List;
+import lombok.*;
 
 @Getter
 @Setter
@@ -18,7 +13,4 @@ public class QuestionFormDto {
 
     @NotEmpty(message="내용은 필수항목입니다.")
     private String content;
-
-
-
 }
