@@ -100,9 +100,9 @@ public class QuestionService {
             String originalFileName = imageFile.getOriginalFilename();
             File saveFile = new File(userDirectory, originalFileName);
 
-
             imageFile.transferTo(saveFile);
 
+//            question.setFileName(originalFileName);
             question.setFilePath("/static/questionFiles/" + user.getUserName() + "/" + question.getId() + "/" + originalFileName); // Update the file path
             question.setOriginalFileName(originalFileName); // Set the original file name
 
