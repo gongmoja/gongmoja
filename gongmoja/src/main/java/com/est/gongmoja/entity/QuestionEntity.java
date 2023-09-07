@@ -25,7 +25,7 @@ public class QuestionEntity {
 
     private LocalDateTime createDate; // 작성 일시
 
-    private String filename; // 파일 이름
+    private String originalFileName; // 원본 파일 이름
 
     private String filepath; // 파일 경로
 
@@ -38,12 +38,12 @@ public class QuestionEntity {
     @OneToMany(mappedBy = "questionEntity", cascade = CascadeType.REMOVE) // 질문 삭제하면 답변도 전체 삭제
     private List<AnswerEntity> answerEntityList;
 
-    public void setFileName(String fileName) {
-        this.filename = fileName;
+
+    public void setOriginalFileName(String originalFileName) {
+        this.originalFileName = originalFileName;
     }
 
     public void setFilePath(String filePath) {
         this.filepath = filePath;
     }
-
 }

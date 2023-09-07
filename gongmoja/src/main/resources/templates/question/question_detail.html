@@ -200,8 +200,9 @@
 
                     <!--첨부파일 확인-->
                     <div>
-                        <h6>첨부파일</h6>
-                        <img th:if="${question.filepath}" th:src="@{'/media/' + user.userName + '/' + question.id + '/' + question.filePath}" alt="Image">
+                        <a th:href="${question.filepath}" target="_blank">
+                            <button class="btn btn-primary my-0">첨부파일 확인</button>
+                        </a>
                     </div>
                 </div>
             </div>
