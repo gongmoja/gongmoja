@@ -239,8 +239,8 @@
 
   function sendMessageWithDateCheck() {
       // 여기에서 날짜 검증 로직을 수행합니다.
-      dateCheck(chatRoomId);
-      console.log(isValid);
+      dateCheck(chatRoomId, function (isValid) {
+          console.log(isValid);
           if (isValid) {
               // 날짜 메시지를 보냅니다.
               sendDateMessage();
@@ -248,10 +248,11 @@
 
           // 그리고 메시지를 보냅니다.
           sendMessage();
+      });
   }
 
-  function dateCheck(chatRoomId) {
-      return fetch(`/chat/date-check?chatRoomId=${chatRoomId}`, {
+  function dateCheck(chatRoomId, callback) {
+      fetch(`/chat/date-check?chatRoomId=${chatRoomId}`, {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json',
@@ -262,15 +263,17 @@
                   return response.json();
               } else {
                   console.error('오류 발생');
+                  throw new Error('날짜 검증 실패');
               }
           })
-
           .then(dateNeeded => {
-              isValid = dateNeeded;
+              const isValid = dateNeeded;
               console.log(isValid);
+              callback(isValid); // 콜백 함수 호출
           })
           .catch(error => {
               console.error('오류 발생', error);
+              callback(false); // 에러 발생 시 false 전달
           });
   }
 
