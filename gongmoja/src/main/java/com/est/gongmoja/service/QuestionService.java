@@ -79,6 +79,7 @@ public class QuestionService {
             }
         };
     }
+
     public void create(String subject, String content, MultipartFile imageFile, UserEntity user) throws IOException {
         QuestionEntity question = new QuestionEntity();
         question.setSubject(subject);
@@ -87,11 +88,11 @@ public class QuestionService {
         question.setCreateDate(LocalDateTime.now());
         questionRepository.save(question);
 
-        String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/questionFiles"; // Update the base directory
+        String projectPath = System.getProperty("user.dir") + "/static";
 
         if (imageFile != null && !imageFile.isEmpty()) {
-            // 파일 업로드 시 userName 및 QuestionId 별 디렉토리 생성
-            String userDirectory = projectPath + "/" + user.getUserName() + "/" + question.getId();
+            // userName 및 questionId에 대한 디렉터리가 없으면 생성합니다.
+            String userDirectory = projectPath + "/" + question.getId();
             File userDirectoryFile = new File(userDirectory);
             if (!userDirectoryFile.exists()) {
                 userDirectoryFile.mkdirs();
@@ -102,11 +103,39 @@ public class QuestionService {
 
             imageFile.transferTo(saveFile);
 
-//            question.setFileName(originalFileName);
-            question.setFilePath("/static/questionFiles/" + user.getUserName() + "/" + question.getId() + "/" + originalFileName); // Update the file path
-            question.setOriginalFileName(originalFileName); // Set the original file name
-
+            question.setOriginalFileName(originalFileName);
+            question.setFilePath("/static/" + question.getId() + "/" + originalFileName);
             questionRepository.save(question); // 파일 정보 업데이트
         }
     }
 }
+
+//    public void create(String subject, String content, MultipartFile imageFile, UserEntity user) throws IOException {
+//        QuestionEntity question = new QuestionEntity();
+//        question.setSubject(subject);
+//        question.setContent(content);
+//        question.setUser(user);
+//        question.setCreateDate(LocalDateTime.now());
+//        questionRepository.save(question);
+//
+//        String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/questionFiles"; // Update the base directory
+//
+//        if (imageFile != null && !imageFile.isEmpty()) {
+//            // 파일 업로드 시 userName 및 QuestionId 별 디렉토리 생성
+//            String userDirectory = projectPath + "/" + user.getUserName() + "/" + question.getId();
+//            File userDirectoryFile = new File(userDirectory);
+//            if (!userDirectoryFile.exists()) {
+//                userDirectoryFile.mkdirs();
+//            }
+//
+//            String originalFileName = imageFile.getOriginalFilename();
+//            File saveFile = new File(userDirectory, originalFileName);
+//
+//            imageFile.transferTo(saveFile);
+//
+//            question.setFilePath("/static/questionFiles/" + user.getUserName() + "/" + question.getId() + "/" + originalFileName); // Update the file path
+//            question.setOriginalFileName(originalFileName); // Set the original file name
+//
+//            questionRepository.save(question); // 파일 정보 업데이트
+//        }
+//    }}
