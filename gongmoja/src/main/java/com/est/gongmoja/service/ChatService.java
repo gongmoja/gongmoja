@@ -65,7 +65,7 @@ public class ChatService {
                 .createdAt(createdAt)
                 .user(user)
                 .chatRoom(chatRoom)
-                .type(MessageType.CHAT)
+                .type(chatData.getType())
                 .build();
         chatDataRepository.save(chatDataEntity);
 
@@ -92,7 +92,7 @@ public class ChatService {
                 .createdAt(createdAt)
                 .user(admin)
                 .chatRoom(chatRoom)
-                .type(MessageType.DATE)
+                .type(chatData.getType())
                 .build();
         chatDataRepository.save(chatDataEntity);
         simpMessagingTemplate.convertAndSend(String.format("/topic/%s", chatData.getChatRoomId()), chatData);
