@@ -277,14 +277,14 @@
                 </div>
 
                 <!-- 비밀번호 수정 카드항목 -->
-                <div class="card shadow mb-4">
+                <div class="card shadow mb-4" th:if="${userEntity.getProvider() == null}">
                     <div class="card-header py-3">
                         <h6 class="m-0 font-weight-bold text-primary">내 정보</h6>
                     </div>
                     <div class="card-body">
                         <div class="d-flex justify-content-start"> <!-- 버튼들을 오른쪽으로 정렬하는 부분 -->
                             <div class="col-xl-2 mb-2">
-                                <form th:if="${userEntity.getProvider().isEmpty()}" th:action="@{/modify-password}" th:method="get">
+                                <form th:action="@{/modify-password}" th:method="get">
                                     <button class="d-md-inline-block btn btn-md btn-primary shadow-md" type="submit">
                                         <i class="fas fa-poll-h fa-sm text-white-50">
                                         </i>
