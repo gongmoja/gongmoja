@@ -73,6 +73,16 @@ public class ChatService {
         simpMessagingTemplate.convertAndSend(String.format("/topic/%s", chatData.getChatRoomId()), chatData);
     }
 
+    public void sendDate(ChatDataDto chatData){
+        Optional<ChatRoomEntity> optionalChatRoomEntity = chatRoomRepository.findById(chatData.getChatRoomId());
+        ChatRoomEntity chatRoom = optionalChatRoomEntity.get();
+        ChatDataEntity chatDataEntity = ChatDataEntity.builder()
+                .message(chatData.getMessage())
+                .chatRoom(chatRoom)
+                .build();
+        chatDataRepository.save(chatDataEntity);
+        simpMessagingTemplate.convertAndSend(String.format("/topic/%s", chatData.getChatRoomId()), chatData);
+    }
 
     /**
      * 체팅방을 해방 채팅방의 id로 찾는다

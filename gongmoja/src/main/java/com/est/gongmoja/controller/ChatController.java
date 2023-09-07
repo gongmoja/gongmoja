@@ -88,4 +88,10 @@ public class ChatController {
         chatService.sendChat(chatData);
     }
 
+    @MessageMapping("/date")
+    @Transactional
+    public void sendDate(ChatDataDto chatData){
+        chatService.sendChat(chatData);
+    }
+
 }

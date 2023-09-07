@@ -271,12 +271,16 @@
     sendButton.style.display = 'none';
   }
 
-  setInterval(function() {
-    var currentDateTime = new Date();
-    if (currentDateTime >= endDateTime) {
-      disableChat();
-    }
-  }, 1000);
+  function checkEndDateTime() {
+      var currentDateTime = new Date();
+      if (currentDateTime >= endDateTime) {
+          disableChat();
+      }
+  }
+
+  setInterval(checkEndDateTime, 1000);
+
+  window.onload = checkEndDateTime;
 
   function fnMoveIndex(targetPage, seq) {
       // 이동할 대상 페이지의 URL
@@ -285,6 +289,25 @@
       // 새로운 페이지로 이동
       window.location.href = targetURL;
   }
+
+  function onUserMessageInput() {
+      const today = new Date(); // 현재 날짜 가져오기
+      const messagesDiv = document.getElementById('messages');
+
+      // 이미 메시지가 하나 이상 있는지 확인
+      if (messagesDiv.children.length === 0) {
+          // 채팅방에 아직 메시지가 없는 경우, 날짜 메시지 생성
+          const messageP = document.createElement('p');
+          messageP.innerHTML = today.getFullYear() + "년" + (today.getMonth() + 1) + "월" + today.getDate() + "일";
+          messageP.className = "my-message";
+
+          messagesDiv.appendChild(messageP);
+          scrollToBottom(); // 스크롤을 아래로 이동
+      }
+  }
+
+  // 사용자가 메시지 입력하는 input 요소에 이벤트 리스너 추가
+  messageInput.addEventListener('input', onUserMessageInput);
 
 </script>
 
