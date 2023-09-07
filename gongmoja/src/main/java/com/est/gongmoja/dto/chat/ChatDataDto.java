@@ -16,6 +16,7 @@ public class ChatDataDto {
     private String sender;
     private String message;
     private String sentTime;
+//    private LocalDateTime sentTime;
 //    private long userId;
 
 

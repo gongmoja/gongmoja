@@ -17,14 +17,12 @@ public class ChatDataEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    public enum MessageType{
-//        ENTER, TALK
-//    }
-//    private MessageType type;
-
-
     private String message;
-    private String createdAt;
+
+    private LocalDateTime createdAt;
+
+    @Enumerated(EnumType.STRING)
+    private MessageType type;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

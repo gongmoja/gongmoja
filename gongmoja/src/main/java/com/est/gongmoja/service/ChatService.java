@@ -2,10 +2,7 @@ package com.est.gongmoja.service;
 
 import com.est.gongmoja.dto.chat.ChatDataDto;
 import com.est.gongmoja.dto.chat.ChatRoomResponseDto;
-import com.est.gongmoja.entity.ChatDataEntity;
-import com.est.gongmoja.entity.ChatRoomEntity;
-import com.est.gongmoja.entity.StockEntity;
-import com.est.gongmoja.entity.UserEntity;
+import com.est.gongmoja.entity.*;
 import com.est.gongmoja.exception.CustomException;
 import com.est.gongmoja.exception.ErrorCode;
 import com.est.gongmoja.repository.ChatDataRepository;
@@ -19,6 +16,11 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -51,17 +53,19 @@ public class ChatService {
     }
 
     public void sendChat(ChatDataDto chatData){
-        String time = new SimpleDateFormat("HH:mm").format(new Date());
-        chatData.setSentTime(time);
+//        String time = new SimpleDateFormat("HH:mm").format(new Date());
+//        chatData.setSentTime(time);
+        LocalDateTime createdAt = LocalDateTime.parse(chatData.getSentTime(), DateTimeFormatter.ISO_DATE_TIME);
         Optional<ChatRoomEntity> optionalChatRoomEntity = chatRoomRepository.findById(chatData.getChatRoomId());
         ChatRoomEntity chatRoom = optionalChatRoomEntity.get();
         Optional<UserEntity> optionalUser = userRepository.findByNickName(chatData.getSender());
         UserEntity user = optionalUser.get();
         ChatDataEntity chatDataEntity = ChatDataEntity.builder()
                 .message(chatData.getMessage())
-                .createdAt(time)
+                .createdAt(createdAt)
                 .user(user)
                 .chatRoom(chatRoom)
+                .type(MessageType.CHAT)
                 .build();
         chatDataRepository.save(chatDataEntity);
 
@@ -73,6 +77,26 @@ public class ChatService {
         simpMessagingTemplate.convertAndSend(String.format("/topic/%s", chatData.getChatRoomId()), chatData);
     }
 
+    public void sendDate(ChatDataDto chatData){
+        log.info(String.valueOf(chatData.getChatRoomId()));
+        UserEntity admin = userRepository.findById(1L).get();
+        log.info(admin.getNickName());
+        //한국시간으로 변경
+        ZoneId koreaZone = ZoneId.of("Asia/Seoul");
+        ZonedDateTime koreaTime = ZonedDateTime.now(koreaZone);
+        LocalDateTime createdAt = koreaTime.toLocalDateTime();
+        Optional<ChatRoomEntity> optionalChatRoomEntity = chatRoomRepository.findById(chatData.getChatRoomId());
+        ChatRoomEntity chatRoom = optionalChatRoomEntity.get();
+        ChatDataEntity chatDataEntity = ChatDataEntity.builder()
+                .message(chatData.getMessage())
+                .createdAt(createdAt)
+                .user(admin)
+                .chatRoom(chatRoom)
+                .type(MessageType.DATE)
+                .build();
+        chatDataRepository.save(chatDataEntity);
+        simpMessagingTemplate.convertAndSend(String.format("/topic/%s", chatData.getChatRoomId()), chatData);
+    }
 
     /**
      * 체팅방을 해방 채팅방의 id로 찾는다
@@ -97,27 +121,43 @@ public class ChatService {
                 .collect(Collectors.toList());
     }
 
-    public boolean isFavorite(UserEntity userEntity, Long chatRoomId) {
-        Optional<UserEntity> optionalUser = userRepository.findById(userEntity.getId());
-
-        if (optionalUser.isEmpty()) {
-            throw new CustomException(ErrorCode.USERNAME_NOT_FOUND);
-        }
-
-        UserEntity user = optionalUser.get();
-        List<StockEntity> favoriteStocks = user.getStocks();
-
-        // 주어진 chatRoomId를 가진 주식이 favoriteStocks에 있는지 확인
-        boolean isFavorite = favoriteStocks.stream()
-                .anyMatch(stock -> stock.getId().equals(chatRoomId));
-
-        return isFavorite;
-    }
-
     public List<ChatDataEntity> getMessagesByChatRoomId(Long chatRoomId) {
         return chatDataRepository.findByChatRoom_IdOrderByIdAsc(chatRoomId);
     }
 
 
+    public boolean shouldSendDateMessage(Long chatRoomId) {
+        List<ChatDataEntity> messages =  getMessagesByChatRoomId(chatRoomId);
+
+        LocalDate today = LocalDate.now();
+        // 메시지를 하나씩 확인하면서 오늘 일의 날짜를 가지고 있는지 확인
+        for (ChatDataEntity message : messages) {
+            LocalDateTime createdAt = message.getCreatedAt();
+            LocalDate messageDate = createdAt.toLocalDate();
+
+            if (messageDate.equals(today)) {
+                // 오늘 일의 날짜를 가지고 있는 메시지가 하나라도 있다면 false 반환
+                return false;
+            }
+        }
+        return true;
+    }
+
+    //    public boolean isFavorite(UserEntity userEntity, Long chatRoomId) {
+//        Optional<UserEntity> optionalUser = userRepository.findById(userEntity.getId());
+//
+//        if (optionalUser.isEmpty()) {
+//            throw new CustomException(ErrorCode.USERNAME_NOT_FOUND);
+//        }
+//
+//        UserEntity user = optionalUser.get();
+//        List<StockEntity> favoriteStocks = user.getStocks();
+//
+//        // 주어진 chatRoomId를 가진 주식이 favoriteStocks에 있는지 확인
+//        boolean isFavorite = favoriteStocks.stream()
+//                .anyMatch(stock -> stock.getId().equals(chatRoomId));
+//
+//        return isFavorite;
+//    }
 
 }

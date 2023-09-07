@@ -14,6 +14,7 @@ import com.est.gongmoja.service.StockService;
 import com.est.gongmoja.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -87,5 +88,23 @@ public class ChatController {
         }
         chatService.sendChat(chatData);
     }
+
+    @MessageMapping("/date")
+    @Transactional
+    public void sendDate(ChatDataDto chatData){
+        log.info("메시지 매핑 호출 완료");
+        chatService.sendDate(chatData);
+    }
+
+
+    @PostMapping("/date-check")
+    @ResponseBody
+    public Boolean dateCheck(@RequestParam("chatRoomId") Long chatRoomId) {
+        log.info("포스트 호출 완료");
+        boolean isValid = chatService.shouldSendDateMessage(chatRoomId);
+        log.info(String.valueOf(isValid));
+        return isValid;
+    }
+
 
 }
