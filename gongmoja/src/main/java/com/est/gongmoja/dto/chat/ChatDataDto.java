@@ -1,6 +1,7 @@
 package com.est.gongmoja.dto.chat;
 
 import com.est.gongmoja.entity.ChatDataEntity;
+import com.est.gongmoja.entity.MessageType;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -16,6 +17,8 @@ public class ChatDataDto {
     private String sender;
     private String message;
     private String sentTime;
+
+    private MessageType type;
 //    private LocalDateTime sentTime;
 //    private long userId;
 
