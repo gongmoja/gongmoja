@@ -284,7 +284,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-start"> <!-- 버튼들을 오른쪽으로 정렬하는 부분 -->
                             <div class="col-xl-2 mb-2">
-                                <form th:action="@{/modify-password}" th:method="get">
+                                <form th:if="${userEntity.getProvider().isEmpty()}" th:action="@{/modify-password}" th:method="get">
                                     <button class="d-md-inline-block btn btn-md btn-primary shadow-md" type="submit">
                                         <i class="fas fa-poll-h fa-sm text-white-50">
                                         </i>

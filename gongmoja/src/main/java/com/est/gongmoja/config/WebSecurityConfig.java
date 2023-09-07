@@ -29,6 +29,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
+import java.util.Optional;
 
 @Configuration
 @Slf4j
@@ -47,24 +48,20 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         authorizationManagerRequestMatcherRegistry -> authorizationManagerRequestMatcherRegistry
-//                                //메인 페이지는 전부 접근 가능
-//                                .requestMatchers("/").permitAll()
-//                                //oauth2 관련 익명 접근 가능
-//                                .requestMatchers("/oauth2/**").anonymous()
-//                                //로그인 페이지 , 회원가입 페이지는 익명 접근 가능
-//                                .requestMatchers("/login","/register").anonymous()
-//                                //이외 페이지는 인가된 이용자만 접근 가능
-//                                .anyRequest().authenticated()
-//                                //메인 페이지는 전부 접근 가능
-//                                .requestMatchers("/").permitAll()
-//                                //oauth2 관련 익명 접근 가능
-//                                .requestMatchers("/login/oauth/**").anonymous()
-//                                //로그인 페이지 , 회원가입 페이지는 익명 접근 가능
-//                                .requestMatchers("/login","/register").anonymous()
-//                                //이외 페이지는 인가된 이용자만 접근 가능
-//                                .anyRequest().authenticated()
+                                //정적 파일 모두 접근 가
+                                .requestMatchers("/static/**").permitAll()
+                                .requestMatchers("/calendar/**").permitAll()
+                                .requestMatchers("/calendar").permitAll()
+                                //메인 페이지는 전부 접근 가능
+                                .requestMatchers("/").permitAll()
+                                //oauth2 관련 익명 접근 가능
+                                .requestMatchers("/oauth2/**").anonymous()
+                                //로그인 페이지 , 회원가입 페이지는 익명 접근 가능
+                                .requestMatchers("/login","/register").anonymous()
+                                //이외 페이지는 인가된 이용자만 접근 가능
+                                .anyRequest().authenticated()
                                 //추후 비회원의 접근이 어디까지가 괜찮을지 논의
-                               .anyRequest().permitAll()
+//                               .anyRequest().permitAll()
                 )
                 .sessionManagement(
                         sessionManagement -> sessionManagement
@@ -93,6 +90,11 @@ public class WebSecurityConfig {
 
     @Bean
     public void makeAdmin(){
+
+        Optional<UserEntity> optional = userRepository.findByUserName("ADMIN0000");
+        if(optional.isPresent()){
+            return;
+        }
         userRepository.save(UserEntity
                 .builder()
                 .userName("ADMIN0000")

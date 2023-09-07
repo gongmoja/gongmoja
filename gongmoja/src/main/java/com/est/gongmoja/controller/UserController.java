@@ -3,6 +3,7 @@ package com.est.gongmoja.controller;
 import com.est.gongmoja.dto.user.*;
 import com.est.gongmoja.entity.UserEntity;
 import com.est.gongmoja.exception.CustomException;
+import com.est.gongmoja.exception.ErrorCode;
 import com.est.gongmoja.jwt.CookieUtil;
 import com.est.gongmoja.jwt.JwtTokenUtil;
 import com.est.gongmoja.service.MailService;
@@ -132,6 +133,16 @@ public class UserController {
 
         //새로운 비밀번호
         String newPassword = requestDto.getNewPassword();
+        String newPasswordCheck = requestDto.getNewPasswordOneMoreTime();
+
+        //기존 비밀번호
+        String nowPassword = requestDto.getNowPassword();
+
+        //현재 비밀번호가 맞는지 확인 (아니면 예외처리)
+        if(!userService.checkPassword(nowPassword,userEntity)) throw new CustomException(ErrorCode.PASSWORD_ERROR);
+
+        //새 비밀번호 & 새 비밀번호 확인 두개가 같은지 (아니면 예외처리)
+        if(!newPassword.equals(newPasswordCheck)) throw new CustomException(ErrorCode.NEW_PASSWORD_NOT_CORRECT);
 
         //비밀번호 변경
         userService.modifyPassword(newPassword,userEntity);
