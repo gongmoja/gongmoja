@@ -201,6 +201,12 @@
                                 <input type="file" class="form-control" name="file" id="file">
                             </div>
 
+                            <!-- 선택한 파일 표시 및 삭제 버튼 -->
+                            <div id="fileInfo" class="mb-3">
+                                <span id="fileName"></span>
+                                <button type="button" id="deleteFile" class="btn btn-danger">삭제</button>
+                            </div>
+
                             <!--제출하기 버튼-->
                             <input type="submit" value="제출하기" class="btn btn-primary my-2">
                         </form>
@@ -220,6 +226,8 @@
 
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
     function fnMoveIndex(targetPage, seq) {
         // 이동할 대상 페이지의 URL
@@ -229,7 +237,24 @@
         window.location.href = targetURL;
     }
 
+    // 파일업로드 삭제 버튼
+    $(document).ready(function() {
+        // 파일 선택(input type="file") 변경 이벤트 처리
+        $('#file').change(function() {
+            var fileName = $(this).val().split('\\').pop(); // 선택한 파일의 이름 추출
+            $('#fileName').text(fileName); // 파일 이름을 표시
+            $('#deleteFile').show(); // 삭제 버튼 표시
+        });
+
+        // 삭제 버튼 클릭 이벤트 처리
+        $('#deleteFile').click(function() {
+            $('#file').val(''); // 파일 선택(input type="file") 내용 비움
+            $('#fileName').text(''); // 파일 이름 표시 비움
+            $(this).hide(); // 삭제 버튼 숨김
+        });
+    });
 </script>
+
 <!-- Bootstrap core JavaScript-->
 <script src="/static/bootstrap/vendor/jquery/jquery.min.js"></script>
 <script src="/static/bootstrap/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -246,6 +271,7 @@
 <!-- Page level custom scripts -->
 <script src="/static/bootstrap/js/demo/chart-area-demo.js"></script>
 <script src="/static/bootstrap/js/demo/chart-pie-demo.js"></script>
+
 </body>
 
 <style>
@@ -278,5 +304,6 @@
         overflow: hidden;
         border: 0;
     }
+
 </style>
 </html>
