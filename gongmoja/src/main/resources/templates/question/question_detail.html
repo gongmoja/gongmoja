@@ -201,8 +201,9 @@
                     <!--첨부파일 확인-->
                     <div>
                         <h6>첨부파일</h6>
-                        <img th:if="${question.filepath}" th:src="@{'/media/' + user.userName + '/' + question.id + '/' + question.filePath}" alt="Image">
+                        <img th:if="${question.filepath}" th:src="@{'/static/questionFiles/' + user.userName + '/' + question.id + '/' + question.fileName}" alt="Image">
                     </div>
+
                 </div>
             </div>
 

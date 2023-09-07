@@ -89,7 +89,7 @@ public class QuestionService {
 
         questionRepository.save(question); // QuestionEntity를 저장한 이후에 Id가 할당됨
 
-        String projectPath = System.getProperty("user.dir") + "/media";
+        String projectPath = System.getProperty("user.dir") + "/static/questionFiles"; // Update the base directory
 
         if (imageFile != null && !imageFile.isEmpty()) {
             // 파일 업로드 시 userName 및 QuestionId 별 디렉토리 생성
@@ -106,7 +106,7 @@ public class QuestionService {
             imageFile.transferTo(saveFile);
 
             question.setFileName(fileName);
-            question.setFilePath("/media/" + user.getUserName() + "/" + question.getId() + "/" + fileName);
+            question.setFilePath("/static/questionFiles/" + user.getUserName() + "/" + question.getId() + "/" + fileName); // Update the file path
             questionRepository.save(question); // 파일 정보 업데이트
         }
     }
