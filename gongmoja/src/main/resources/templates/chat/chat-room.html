@@ -165,14 +165,11 @@
             </nav>
             <!-- 토글 바 끝 -->
           <div class="container-fluid">
-              <h1 id="text-container" style="width: 350px; overflow: hidden;">
-                  <span id="text-content" th:text="${stockName}" style="font-size: 24px;"></span>
-              </h1>
-              <h1 id="chat-room-label"></h1>
+              <h1 th:utext="${stockName + '<br>채팅방'}" ></h1>
               <style>
                   #messages {
                       height: 600px;
-                      width: 350px;
+                      width: 340px;
                       overflow-y: scroll;
                   }
                   .my-message {
@@ -225,7 +222,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.2/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 <script th:inline="javascript">
-
   const socket = new WebSocket('ws://localhost:8080/chatting');
   const pathname = window.location.pathname;
   const chatRoomId = parseInt(pathname.split("/")[2]);
@@ -419,33 +415,6 @@
           }
       });
   }
-
-  // 제목 텍스트의 폰트 크기 가져오기
-  var titleText = document.getElementById("text-content");
-  var textContainer = document.getElementById("text-container");
-  var chatRoomLabel = document.getElementById("chat-room-label");
-
-  // 텍스트의 길이 측정
-  var textLength = titleText.textContent.length;
-
-  // 원하는 최대 길이 (350px)에 따라 폰트 크기 조절
-  var maxTextLength = 20; // 예를 들어, 최대 길이를 20으로 설정
-  var fontSize = 24; // 기본 폰트 크기
-
-  if (textLength > maxTextLength) {
-      fontSize = (fontSize * maxTextLength) / textLength;
-  }
-
-  // 폰트 크기 설정
-  titleText.style.fontSize = fontSize + "px";
-
-  // "채팅방" 텍스트 추가 및 폰트 크기 설정
-  chatRoomLabel.innerText = "채팅방";
-  chatRoomLabel.style.fontSize = fontSize + "px";
-
-  // 텍스트가 컨테이너를 벗어나는 경우에도 일부 텍스트만 표시
-  textContainer.style.whiteSpace = "nowrap";
-  textContainer.style.textOverflow = "ellipsis";
 
 
 </script>
