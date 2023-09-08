@@ -199,14 +199,12 @@
                     </div>
 
                     <!--첨부파일 확인-->
-                    <div>
-                        <a th:href="${question.filepath}" target="_blank">
-                            <button class="btn btn-primary my-0">첨부파일 확인</button>
-                        </a>
+                    <div th:if="${question.filepath}">
+                        <p>업로드한 첨부파일</p>
+                        <img th:src="${question.filepath}" width="400" height="300">
                     </div>
                 </div>
             </div>
-
 
                 <div class="card shadow mb-4">
                 <div class="card-header py-3">
