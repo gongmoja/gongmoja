@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns="http://www.w3.org/1999/html">
 <!-- 스타일 코드 추가-->
 <style>
     #stiky {
@@ -146,7 +146,7 @@
                                 <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                 마이페이지
                             </a>
-                            <a class="dropdown-item" href="#">
+                            <a class="dropdown-item" href="/chat/list">
                                 <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                                 참여중인 채팅방
                             </a>
@@ -165,11 +165,11 @@
             </nav>
             <!-- 토글 바 끝 -->
           <div class="container-fluid">
-            <h1 th:text="${stockName + ' 채팅방'}"></h1>
+              <h1 th:utext="${stockName + '<br>채팅방'}" ></h1>
               <style>
                   #messages {
                       height: 600px;
-                      width: 350px;
+                      width: 340px;
                       overflow-y: scroll;
                   }
                   .my-message {
@@ -183,19 +183,28 @@
                       font-weight: bold;
                   }
 
+
               </style>
             <div id="chat">
               <div id="messages">
                 <div th:each="message : ${chatMessages}">
                     <p th:class="${message.user.id eq 1} ? 'admin-message' : (${message.user.id eq currentUserId} ? 'my-message' : 'other-message')">
-                        <span th:if="${message.type != 'DATE'}" th:text="${#temporals.format(message.createdAt, 'HH:mm')}"></span>
-                        <span th:if="${message.type == 'DATE'}" th:text="${message.message}"></span><br>
-                        <span th:unless="${message.type == 'DATE'}" th:text="${message.user.nickName + ': ' + message.message}"></span>
+                         <span th:if="${message.user.id != 1}">
+                            <span th:text="${#temporals.format(message.createdAt, 'HH:mm')}"></span><br>
+                            <span th:text="${message.user.nickName + ': ' + message.message}"></span>
+                        </span>
+                        <span th:if="${message.user.id eq 1}" th:text="${message.message}"></span><br>
                     </p>
+
                 </div>
               </div>
                 <input type="text" id="message" placeholder="메시지를 입력하세요.">
-                <button class="send-button" onclick="sendMessageWithDateCheck()">보내기</button>
+                <button class="send-button btn btn-primary" onclick="sendMessageWithDateCheck()">보내기</button><br>
+                <br>
+                <button class="chat-room-button btn btn-primary" onclick="window.location.href='/chat/list'">참여중인 채팅방</button><br>
+                <br>
+                <button class="leave-chat-button btn btn-primary" onclick="leaveChatRoom()">채팅방 나가기</button>
+
             </div>
           </div>
         </div>
@@ -324,10 +333,12 @@
       } else {
           // 일반 메시지인 경우
           const formattedTime = formatTime(message.sentTime);
-          messageP.innerHTML = formattedTime + "<br>" + message.sender + ": " + message.message;
+
           if (currentUserId === 1) {
+              messageP.innerHTML = message.message;
               messageP.className = "admin-message";
           } else {
+              messageP.innerHTML = formattedTime + "<br>" + message.sender + ": " + message.message;
               messageP.className = "my-message";
           }
           messagesDiv.appendChild(messageP);
@@ -386,6 +397,23 @@
 
       // 새로운 페이지로 이동
       window.location.href = targetURL;
+  }
+
+  function leaveChatRoom() {
+      var method = 'POST';
+      var url = '/chat/delete-from/' + chatRoomId;
+
+      fetch(url, {
+          method: method,
+          headers: {
+              'Content-Type': 'application/json;charset=UTF-8'
+          }
+      }).then(function(response) {
+          if (response.ok) {
+              // 채팅방을 나갔다는 메시지를 받았을 때, /chat/list로 리다이렉트
+              window.location.href = '/chat/list';
+          }
+      });
   }
 
 

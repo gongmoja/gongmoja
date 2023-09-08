@@ -24,7 +24,6 @@ public class ChatRoomEntity {
     private String title;
     private LocalDateTime openDate;
     private LocalDateTime closeDate;
-    private Long userCount;
 
 
     @OneToOne
@@ -33,4 +32,8 @@ public class ChatRoomEntity {
 
     @OneToMany(mappedBy = "chatRoom")
     final private List<ChatDataEntity> chatDataEntityList = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "chatRooms")
+    private List<UserEntity> users;
+
 }
