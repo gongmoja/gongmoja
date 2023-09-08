@@ -103,6 +103,7 @@ public class ChatController {
             Page<ChatRoomEntity> userChatRooms = chatService.getUserChatRoomsPaged(userEntity, pageable);
             model.addAttribute("userChatRooms", userChatRooms);
         }
+        model.addAttribute("currentUserId", userEntity.getId());
         model.addAttribute("userEntity", userEntity); // top bar에서 이용
         return "chat/list";
     }

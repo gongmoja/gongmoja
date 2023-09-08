@@ -186,7 +186,7 @@
               <td class="col-6" th:text="${chatRoom.title}" id="chat-room-title"></td>
               <td class="col-4">
                 <a th:href="@{/chat/{id}(id=${chatRoom.id})}" class="btn btn-primary">입장</a>
-                <th:block th:if="${userEntity.role == 'ROLE_ADMIN'}">
+                <th:block th:if="${currentUserId != 1}">
                   <button class="btn btn-danger" th:onclick="'leaveChatRoom(' + ${chatRoom.id} + ')'" title="채팅방 나가기">X</button>
                 </th:block>
               </td>
