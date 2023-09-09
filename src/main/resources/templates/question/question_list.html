@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+    #stiky {
+        position:sticky ;
+        top: 20px;
+        bottom: 20px;
+    }
+
+    /* 공모자들 타이틀 폰트 */
+    @font-face {
+        font-family: 'yg-jalnan';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    .horizontal-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .sidebar-brand-text {
+        font-family: 'yg-jalnan', sans-serif;
+        font-size: 23px;
+        font-weight: bold;
+        color: #5D5D5D;
+    }
+</style>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>공모자들</title>
+
+    <!-- Custom fonts for this template-->
+    <link rel="shortcut icon" href="/static/favicon.ico">
+    <link href="/static/bootstrap/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="/static/bootstrap/css/sb-admin-2.min.css" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <!-- 사이드바 -->
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        <!-- Sidebar - Brand -->
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
+            <div class="sidebar-brand-icon rotate-n-15">
+                <!--아이콘 변경-->
+                <!--                    <i class="fas fa-laugh-wink"></i>-->
+            </div>
+            <div class="horizontal-container">
+                <div>GongMoJa</div></div>
+        </a>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0">
+        <hr class="sidebar-divider my-0">
+
+        <!-- 구분선 -->
+        <hr class="sidebar-divider">
+
+        <!-- 내비게이션 1번 제목-->
+        <!--내비게이션 1번 항목 (공모주)-->
+        <div id="stiky" >
+            <div  class="sidebar-heading">GONGMOJA</div>
+
+            <!-- 1. 공모주 일정 메뉴  -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" onclick="fnMoveIndex('/', '3');" data-toggle="collapse" data-target="#collapseTwo"
+                   aria-expanded="true" aria-controls="collapseTwo">
+                    <!--폴더아이콘-->
+                    <i class="fas fa-fw fa-calendar-alt"></i>
+                    <span>공모주 일정</span>
+                </a>
+            </li>
+            <!-- 2. 공모주 경쟁률 메뉴  -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" onclick="fnMoveIndex('/', '1');" data-toggle="collapse" data-target="#collapseTwo"
+                   aria-expanded="true" aria-controls="collapseTwo">
+                    <!--폴더아이콘-->
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>공모주 경쟁률</span>
+                </a>
+            </li>
+            <!-- 3. 공모주 뉴스 메뉴  -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" onclick="fnMoveIndex('/', '2');" data-toggle="collapse" data-target="#collapseTwo"
+                   aria-expanded="true" aria-controls="collapseTwo">
+                    <!--폴더아이콘-->
+                    <i class="fas fa-fw fa-layer-group"></i>
+                    <span>공모주 뉴스</span>
+                </a>
+            </li>
+            <!-- 구분선 -->
+            <hr class="sidebar-divider d-none d-md-block">
+
+    </ul>
+    <!-- 왼쪽 사이드바 종료 -->
+
+    <!-- 사이드바 숨기기 -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                <!-- Sidebar Toggle (Topbar) -->
+                <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                    <i class="fa fa-bars"></i>
+                </button>
+
+                <!-- 공모자들 제목-->
+                <div class="horizontal-container">
+                    <!--                    <img src="/static/bootstrap/img/공모자들로고-002.png" alt="공모자들로고" style="width: 48px;">-->
+                    <div class="sidebar-brand-text mx-3">공모자들<sup></sup></div>
+                </div>
+
+                <!-- Topbar Navbar -->
+                <ul class="navbar-nav ml-auto">
+
+                    <div class="topbar-divider d-none d-sm-block"></div>
+
+                    <!--탑 네비게이션 바 - 로그인 로그아웃 사용자정보-->
+                    <!-- Nav Item - User Information -->
+                    <li class="nav-item dropdown no-arrow">
+                        <a class="nav-link dropdown-toggle text-dark text-center" href="#" id="userDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="mr-4 d-none d-lg-inline text-gray-600 small" th:if="${userEntity != null}"  th:text="${userEntity.nickName}+님"></span>
+                            <span class="mr-4 d-none d-lg-inline text-gray-600 small" th:unless="${userEntity != null}" >클릭하여 로그인</span>
+                            <img class="img-profile rounded-circle" src="/static/bootstrap/img/undraw_profile.svg">
+                            <!--                                    <button th:method="post" th:action="@{/logout}"></button>-->
+                        </a>
+                        <!-- Dropdown - User Information -->
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                             aria-labelledby="userDropdown">
+                            <a class="dropdown-item" href="/favorites/list">
+                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                마이페이지
+                            </a>
+                            <a class="dropdown-item" href="#">
+                                <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                                참여중인 채팅방
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" th:if="${userEntity == null}" href="/login">
+                                <i class="fas fa-sign-in-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                로그인
+                            </a>
+                            <a class="dropdown-item" th:unless="${userEntity == null}" href="/logout">
+                                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                로그아웃
+                            </a>
+                        </div>
+                    </li>
+
+                </ul>
+
+            </nav>
+            <!-- 토글 바 끝 -->
+
+        <!-- Basic Card Example -->
+        <div class="card shadow mb-4" style="margin: 0 20px;">
+            <div class="card-header py-3">
+                <h5 class="m-0 font-weight-bold text-primary" th:text="${userEntity.nickName} + '님의 문의내역'"></h5>
+            </div>
+            <div class="card-body p-0"> <!-- Added p-0 class to remove horizontal padding -->
+                <div class="container my-3">
+                    <table class="table">
+                        <thead class="table-dark">
+                        <tr class="text-center">
+                            <th style="width: 15%; font-size: 14px;">번호</th>
+                            <th style="width: 50%; font-size: 14px;">제목</th>
+                            <th style="font-size: 14px;">작성자</th>
+                            <th style="font-size: 13px;">작성일시</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="questionEntity, index : ${questionEntity}">
+                        <tr class="text-center" th:each="questionEntity, loop : ${paging}">
+                            <!--번호-->
+                            <td th:text="${loop.count}"></td>
+                            <!--제목-->
+                            <td class="text-center">
+                                <a th:href="@{|/question/detail/${questionEntity.id}|}" th:text="${questionEntity.subject}"></a>
+                                <span class="text-danger small ms-2"
+                                      th:if="${#lists.size(questionEntity.answerEntityList) > 0}"
+                                      th:text="${#lists.size(questionEntity.answerEntityList)}">
+                                </span>
+                            </td>
+                            <!--작성자-->
+                            <td><span th:if="${questionEntity.user != null}" th:text="${questionEntity.user.userName}"></span></td>
+                            <!--일시-->
+                            <td th:text="${#temporals.format(questionEntity.createDate, 'yy-MM-dd HH:mm')}"></td>
+                        </tr>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+            <!-- 페이징처리 시작 -->
+            <div th:if="${!paging.isEmpty()}">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
+                        <a class="page-link"
+                           th:href="@{|?page=${paging.number-1}|}">
+                            <span>이전</span>
+                        </a>
+                    </li>
+                    <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
+                        th:if="${page >= paging.number-5 and page <= paging.number+5}"
+                        th:classappend="${page == paging.number} ? 'active'"
+                        class="page-item">
+                        <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
+                    </li>
+                    <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
+                        <a class="page-link" th:href="@{|?page=${paging.number+1}|}">
+                            <span>다음</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- 페이징처리 끝 -->
+
+        <!-- Footer -->
+        <footer class="sticky-footer bg-white">
+            <div class="container my-auto">
+                <div class="copyright text-center my-auto">
+                    <span>Copyright &copy; gongmoja 2023</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+</div>
+<script>
+    function fnMoveIndex(targetPage, seq) {
+        // 이동할 대상 페이지의 URL
+        var targetURL = targetPage + "#div" + seq;
+
+        // 새로운 페이지로 이동
+        window.location.href = targetURL;
+    }
+</script>
+<!-- Bootstrap core JavaScript-->
+<script src="/static/bootstrap/vendor/jquery/jquery.min.js"></script>
+<script src="/static/bootstrap/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="/static/bootstrap/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="/static/bootstrap/js/sb-admin-2.min.js"></script>
+
+<!-- Page level plugins -->
+<script src="/static/bootstrap/vendor/chart.js/Chart.min.js"></script>
+
+<!-- Page level custom scripts -->
+<script src="/static/bootstrap/js/demo/chart-area-demo.js"></script>
+<script src="/static/bootstrap/js/demo/chart-pie-demo.js"></script>
+</body>
+</html>

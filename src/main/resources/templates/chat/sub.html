@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${stockName + ' 채팅방'}"></title>
+    <style>
+        #messages {
+            height: 800px;
+            width: 600px;
+            overflow-y: scroll;
+        }
+        .my-message {
+            text-align: right;
+        }
+        .other-message {
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+<h1 th:text="${stockName + ' 채팅방'}"></h1>
+<div id="chat">
+    <div id="messages">
+        <div th:each="message : ${chatMessages}">
+            <!-- 현재 사용자가 보낸 메시지인 경우 -->
+            <p th:class="${message.user.id eq currentUserId} ? 'my-message' : 'other-message'">
+                <span th:text="${message.createdAt}"></span><br>
+                <span th:text="${message.user.nickName + ': ' + message.message}"></span>
+            </p>
+        </div>
+    </div>
+    <input type="text" id="message" placeholder="메시지를 입력하세요.">
+    <button onclick="sendMessage()">보내기</button>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.2/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script>
+    const socket = new WebSocket('ws://localhost:8080/chatting');
+    const pathname = window.location.pathname;
+    const chatRoomId = parseInt(pathname.split("/")[2]);
+    const stompClient = Stomp.over(socket);
+
+    function scrollToBottom() {
+        const messagesDiv = document.getElementById('messages');
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+    stompClient.connect({}, function (frame) {
+        console.log('Connected: ' + frame);
+        stompClient.subscribe(`/topic/${chatRoomId}`, function (message) {
+            showMessage(JSON.parse(message.body));
+        });
+    });
+
+    function sendMessage() {
+        const messageInput = document.getElementById('message');
+        const message = messageInput.value;
+        if (message.trim() !== '') {
+            stompClient.send("/app/chat", {}, JSON.stringify({
+                "chatRoomId": chatRoomId,
+                "message": message
+            }));
+            messageInput.value = '';
+        }
+    }
+
+    function showMessage(message) {
+        const messagesDiv = document.getElementById('messages');
+        const messageP = document.createElement('p');
+        messageP.innerHTML = message.sentTime + "<br>" + message.sender + ": " + message.message;
+
+        // 항상 내가 보낸 메시지인 경우 오른쪽 정렬 클래스를 추가합니다.
+        messageP.className = "my-message";
+
+        messagesDiv.appendChild(messageP);
+
+        // 스크롤을 항상 가장 아래로 조정하여 새로운 메시지가 보이도록 합니다.
+        scrollToBottom();
+    }
+
+    // 엔터 키로 메시지 전송을 가능하게 하는 코드
+    const messageInput = document.getElementById('message');
+    messageInput.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            sendMessage();
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        scrollToBottom();
+    });
+
+    const endDateTimeStr = /*[[${endDate}]]*/ '';
+    const endDateTime = new Date(endDateTimeStr);
+
+    function disableChat() {
+        // 메시지 입력 상자 비활성화
+        const messageInput = document.getElementById('message');
+        messageInput.disabled = true;
+        messageInput.placeholder = "채팅이 비활성화되었습니다.";
+
+        // 보내기 버튼 비활성화
+        const sendButton = document.querySelector('button');
+        sendButton.disabled = true;
+    }
+
+    setInterval(function() {
+        const currentDateTime = new Date();
+        if (currentDateTime >= endDateTime) {
+            disableChat();
+        }
+    }, 1000);
+
+</script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>News Page</title>
+</head>
+<body>
+
+<h1 th:text="${stockName}">stockName</h1>
+
+<div th:each="news : ${newsList}">
+    <div class="news-item">
+        <p></p>
+        <h2 style="display: inline;"><a th:href="${news.newsUrl}" target="_blank"  th:text="${news.title}" >News Title</a></h2>
+        <p th:text="${news.publisher}" style="display: inline; margin: 0;">Publisher</p>
+        <img th:src="${news.imageUrl}" alt="News Image" width="20" style="max-height: 20px; display: inline;">
+        <span style="display: inline;">|</span>
+        <p th:text="${#temporals.format(news.publishedTime, 'yyyy-MM-dd')}" style="display: inline; margin: 0;">Published Date</p>
+        <p th:text="${news.content}">News Summary</p>
+    </div>
+</div>
+
+</body>
+</html>

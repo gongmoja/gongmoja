@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" th:href="@{/static/question/style.css}">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/js/bootstrap.min.js"></script>
+
+
+<head>
+    <meta charset="UTF-8">
+    <title>메인페이지</title>
+</head>
+<body>
+
+<!--내비게이션 바-->
+<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/gongmoja">공모자들</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                <li class="nav-item">
+                    <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/login}">로그인</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/logout}">로그아웃</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/register}">회원가입</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/my">마이페이지</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/display-graph">경쟁률</a>
+                </li>
+                <!--공모주 뉴스 아이디 매핑 수정해야함-->
+                <li class="nav-item">
+                    <a class="nav-link" href="/news/1">공모주 뉴스</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/calendar">공모주 일정</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/question/create">질문게시판</a>
+                </li>
+                <!--admin만 보일 수 있게 수정-->
+                <li class="nav-item">
+                    <a class="nav-link" href="/question/list">질문 목록</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

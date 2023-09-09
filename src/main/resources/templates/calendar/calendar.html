@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='utf-8'/>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <!-- fullcalendar css, js -->
+
+    <link href='/static/fullcalendar-5.11.5/main.css' rel='stylesheet' />
+    <script src='/static/fullcalendar-5.11.5/main.js'></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        document.addEventListener(
+            'DOMContentLoaded', function () {
+                var calendarEl = document.getElementById('calendar');
+
+                var calendar = new FullCalendar.Calendar(calendarEl, {
+                    initialView: 'dayGridMonth', // 초기 로드 될때 보이는 캘린더 화면(기본 설정: 달)
+                    dayMaxEventRows: true,
+                    views: {
+                        timeGrid: {
+                            dayMaxEventRows: 3
+                        }
+                    },
+                    locale: "ko", // 한국어 설정
+                    displayEventTime: false, // 일정 시각 안보이도록
+                    eventSources: { // 이벤트 목록
+                        url: '/calendar/event',
+                        method: 'GET',
+                        failure: function () {
+                            alert('there was an error while fetching events!');
+                        }
+                    }
+                });
+
+                // 캘린더 렌더
+                calendar.render();
+                // calendar.updateSize();
+                // calendar.setOption('height', 700); // 크기 동적으로
+
+            });
+
+
+    </script>
+</head>
+</html>

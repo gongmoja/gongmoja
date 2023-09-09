@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<style>
+    #stiky {
+        position:sticky ;
+        top: 20px;
+        bottom: 20px;
+    }
+
+    /* 공모자들 타이틀 폰트 */
+    @font-face {
+        font-family: 'yg-jalnan';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    .horizontal-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .sidebar-brand-text {
+        font-family: 'yg-jalnan', sans-serif;
+        font-size: 23px;
+        font-weight: bold;
+        color: #5D5D5D;
+    }
+</style>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>공모자들</title>
+
+    <!-- Custom fonts for this template-->
+    <link rel="shortcut icon" href="/static/favicon.ico">
+    <link href="/static/bootstrap/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="/static/bootstrap/css/sb-admin-2.min.css" rel="stylesheet">
+
+
+</head>
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <!-- 사이드바 -->
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        <!-- Sidebar - Brand -->
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
+            <div class="sidebar-brand-icon rotate-n-15">
+                <!--아이콘 변경-->
+                <!--                    <i class="fas fa-laugh-wink"></i>-->
+            </div>
+            <div class="horizontal-container">
+                <div>GongMoJa</div></div>
+        </a>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0">
+        <hr class="sidebar-divider my-0" >
+
+        <!-- 구분선 -->
+        <hr class="sidebar-divider">
+
+        <!-- 내비게이션 1번 제목-->
+
+        <!--내비게이션 1번 항목 (공모주)-->
+        <div id="stiky" >
+            <div  class="sidebar-heading">GONGMOJA</div>
+
+            <!-- 1. 공모주 일정 메뉴  -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" onclick="fnMoveIndex('/', '3');" data-toggle="collapse" data-target="#collapseTwo"
+                   aria-expanded="true" aria-controls="collapseTwo">
+                    <!--폴더아이콘-->
+                    <i class="fas fa-fw fa-calendar-alt"></i>
+                    <span>공모주 일정</span>
+                </a>
+            </li>
+            <!-- 2. 공모주 경쟁률 메뉴  -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" onclick="fnMoveIndex('/', '1');" data-toggle="collapse" data-target="#collapseTwo"
+                   aria-expanded="true" aria-controls="collapseTwo">
+                    <!--폴더아이콘-->
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>공모주 경쟁률</span>
+                </a>
+            </li>
+            <!-- 3. 공모주 뉴스 메뉴  -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" onclick="fnMoveIndex('/', '2');" data-toggle="collapse" data-target="#collapseTwo"
+                   aria-expanded="true" aria-controls="collapseTwo">
+                    <!--폴더아이콘-->
+                    <i class="fas fa-fw fa-layer-group"></i>
+                    <span>공모주 뉴스</span>
+                </a>
+            </li>
+
+        <!-- 구분선 -->
+        <hr class="sidebar-divider d-none d-md-block">
+
+    </ul>
+    <!-- 왼쪽 사이드바 종료 -->
+
+    <!-- 사이드바 숨기기 -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                <!-- Sidebar Toggle (Topbar) -->
+                <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                    <i class="fa fa-bars"></i>
+                </button>
+
+                <!-- 공모자들 제목-->
+                <div class="horizontal-container">
+                    <!--                    <img src="/static/bootstrap/img/공모자들로고-002.png" alt="공모자들로고" style="width: 48px;">-->
+                    <div class="sidebar-brand-text mx-3">공모자들<sup></sup></div>
+                </div>
+
+                <!-- Topbar Navbar -->
+                <ul class="navbar-nav ml-auto">
+
+                    <div class="topbar-divider d-none d-sm-block"></div>
+
+                    <!--탑 네비게이션 바 - 로그인 로그아웃 사용자정보-->
+                    <!-- Nav Item - User Information -->
+                    <li class="nav-item dropdown no-arrow">
+                        <a class="nav-link dropdown-toggle text-dark text-center" href="#" id="userDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="mr-4 d-none d-lg-inline text-gray-600 small" th:if="${userEntity != null}"  th:text="${userEntity.nickName}+님"></span>
+                            <span class="mr-4 d-none d-lg-inline text-gray-600 small" th:unless="${userEntity != null}" >클릭하여 로그인</span>
+                            <img class="img-profile rounded-circle" src="/static/bootstrap/img/undraw_profile.svg">
+                            <!--                                    <button th:method="post" th:action="@{/logout}"></button>-->
+                        </a>
+                        <!-- Dropdown - User Information -->
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                             aria-labelledby="userDropdown">
+                            <a class="dropdown-item" href="/favorites/list">
+                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                마이페이지
+                            </a>
+                            <a class="dropdown-item" href="#">
+                                <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                                참여중인 채팅방
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" th:if="${userEntity == null}" href="/login">
+                                <i class="fas fa-sign-in-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                로그인
+                            </a>
+                            <a class="dropdown-item" th:unless="${userEntity == null}" href="/logout">
+                                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                로그아웃
+                            </a>
+                        </div>
+                    </li>
+
+                </ul>
+
+            </nav>
+            <!-- 토글 바 끝 -->
+
+            <!-- Page Heading -->
+            <div class="container-fluid">
+                <!--마이페이지 타이틀-->
+                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                    <h1 class="h4 mb-0 text-gray-800" th:text="${userEntity.nickName} + '님의 마이페이지'"></h1>
+                    <hr style="color: #A6A6A6; height: 0.5px;">
+                </div>
+
+                <!-- Basic Card Example -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">즐겨찾는 공모주</h6>
+                    </div>
+                    <div class="card-body">
+                        <!-- Pending Requests Card Example -->
+                        <ul style="padding: 0">
+                            <th:block th:each="stock : ${favoriteStocks}">
+                                <li style="list-style: none">
+
+                                    <div class="col-xl-3 col-md-6 mb-4 d-flex"> <!-- d-flex 클래스 추가 -->
+                                        <div class="card border-left-warning shadow h-100 py-2 flex-grow-1"> <!-- flex-grow-1 클래스 추가 -->
+                                            <div class="card-body">
+                                                <div class="row no-gutters align-items-center">
+                                                    <div class="col mr-2">
+                                                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                                            즐겨찾는 공모주
+                                                        </div>
+                                                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="dataFromDB">
+                                                            <a th:href="@{/stock/{stockId}(stockId=${stock.id})}"
+                                                               th:text="${stock.name}"
+                                                               style="text-decoration: none; color:#5a5c69"></a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <!-- TODO 현재는 각 주식의 상세 페이지로 이동하도록 함. 각 주식의 채팅 url로 변경 필요 -->
+                                                        <a th:href="@{/chat/{stockId}(stockId=${stock.id})}">
+                                                            <i class="fas fa-comment fa-2x custom-icon"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button id="deleteFavoriteButton" class="trash-icon" th:data-stock-id="${stock.id}">
+                                            <i class="fas fa-trash"></i> <!-- 즐겨찾기 삭제 아이콘 -->
+                                        </button>
+                                    </div>
+                                </li>
+                            </th:block>
+                        </ul>
+                    </div>
+                </div>
+
+
+                <!-- 문의관련 카드항목 -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">문의하기</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-start"> <!-- 버튼들을 오른쪽으로 정렬하는 부분 -->
+                            <div class="col-xl-2 mb-2">
+                                <form th:action="@{/question/create}" th:method="get">
+                                    <button class="d-md-inline-block btn btn-md btn-primary shadow-md" type="submit">
+                                        <i class="fas fa-question-circle fa-sm text-white-50">
+                                        </i>
+                                        &nbsp;&nbsp;&nbsp;문의하기&nbsp;&nbsp;
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!--ROLE_USER인 경우에만 내 문의내역 버튼 활성화-->
+                        <div class="d-flex justify-content-start">
+                            <div class="col-xl-2 mb-2" th:if="${#authorization.expression('hasRole(''ROLE_USER'')')}">
+                                <form th:action="@{/question/list-by-user}" th:method="get">
+                                    <button class="d-md-inline-block btn btn-md btn-primary shadow-md" type="submit">
+                                        <i class="fas fa-poll-h fa-sm text-white-50">
+                                        </i>
+                                        &nbsp;&nbsp;&nbsp; 내 문의내역&nbsp;
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!--ROLE_ADMIN인 경우에만 전체 문의내역 버튼 활성화-->
+                        <div class="d-flex justify-content-start">
+                            <div class="col-xl-2 mb-2" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+                                <form th:action="@{/admin}" th:method="get">
+                                    <button class="d-md-inline-block btn btn-md btn-primary shadow-md" type="submit">
+                                        <i class="fas fa-poll-h fa-sm text-white-50">
+                                        </i>
+                                        &nbsp; 전체 문의내역&nbsp;
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 비밀번호 수정 카드항목 -->
+                <div class="card shadow mb-4" th:if="${userEntity.getProvider() == null}">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">내 정보</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-start"> <!-- 버튼들을 오른쪽으로 정렬하는 부분 -->
+                            <div class="col-xl-2 mb-2">
+                                <form th:action="@{/modify-password}" th:method="get">
+                                    <button class="d-md-inline-block btn btn-md btn-primary shadow-md" type="submit">
+                                        <i class="fas fa-poll-h fa-sm text-white-50">
+                                        </i>
+                                        &nbsp;비밀번호 수정
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="sticky-footer bg-white">
+            <div class="container my-auto">
+                <div class="copyright text-center my-auto">
+                    <span>Copyright &copy; gongmoja 2023</span>
+                </div>
+            </div>
+        </footer>
+
+        </div>
+    </div>
+
+<script>
+        function fnMoveIndex(targetPage, seq) {
+        // 이동할 대상 페이지의 URL
+        var targetURL = targetPage + "#div" + seq;
+
+        // 새로운 페이지로 이동
+        window.location.href = targetURL;
+    }
+
+</script>
+<!-- Bootstrap core JavaScript-->
+<script src="/static/bootstrap/vendor/jquery/jquery.min.js"></script>
+<script src="/static/bootstrap/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="/static/bootstrap/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="/static/bootstrap/js/sb-admin-2.min.js"></script>
+
+<!-- Page level plugins -->
+<script src="/static/bootstrap/vendor/chart.js/Chart.min.js"></script>
+
+<!-- Page level custom scripts -->
+<script src="/static/bootstrap/js/demo/chart-area-demo.js"></script>
+<script src="/static/bootstrap/js/demo/chart-pie-demo.js"></script>
+<script th:inline="javascript">
+    document.addEventListener("DOMContentLoaded", function () {
+        var deleteButtons = document.querySelectorAll('.trash-icon');
+
+        deleteButtons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                // 해당 버튼의 data-stock-id 속성을 읽어와서 stockId 변수로 설정
+                var stockId = button.getAttribute('data-stock-id');
+
+                fetch('/favorites/remove/' + stockId, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json;charset=UTF-8'
+                    }
+                })
+                    .then(response => {
+                        if (response.status === 200) {
+                            // 삭제가 성공하면 해당 카드 또는 요소를 화면에서 제거
+                            var cardToDelete = button.closest('.col-xl-3');
+                            if (cardToDelete) {
+                                cardToDelete.remove();
+                            }
+                        } else {
+                            console.error('오류 발생');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('오류 발생', error);
+                    });
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
+
+<style>
+    .custom-icon {
+        color: #f6c23e; /* 원하는 색상으로 변경 */
+    }
+    .trash-icon{
+        color: dimgray;
+        font-size: 20px;
+        padding: 0; /* 패딩 제거 */
+        border: none; /* 외각 박스 제거 */
+        background: transparent; /* 배경 제거 */
+        margin-left: 10px;
+    }
+</style>
