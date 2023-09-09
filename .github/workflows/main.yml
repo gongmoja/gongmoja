@@ -1,24 +1,30 @@
 name: CICD Test
 run-name: Running
-on: [push]
-  
+on:
+  push:
+    branches:
+      - develop
+      - 'releases/**'
+
 env:
   AWS_REGION: ap-northeast-2
   AWS_S3_BUCKET: my-s3-bucket97
-  AWS_CODE_DEPLOY_APPLICATION: cicid-test-CD
+  AWS_CODE_DEPLOY_APPLICATION: cicd-test-CD
   AWS_CODE_DEPLOY_GROUP: cicd-test-CD-group
 
 jobs:
   build-with-gradle:
     runs-on: ubuntu-20.04
     steps:
+    - name: production 브랜치로 이동
+      uses: actions/checkout@v3
+      with:
+        ref: develop
     - name: JDK 17 설치
       uses: actions/setup-java@v3
       with:
         java-version: '17'
         distribution: 'corretto'
-    - name: Change to project directory
-      run: cd gongmoja
     - name: gradlew에 실행 권한 부여
       run: chmod +x ./gradlew
     - name: 프로젝트 빌드
