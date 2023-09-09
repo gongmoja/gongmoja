@@ -17,6 +17,8 @@ jobs:
       with:
         java-version: '17'
         distribution: 'corretto'
+    - name: Change to project directory
+      run: cd gongmoja
     - name: gradlew에 실행 권한 부여
       run: chmod +x ./gradlew
     - name: 프로젝트 빌드
