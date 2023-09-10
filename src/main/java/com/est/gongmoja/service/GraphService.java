@@ -4,6 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.knowm.xchart.*;
 import org.knowm.xchart.style.Styler;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +21,8 @@ import java.util.List;
 @Slf4j
 @Service
 public class GraphService {
-    private final String csvFile = "src/main/resources/Book1.csv";
+    private final Resource csvResource = new ClassPathResource("Book1.csv");
+    //private final String csvFile = "src/main/resources/Book1.csv";
     private final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 
     //@Scheduled(cron = "0 */10 * * * *") // 매 10분(600000밀리초)마다 실행
@@ -38,7 +41,8 @@ public class GraphService {
             yData.add(0.0);
         }
 
-        try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
+        try (InputStream inputStream = csvResource.getInputStream();
+             BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
             String line;
             int cnt = 0;
             while ((line = br.readLine()) != null) {
