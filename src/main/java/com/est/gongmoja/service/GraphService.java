@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ public class GraphService {
         }
 
         try (InputStream inputStream = csvResource.getInputStream();
-             BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
+             BufferedReader br = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
             String line;
             int cnt = 0;
             while ((line = br.readLine()) != null) {
