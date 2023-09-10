@@ -19,8 +19,7 @@ jobs:
     - name: Set YML
       run: |
         mkdir -p src/main/resources
-                 echo "${{ secrets.APPLICATION_YML }}" | base64 --decode > src/main/resources/application.yml
-                 find src
+        echo "${{ secrets.application_yml }}" | base64 --decode > src/main/resources/application.yml
     - name: production 브랜치로 이동
       uses: actions/checkout@v3
       with:
