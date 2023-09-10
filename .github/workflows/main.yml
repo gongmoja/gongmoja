@@ -11,16 +11,16 @@ env:
   AWS_S3_BUCKET: my-s3-bucket97
   AWS_CODE_DEPLOY_APPLICATION: cicd-test-CD
   AWS_CODE_DEPLOY_GROUP: cicd-test-CD-group
-  SPRING_MAIL_PASSWORD: ${{ secrets.SPRING_MAIL_PASSWORD }}
-  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-  JWT_TOKEN_SECRET: ${{ secrets.JWT_TOKEN_SECRET }}
-  KAKAO_CLIENT_SECRET: ${{ secrets.KAKAO_CLIENT_SECRET}}
-  NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET}}
 
 jobs:
   build-with-gradle:
     runs-on: ubuntu-20.04
     steps:
+    - name: Set YML
+      run: |
+        mkdir -p src/main/resources
+                 echo "${{ secrets.APPLICATION_YML }}" | base64 --decode > src/main/resources/application.yml
+                 find src
     - name: production 브랜치로 이동
       uses: actions/checkout@v3
       with:
