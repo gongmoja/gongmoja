@@ -48,22 +48,22 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         authorizationManagerRequestMatcherRegistry -> authorizationManagerRequestMatcherRegistry
-//                                //정적 파일 모두 접근 가
-//                                .requestMatchers("/static/**").permitAll()
-//                                .requestMatchers("/calendar/**").permitAll()
-//                                .requestMatchers("/calendar").permitAll()
-//                                .requestMatchers("/media/**").permitAll()
-//                                //메인 페이지는 전부 접근 가능
-//                                .requestMatchers("/").permitAll()
-//                                //oauth2 관련 익명 접근 가능
-//                                .requestMatchers("/oauth2/**").anonymous()
-//                                //로그인 페이지 , 회원가입 페이지는 익명 접근 가능
-//                                .requestMatchers("/login","/register").anonymous()
-//                                //이외 페이지는 인가된 이용자만 접근 가능
-//                                .anyRequest().authenticated()
-//                                //추후 비회원의 접근이 어디까지가 괜찮을지 논의
+                                //정적 파일 모두 접근 가
+                                .requestMatchers("/static/**").permitAll()
+                                .requestMatchers("/calendar/**").permitAll()
+                                .requestMatchers("/calendar").permitAll()
+                                .requestMatchers("/media/**").permitAll()
+                                //메인 페이지는 전부 접근 가능
+                                .requestMatchers("/").permitAll()
+                                //oauth2 관련 익명 접근 가능
+                                .requestMatchers("/oauth2/**").anonymous()
+                                //로그인 페이지 , 회원가입 페이지는 익명 접근 가능
+                                .requestMatchers("/login","/register").anonymous()
+                                //이외 페이지는 인가된 이용자만 접근 가능
+                                .anyRequest().authenticated()
+                                //추후 비회원의 접근이 어디까지가 괜찮을지 논의
 
-                               .anyRequest().permitAll()
+                               //.anyRequest().permitAll()
                 )
 
                 .sessionManagement(
