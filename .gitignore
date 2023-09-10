@@ -38,5 +38,5 @@ out/
 
 ### CUSTOM ###
 .DS_Store
-*.yml
+
 /resources/
