@@ -1,4 +1,7 @@
 spring:
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
   mail:
     host: smtp.gmail.com
     port: 587
