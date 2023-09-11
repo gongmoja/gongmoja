@@ -376,12 +376,15 @@
             // 일반 메시지인 경우
             const formattedTime = formatTime(message.sentTime);
 
-            if (currentUserId === 1) {
+            if (message.senderId === 1) {
                 messageP.innerHTML = message.message;
                 messageP.className = "admin-message";
-            } else {
+            } else if(currentUserId === message.senderId){
                 messageP.innerHTML = formattedTime + "<br>" + message.sender + ": " + message.message;
                 messageP.className = "my-message";
+            } else{
+                messageP.innerHTML = formattedTime + "<br>" + message.sender + ": " + message.message;
+                messageP.className = "other-message";
             }
             messagesDiv.appendChild(messageP);
             scrollToBottom();
