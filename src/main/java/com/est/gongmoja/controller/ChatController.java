@@ -1,7 +1,6 @@
 package com.est.gongmoja.controller;
 
 import com.est.gongmoja.dto.chat.ChatDataDto;
-import com.est.gongmoja.dto.chat.ChatRoomResponseDto;
 import com.est.gongmoja.entity.ChatDataEntity;
 import com.est.gongmoja.entity.ChatRoomEntity;
 import com.est.gongmoja.entity.StockEntity;
@@ -14,6 +13,10 @@ import com.est.gongmoja.service.StockService;
 import com.est.gongmoja.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.security.core.Authentication;
@@ -66,12 +69,45 @@ public class ChatController {
     }
 
 
+
+//    @GetMapping("/list")
+//    public String showChatRoomList(Model model, Authentication authentication) {
+//        UserEntity user = (UserEntity) authentication.getPrincipal();
+//        UserEntity userEntity = userService.getUser(user.getUserName());
+//
+//        if (userEntity.getId() == 1) {
+//            // id가 1인 경우 모든 채팅방을 가져올 로직을 수행
+//            List<ChatRoomEntity> allChatRooms = chatService.getAllChatRooms();
+//            model.addAttribute("userChatRooms", allChatRooms);
+//        } else {
+//            List<ChatRoomEntity> userChatRooms = chatService.getUserChatRooms(userEntity);
+//            model.addAttribute("userChatRooms", userChatRooms);
+//        }
+//
+//        model.addAttribute("userEntity", userEntity); // top bar에서 이용
+//        return "chat/list";
+//    }
+
     @GetMapping("/list")
-    public String showChatRoomList(Model model) {
-        List<ChatRoomResponseDto> chatRooms = chatService.getAllChatRooms();
-        model.addAttribute("chatRooms", chatRooms);
+    public String showChatRoomList(Model model, Authentication authentication,
+                                   @RequestParam(name = "page", defaultValue = "0") int page) {
+        UserEntity user = (UserEntity) authentication.getPrincipal();
+        UserEntity userEntity = userService.getUser(user.getUserName());
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "id"));
+
+        if (userEntity.getId() == 1) {
+            // id가 1인 경우 모든 채팅방을 가져올 로직을 수행
+            Page<ChatRoomEntity> allChatRooms = chatService.getAllChatRoomsPaged(pageable);
+            model.addAttribute("userChatRooms", allChatRooms);
+        } else {
+            Page<ChatRoomEntity> userChatRooms = chatService.getUserChatRoomsPaged(userEntity, pageable);
+            model.addAttribute("userChatRooms", userChatRooms);
+        }
+        model.addAttribute("currentUserId", userEntity.getId());
+        model.addAttribute("userEntity", userEntity); // top bar에서 이용
         return "chat/list";
     }
+
 
     @MessageMapping("/chat")
     @Transactional
@@ -79,6 +115,7 @@ public class ChatController {
         UserEntity user = (UserEntity)authentication.getPrincipal();
         UserEntity userEntity = userService.getUser(user.getUserName());
         chatData.setSender(userEntity.getNickName());
+        chatData.setSenderId(userEntity.getId());
         ChatRoomEntity chatRoom = chatService.findRoomById(chatData.getChatRoomId());
         Optional<UserEntity> optionalUser =
                 userRepository.findByIdAndChatRooms(userEntity.getId(),chatRoom);
@@ -105,6 +142,17 @@ public class ChatController {
         log.info(String.valueOf(isValid));
         return isValid;
     }
+
+    @PostMapping("/delete-from/{chatRoomId}")
+    @ResponseBody
+    public ResponseEntity<String> deleteUserFromChatRoom(Authentication authentication, @PathVariable("chatRoomId") Long chatRoomId){
+        UserEntity user = (UserEntity)authentication.getPrincipal();
+        UserEntity userEntity = userService.getUser(user.getUserName());
+        chatService.removeUserFromChatRoom(userEntity,chatRoomId);
+        return ResponseEntity.ok("채팅방을 나갔습니다.");
+
+    }
+
 
 
 }

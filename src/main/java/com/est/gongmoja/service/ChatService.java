@@ -10,6 +10,10 @@ import com.est.gongmoja.repository.ChatRoomRepository;
 import com.est.gongmoja.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +36,7 @@ public class ChatService {
     private final ChatDataRepository chatDataRepository;
     private final UserRepository userRepository;
     private final SimpMessagingTemplate simpMessagingTemplate;
+    private final UserService userService;
 
 
     public void createChatRoomForStock(StockEntity stock) {
@@ -46,7 +51,6 @@ public class ChatService {
                     .openDate(stock.getStartDate())
                     .closeDate(stock.getEndDate())
                     .stockId(stock)
-                    .userCount(0L)
                     .build();
             chatRoomRepository.save(chatRoom);
         }
@@ -55,10 +59,12 @@ public class ChatService {
     public void sendChat(ChatDataDto chatData){
 //        String time = new SimpleDateFormat("HH:mm").format(new Date());
 //        chatData.setSentTime(time);
-        LocalDateTime createdAt = LocalDateTime.parse(chatData.getSentTime(), DateTimeFormatter.ISO_DATE_TIME);
+        ZoneId koreaZone = ZoneId.of("Asia/Seoul");
+        ZonedDateTime koreaTime = ZonedDateTime.now(koreaZone);
+        LocalDateTime createdAt = koreaTime.toLocalDateTime();
         Optional<ChatRoomEntity> optionalChatRoomEntity = chatRoomRepository.findById(chatData.getChatRoomId());
         ChatRoomEntity chatRoom = optionalChatRoomEntity.get();
-        Optional<UserEntity> optionalUser = userRepository.findByNickName(chatData.getSender());
+        Optional<UserEntity> optionalUser = userRepository.findById(chatData.getSenderId());
         UserEntity user = optionalUser.get();
         ChatDataEntity chatDataEntity = ChatDataEntity.builder()
                 .message(chatData.getMessage())
@@ -78,9 +84,7 @@ public class ChatService {
     }
 
     public void sendDate(ChatDataDto chatData){
-        log.info(String.valueOf(chatData.getChatRoomId()));
         UserEntity admin = userRepository.findById(1L).get();
-        log.info(admin.getNickName());
         //한국시간으로 변경
         ZoneId koreaZone = ZoneId.of("Asia/Seoul");
         ZonedDateTime koreaTime = ZonedDateTime.now(koreaZone);
@@ -114,12 +118,11 @@ public class ChatService {
     }
 
 
-    public List<ChatRoomResponseDto> getAllChatRooms() {
-        List<ChatRoomEntity> chatRooms = chatRoomRepository.findAll();
-        return chatRooms.stream()
-                .map(ChatRoomResponseDto::fromEntity)
-                .collect(Collectors.toList());
+    public List<ChatRoomEntity> getAllChatRooms() {
+        Sort sort = Sort.by(Sort.Direction.DESC, "id");
+        return chatRoomRepository.findAll(sort);
     }
+
 
     public List<ChatDataEntity> getMessagesByChatRoomId(Long chatRoomId) {
         return chatDataRepository.findByChatRoom_IdOrderByIdAsc(chatRoomId);
@@ -141,6 +144,37 @@ public class ChatService {
             }
         }
         return true;
+    }
+
+    public List<ChatRoomEntity> getUserChatRooms(UserEntity userEntity) {
+        List<ChatRoomEntity> chatRooms = userEntity.getChatRooms();
+
+        // ChatRoomEntity를 id 역순으로 정렬
+        Comparator<ChatRoomEntity> byIdDescending = Comparator.comparing(ChatRoomEntity::getId).reversed();
+
+        // 정렬된 List 반환
+        return chatRooms.stream()
+                .sorted(byIdDescending)
+                .collect(Collectors.toList());
+    }
+    public Page<ChatRoomEntity> getAllChatRoomsPaged(Pageable pageable) {
+        return chatRoomRepository.findAll(pageable);
+    }
+
+    public Page<ChatRoomEntity> getUserChatRoomsPaged(UserEntity userEntity, Pageable pageable) {
+        return chatRoomRepository.findByUsers(userEntity, pageable);
+    }
+
+    public void removeUserFromChatRoom(UserEntity userEntity, Long chatRoomId) {
+        ChatRoomEntity chatRoom = chatRoomRepository.findById(chatRoomId).orElse(null);
+        if (userEntity != null && chatRoom != null) {
+            // ManyToMany 관계를 해제합니다.
+            userEntity.getChatRooms().remove(chatRoom);
+            userService.saveUser(userEntity);
+//            chatRoom.getUsers().remove(userEntity);
+        }
+
+
     }
 
     //    public boolean isFavorite(UserEntity userEntity, Long chatRoomId) {
