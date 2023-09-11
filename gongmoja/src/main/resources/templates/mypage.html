@@ -193,6 +193,16 @@
                     <div class="card-body">
                         <!-- Pending Requests Card Example -->
                         <ul style="padding: 0">
+
+                            <th:block th:if="${favoriteStocks.isEmpty()}">
+                                <li style="list-style: none">
+                                    <p>즐겨찾는 공모주가 없습니다.</p>
+                                </li>
+                            </th:block>
+                            <th:block th:each="stock : ${favoriteStocks}" th:unless="${favoriteStocks.isEmpty()}">
+                                <li style="list-style: none">
+                                    <div class="col-xl-3 col-md-6 mb-4 d-flex">
+
                             <th:block th:each="stock : ${favoriteStocks}">
                                 <li style="list-style: none">
 
