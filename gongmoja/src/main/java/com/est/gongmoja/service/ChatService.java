@@ -64,7 +64,7 @@ public class ChatService {
         LocalDateTime createdAt = koreaTime.toLocalDateTime();
         Optional<ChatRoomEntity> optionalChatRoomEntity = chatRoomRepository.findById(chatData.getChatRoomId());
         ChatRoomEntity chatRoom = optionalChatRoomEntity.get();
-        Optional<UserEntity> optionalUser = userRepository.findByNickName(chatData.getSender());
+        Optional<UserEntity> optionalUser = userRepository.findById(chatData.getSenderId());
         UserEntity user = optionalUser.get();
         ChatDataEntity chatDataEntity = ChatDataEntity.builder()
                 .message(chatData.getMessage())

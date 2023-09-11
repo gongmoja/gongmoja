@@ -115,6 +115,7 @@ public class ChatController {
         UserEntity user = (UserEntity)authentication.getPrincipal();
         UserEntity userEntity = userService.getUser(user.getUserName());
         chatData.setSender(userEntity.getNickName());
+        chatData.setSenderId(userEntity.getId());
         ChatRoomEntity chatRoom = chatService.findRoomById(chatData.getChatRoomId());
         Optional<UserEntity> optionalUser =
                 userRepository.findByIdAndChatRooms(userEntity.getId(),chatRoom);
