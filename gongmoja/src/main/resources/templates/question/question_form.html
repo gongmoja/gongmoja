@@ -197,8 +197,8 @@
 
                             <!--첨부파일 업로드-->
                             <div class="mb-3">
-                                <label for="file" class="form-label">첨부 파일</label>
-                                <input type="file" class="form-control" name="file" id="file">
+                                <label for="file" class="form-label">첨부 파일 (jpg, jpeg, png 형식만 가능합니다.)</label>
+                                <input type="file" class="form-control" name="file" id="file" accept=".jpg, .png, .jpeg" onchange="validateFile()">
                             </div>
 
                             <!-- 선택한 파일 표시 및 삭제 버튼 -->
@@ -252,6 +252,20 @@
             $('#fileName').text(''); // 파일 이름 표시 비움
             $(this).hide(); // 삭제 버튼 숨김
         });
+
+        function validateFile() {
+            const fileInput = document.getElementById("file");
+            const allowedExtensions = [".jpg", ".png"];
+            const fileName = fileInput.value;
+            const fileExtension = fileName.slice((fileName.lastIndexOf(".") - 1 >>> 0) + 2);
+
+            if (!allowedExtensions.includes("." + fileExtension.toLowerCase())) {
+                alert("첨부파일 업로드는 .jpg and .png 형식만 가능합니다.");
+                fileInput.value = ""; // Clear the file input
+                return false;
+            }
+            return true;
+        }
     });
 </script>
 
