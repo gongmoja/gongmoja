@@ -1,11 +1,36 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns="http://www.w3.org/1999/html">
-<!-- 스타일 코드 추가-->
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
 <style>
     #stiky {
         position: sticky;
-        top: 20px;
+        top: 10px;
         bottom: 20px;
+
+    }
+
+    .news-item {
+        margin: 10px;
+    }
+
+    .custom-list {
+        padding: 0;
+        list-style: none;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .custom-list li {
+        margin-right: 10px;
+        width: calc(300px); /* 3개씩 표시하므로 33.33%로 설정 */
+        box-sizing: border-box; /* 요소의 padding과 border를 포함하여 크기 계산 */
+    }
+
+    /* 미디어 쿼리: 화면 크기가 768px 이하일 때 한 줄에 2개로 변경 */
+    @media (max-width: 768px) {
+        .custom-list li {
+            width: calc(50% - 10px); /* 화면 크기가 768px 이하일 때 2개씩 표시하므로 50%로 설정 */
+        }
     }
 
     /* 공모자들 타이틀 폰트 */
@@ -21,82 +46,114 @@
         justify-content: center;
         align-items: center;
     }
+
     .sidebar-brand-text {
         font-family: 'yg-jalnan', sans-serif;
         font-size: 23px;
         font-weight: bold;
         color: #5D5D5D;
     }
+
 </style>
+
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!--  메타 추가 -->
+
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <!--  링크 추가 -->
+
+    <title>공모자들</title>
+
+    <!-- Custom fonts for this template-->
     <link rel="shortcut icon" href="/static/favicon.ico">
     <link href="/static/bootstrap/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-          rel="stylesheet">
+    <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+
+    <!-- Custom styles for this template-->
     <link href="/static/bootstrap/css/sb-admin-2.min.css" rel="stylesheet">
 
-    <title th:text="${stockName + ' 채팅방'}"></title>
 </head>
+
 <body id="page-top">
+
+<!-- Page Wrapper -->
 <div id="wrapper">
+
+    <!-- 사이드바 -->
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        <!-- Sidebar - Brand -->
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
             <div class="sidebar-brand-icon rotate-n-15"></div>
             <div class="horizontal-container">
                 <div>GongMoJa</div>
             </div>
         </a>
+
+        <!-- Divider -->
         <hr class="sidebar-divider my-0">
+
+        <!-- 내비게이션 2 : 공모주 관련 내용들 -->
         <hr class="sidebar-divider my-0">
+
+        <!-- 구분선 -->
         <hr class="sidebar-divider">
 
-        <!--    사이드 메뉴 -->
+        <!--내비게이션 1번 항목 (공모주)-->
         <div id="stiky">
             <div class="sidebar-heading">GONGMOJA</div>
+
             <!-- 1. 공모주 일정 메뉴  -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" onclick="fnMoveIndex('/', '3');" data-toggle="collapse"
+                <a class="nav-link collapsed" href="#" onclick="fnMove('3');" data-toggle="collapse"
                    data-target="#collapseTwo"
                    aria-expanded="true" aria-controls="collapseTwo">
+                    <!--폴더아이콘-->
                     <i class="fas fa-fw fa-calendar-alt"></i>
                     <span>공모주 일정</span>
                 </a>
             </li>
             <!-- 2. 공모주 경쟁률 메뉴  -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" onclick="fnMoveIndex('/', '1');" data-toggle="collapse"
+                <a class="nav-link collapsed" href="#" onclick="fnMove('1');" data-toggle="collapse"
                    data-target="#collapseTwo"
                    aria-expanded="true" aria-controls="collapseTwo">
+                    <!--폴더아이콘-->
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>공모주 경쟁률</span>
                 </a>
             </li>
             <!-- 3. 공모주 뉴스 메뉴  -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" onclick="fnMoveIndex('/', '2');" data-toggle="collapse"
+                <a class="nav-link collapsed" href="#" onclick="fnMove('2');" data-toggle="collapse"
                    data-target="#collapseTwo"
                    aria-expanded="true" aria-controls="collapseTwo">
+                    <!--폴더아이콘-->
                     <i class="fas fa-fw fa-layer-group"></i>
                     <span>공모주 뉴스</span>
                 </a>
             </li>
+
+            <!-- 구분선 -->
             <hr class="sidebar-divider d-none d-md-block">
         </div>
     </ul>
-    <!--  사이드 메뉴 종료-->
+    <!-- 왼쪽 사이드바 종료 -->
+
     <!-- 사이드바 숨기기 -->
     <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
         <div id="content">
+
             <!-- Topbar -->
             <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                <!-- Sidebar Toggle (Topbar) -->
                 <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                     <i class="fa fa-bars"></i>
                 </button>
@@ -107,30 +164,13 @@
                     <div class="sidebar-brand-text mx-3">공모자들<sup></sup></div>
                 </div>
 
+                <!-- Topbar Navbar -->
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item dropdown no-arrow d-sm-none">
-                        <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-search fa-fw"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-                             aria-labelledby="searchDropdown">
-                            <form class="form-inline mr-auto w-100 navbar-search">
-                                <div class="input-group">
-                                    <input type="text" class="form-control bg-light border-0 small"
-                                           placeholder="Search for..." aria-label="Search"
-                                           aria-describedby="basic-addon2">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-primary" type="button">
-                                            <i class="fas fa-search fa-sm"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </li>
-                    <!--탑 네비게이션 바 - 로그인 로그아웃 사용자정보-->
+
                     <div class="topbar-divider d-none d-sm-block"></div>
+
+                    <!--탑 네비게이션 바 - 로그인 로그아웃 사용자정보-->
+                    <!-- Nav Item - User Information -->
                     <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle text-dark text-center" href="#" id="userDropdown"
                            role="button"
@@ -139,7 +179,9 @@
                                   th:text="${userEntity.nickName}+님"></span>
                             <span class="mr-4 d-none d-lg-inline text-gray-600 small" th:unless="${userEntity != null}">클릭하여 로그인</span>
                             <img class="img-profile rounded-circle" src="/static/bootstrap/img/undraw_profile.svg">
+                            <!--                                    <button th:method="post" th:action="@{/logout}"></button>-->
                         </a>
+                        <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                              aria-labelledby="userDropdown">
                             <a class="dropdown-item" href="/favorites/list">
@@ -161,15 +203,17 @@
                             </a>
                         </div>
                     </li>
+
                 </ul>
+
             </nav>
             <!-- 토글 바 끝 -->
-          <div class="container-fluid">
+            <div class="container-fluid">
               <h1 th:utext="${stockName + '<br>채팅방'}" ></h1>
               <style>
                   #messages {
                       height: 600px;
-                      width: 340px;
+                      width: 350px;
                       overflow-y: scroll;
                   }
                   .my-message {
@@ -182,41 +226,39 @@
                       text-align: center;
                       font-weight: bold;
                   }
-
-
               </style>
-            <div id="chat">
-              <div id="messages">
-                <div th:each="message : ${chatMessages}">
-                    <p th:class="${message.user.id eq 1} ? 'admin-message' : (${message.user.id eq currentUserId} ? 'my-message' : 'other-message')">
-                         <span th:if="${message.user.id != 1}">
-                            <span th:text="${#temporals.format(message.createdAt, 'HH:mm')}"></span><br>
-                            <span th:text="${message.user.nickName + ': ' + message.message}"></span>
-                        </span>
-                        <span th:if="${message.user.id eq 1}" th:text="${message.message}"></span><br>
-                    </p>
+                <div id="chat">
+                    <div id="messages">
+                        <div th:each="message : ${chatMessages}">
+                            <p th:class="${message.user.id eq 1} ? 'admin-message' : (${message.user.id eq currentUserId} ? 'my-message' : 'other-message')">
+                                <span th:if="${message.user.id != 1}">
+                                <span th:text="${#temporals.format(message.createdAt, 'HH:mm')}"></span><br>
+                                <span th:text="${message.user.nickName + ': ' + message.message}"></span>
+                                </span>
+                                <span th:if="${message.user.id eq 1}" th:text="${message.message}"></span><br>
+                            </p>
 
-                </div>
-              </div>
+                        </div>
+                    </div>
                 <input type="text" id="message" placeholder="메시지를 입력하세요.">
                 <button class="send-button btn btn-primary" onclick="sendMessageWithDateCheck()">보내기</button><br>
                 <br>
                 <button class="chat-room-button btn btn-primary" onclick="window.location.href='/chat/list'">참여중인 채팅방</button><br>
                 <br>
                 <button class="leave-chat-button btn btn-primary" onclick="leaveChatRoom()">채팅방 나가기</button>
-
-            </div>
-          </div>
-        </div>
-        <!-- Footer -->
-        <footer class="sticky-footer bg-white">
-            <div class="container my-auto">
-                <div class="copyright text-center my-auto">
-                    <span>Copyright &copy; gongmoja 2023</span>
                 </div>
             </div>
-        </footer>
+        </div>
+
+<!-- Footer -->
+<footer class="sticky-footer bg-white">
+    <div class="container my-auto">
+        <div class="copyright text-center my-auto">
+            <span>Copyright &copy; gongmoja 2023</span>
+        </div>
     </div>
+</footer>
+</div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.2/sockjs.min.js"></script>

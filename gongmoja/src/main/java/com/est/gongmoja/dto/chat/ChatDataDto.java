@@ -14,6 +14,8 @@ public class ChatDataDto {
 
     //    private ChatDataEntity.MessageType type;
     private Long chatRoomId;
+
+    private Long senderId;
     private String sender;
     private String message;
     private String sentTime;
