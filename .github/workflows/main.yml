@@ -1,4 +1,4 @@
-name: CICD Test
+name: gongmoja-deploy
 run-name: Running
 on:
   push:
