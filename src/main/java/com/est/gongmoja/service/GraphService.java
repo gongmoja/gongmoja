@@ -68,12 +68,12 @@ public class GraphService {
     }
 
     private String generateAndSaveChart(List<Date> xData, List<Double> yData) {
-        XYChart chart = new XYChartBuilder().width(800).height(600).title("대신제16호스팩").xAxisTitle("Time").yAxisTitle("비례 경쟁률").build();
+        XYChart chart = new XYChartBuilder().width(800).height(600).title("Daishin16Spac").xAxisTitle("Time").yAxisTitle("Competition Rate").build();
         chart.getStyler().setChartBackgroundColor(java.awt.Color.WHITE);
         chart.getStyler().setXAxisLabelRotation(0);
         chart.getStyler().setXAxisLabelAlignment(Styler.TextAlignment.Right);
 
-        chart.addSeries("대신증권", xData, yData).setXYSeriesRenderStyle(XYSeries.XYSeriesRenderStyle.Line);
+        chart.addSeries("Daishin Securities", xData, yData).setXYSeriesRenderStyle(XYSeries.XYSeriesRenderStyle.Line);
 
         try {
             BufferedImage chartImage = BitmapEncoder.getBufferedImage(chart);
