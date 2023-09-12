@@ -68,7 +68,7 @@ public class GraphService {
     }
 
     private String generateAndSaveChart(List<Date> xData, List<Double> yData) {
-        XYChart chart = new XYChartBuilder().width(800).height(600).title("Daishin16Spac").xAxisTitle("Time").yAxisTitle("Competition Rate").build();
+        XYChart chart = new XYChartBuilder().width(800).height(600).title("Daishin 16Spac").xAxisTitle("Time").yAxisTitle("Competition Rate").build();
         chart.getStyler().setChartBackgroundColor(java.awt.Color.WHITE);
         chart.getStyler().setXAxisLabelRotation(0);
         chart.getStyler().setXAxisLabelAlignment(Styler.TextAlignment.Right);
