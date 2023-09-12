@@ -35,7 +35,6 @@
 | 사진 | 사진 | 사진 | 사진 | 사진 |
 | --- | --- | --- | --- | --- |
 | [**김남훈**](https://github.com/namhoon-kim97) | [**여민수**](https://github.com/minsooy) | [**백성아**](https://github.com/sunga0101) | [**윤쥰필**](https://github.com/leepnujnooy) | [**유다언**](https://github.com/yudaeon) | 
-| 학력? | 학력? | 학력? | 학력? | 학력? |
 | **담당** | **채팅** | **담당** | **담당** | **담당** |
 
 - (추가사항 논의)
