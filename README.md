@@ -57,3 +57,11 @@
 | --- | --- | --- | --- | --- |
 | [**김남훈**](https://github.com/namhoon-kim97) | [**여민수**](https://github.com/minsooy) | [**백성아**](https://github.com/sunga0101) | [**윤쥰필**](https://github.com/leepnujnooy) | [**유다언**](https://github.com/yudaeon) | 
 | **담당** | **채팅** | **담당** | **담당** | **담당** |
+
+## 프로젝트 구조
+
+- 서비스 요청 흐름도
+  <img width="878" alt="스크린샷 2023-09-12 오후 5 24 15" src="https://github.com/leepnujnooy/cicdtest/assets/89959383/ee12a705-a4f9-44f5-b248-3746f202f1a7">
+  
+- CI/CD Workflows
+![image](https://github.com/leepnujnooy/cicdtest/assets/89959383/8fb8c3a7-2b5b-4ad3-9503-9d22be699b9f)
