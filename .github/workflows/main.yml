@@ -1,4 +1,4 @@
-name: CICD Test
+name: gongmoja-deploy
 run-name: Running
 on:
   push:
@@ -16,6 +16,10 @@ jobs:
   build-with-gradle:
     runs-on: ubuntu-20.04
     steps:
+    - name: production 브랜치로 이동
+      uses: actions/checkout@v3
+      with:
+        ref: main
     - name: JDK 17 설치
       uses: actions/setup-java@v3
       with:
