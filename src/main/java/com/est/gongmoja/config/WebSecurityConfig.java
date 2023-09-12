@@ -58,6 +58,7 @@ public class WebSecurityConfig {
                                 .requestMatchers("/oauth2/**").anonymous()
                                 //로그인 페이지 , 회원가입 페이지는 익명 접근 가능
                                 .requestMatchers("/login","/register").anonymous()
+                                .requestMatchers("/forgot-password").anonymous()
                                 //이외 페이지는 인가된 이용자만 접근 가능
                                 .anyRequest().authenticated()
 //                                //추후 비회원의 접근이 어디까지가 괜찮을지 논의
