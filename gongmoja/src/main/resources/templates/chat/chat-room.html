@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<style>
+    #stiky {
+        position:sticky ;
+        top: 20px;
+        bottom: 20px;
+    }
+
+    /* 공모자들 타이틀 폰트 */
+    @font-face {
+        font-family: 'yg-jalnan';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    .horizontal-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .sidebar-brand-text {
+        font-family: 'yg-jalnan', sans-serif;
+        font-size: 23px;
+        font-weight: bold;
+        color: #5D5D5D;
+    }
+</style>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>공모자들</title>
+
+    <!-- Custom fonts for this template-->
+    <link rel="shortcut icon" href="/static/favicon.ico">
+    <link href="/static/bootstrap/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="/static/bootstrap/css/sb-admin-2.min.css" rel="stylesheet">
+
+
+</head>
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <!-- 사이드바 -->
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        <!-- Sidebar - Brand -->
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
+            <div class="sidebar-brand-icon rotate-n-15">
+                <!--아이콘 변경-->
+                <!--                    <i class="fas fa-laugh-wink"></i>-->
+            </div>
+            <div class="horizontal-container">
+                <div>GongMoJa</div></div>
+        </a>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0">
+        <hr class="sidebar-divider my-0" >
+
+        <!-- 구분선 -->
+        <hr class="sidebar-divider">
+
+        <!-- 내비게이션 1번 제목-->
+
+        <!--내비게이션 1번 항목 (공모주)-->
+        <div id="stiky" >
+            <div  class="sidebar-heading">GONGMOJA</div>
+
+            <!-- 1. 공모주 일정 메뉴  -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" onclick="fnMoveIndex('/', '3');" data-toggle="collapse" data-target="#collapseTwo"
+                   aria-expanded="true" aria-controls="collapseTwo">
+                    <!--폴더아이콘-->
+                    <i class="fas fa-fw fa-calendar-alt"></i>
+                    <span>공모주 일정</span>
+                </a>
+            </li>
+            <!-- 2. 공모주 경쟁률 메뉴  -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" onclick="fnMoveIndex('/', '1');" data-toggle="collapse" data-target="#collapseTwo"
+                   aria-expanded="true" aria-controls="collapseTwo">
+                    <!--폴더아이콘-->
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>공모주 경쟁률</span>
+                </a>
+            </li>
+            <!-- 3. 공모주 뉴스 메뉴  -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" onclick="fnMoveIndex('/', '2');" data-toggle="collapse" data-target="#collapseTwo"
+                   aria-expanded="true" aria-controls="collapseTwo">
+                    <!--폴더아이콘-->
+                    <i class="fas fa-fw fa-layer-group"></i>
+                    <span>공모주 뉴스</span>
+                </a>
+            </li>
+
+            <!-- 구분선 -->
+            <hr class="sidebar-divider d-none d-md-block">
+        </div>
+    </ul>
+    <!-- 왼쪽 사이드바 종료 -->
+
+    <!-- 사이드바 숨기기 -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                <!-- Sidebar Toggle (Topbar) -->
+                <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                    <i class="fa fa-bars"></i>
+                </button>
+
+                <!-- 공모자들 제목-->
+                <div class="horizontal-container">
+                    <!--                    <img src="/static/bootstrap/img/공모자들로고-002.png" alt="공모자들로고" style="width: 48px;">-->
+                    <div class="sidebar-brand-text mx-3">공모자들<sup></sup></div>
+                </div>
+
+                <!-- Topbar Navbar -->
+                <ul class="navbar-nav ml-auto">
+
+                    <div class="topbar-divider d-none d-sm-block"></div>
+
+                    <!--탑 네비게이션 바 - 로그인 로그아웃 사용자정보-->
+                    <!-- Nav Item - User Information -->
+                    <li class="nav-item dropdown no-arrow">
+                        <a class="nav-link dropdown-toggle text-dark text-center" href="#" id="userDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="mr-4 d-none d-lg-inline text-gray-600 small" th:if="${userEntity != null}"  th:text="${userEntity.nickName}+님"></span>
+                            <span class="mr-4 d-none d-lg-inline text-gray-600 small" th:unless="${userEntity != null}" >클릭하여 로그인</span>
+                            <img class="img-profile rounded-circle" src="/static/bootstrap/img/undraw_profile.svg">
+                            <!--                                    <button th:method="post" th:action="@{/logout}"></button>-->
+                        </a>
+                        <!-- Dropdown - User Information -->
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                             aria-labelledby="userDropdown">
+                            <a class="dropdown-item" href="/favorites/list">
+                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                마이페이지
+                            </a>
+                            <a class="dropdown-item" href="/chat/list">
+                                <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                                참여중인 채팅방
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" th:if="${userEntity == null}" href="/login">
+                                <i class="fas fa-sign-in-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                로그인
+                            </a>
+                            <a class="dropdown-item" th:unless="${userEntity == null}" href="/logout">
+                                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                로그아웃
+                            </a>
+                        </div>
+                    </li>
+
+                </ul>
+
+            </nav>
+            <!-- 토글 바 끝 -->
+            <div class="container-fluid">
+                <h1 th:utext="${stockName + '<br>채팅방'}" class="ellipsis-text"></h1>
+                <style>
+                  #messages {
+                      height: 500px;
+                      width: 100%;
+                      overflow-y: scroll;
+                  }
+                  .my-message {
+                      text-align: right;
+                  }
+                  .other-message {
+                      text-align: left;
+                  }
+                  .admin-message {
+                      text-align: center;
+                      font-weight: bold;
+                  }
+                  .ellipsis-text {
+                      overflow: hidden;
+                      white-space: nowrap;
+                      text-overflow: ellipsis;
+                  }
+              </style>
+                <div id="chat">
+                    <div id="messages">
+                        <div th:each="message : ${chatMessages}">
+                            <p th:class="${message.user.id eq 1} ? 'admin-message' : (${message.user.id eq currentUserId} ? 'my-message' : 'other-message')">
+                                <span th:if="${message.user.id != 1}">
+                                <span th:text="${#temporals.format(message.createdAt, 'HH:mm')}"></span><br>
+                                <span th:text="${message.user.nickName + ': ' + message.message}"></span>
+                                </span>
+                                <span th:if="${message.user.id eq 1}" th:text="${message.message}"></span><br>
+                            </p>
+
+                        </div>
+                    </div>
+                <input type="text" id="message" placeholder="메시지를 입력하세요.">
+                <button class="send-button btn btn-primary" onclick="sendMessageWithDateCheck()">보내기</button><br>
+                <br>
+                <button class="chat-room-button btn btn-primary" onclick="window.location.href='/chat/list'">참여중인 채팅방</button><br>
+                <br>
+                <button class="leave-chat-button btn btn-primary" onclick="leaveChatRoom()">채팅방 나가기</button>
+                </div>
+            </div>
+        </div>
+
+<!-- Footer -->
+<footer class="sticky-footer bg-white">
+    <div class="container my-auto">
+        <div class="copyright text-center my-auto">
+            <span>Copyright &copy; gongmoja 2023</span>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.2/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script th:inline="javascript">
+  const socket = new WebSocket('ws://localhost:8080/chatting');
+  const pathname = window.location.pathname;
+  const chatRoomId = parseInt(pathname.split("/")[2]);
+  const stompClient = Stomp.over(socket);
+  const today = new Date(); // 현재 날짜 가져오기
+  var currentUserId = /*[[${currentUserId}]]*/ 0;
+  let isValid = false;
+  const MessageType = {
+      CHAT: 'CHAT',
+      DATE: 'DATE',
+  };
+
+  function scrollToBottom() {
+    const messagesDiv = document.getElementById('messages');
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  }
+
+  stompClient.connect({}, function (frame) {
+    console.log('Connected: ' + frame);
+    stompClient.subscribe(`/topic/${chatRoomId}`, function (message) {
+      showMessage(JSON.parse(message.body));
+    });
+  });
+
+  function sendMessageWithDateCheck() {
+      // 여기에서 날짜 검증 로직을 수행합니다.
+      dateCheck(chatRoomId, function (isValid) {
+          if (isValid) {
+              // 날짜 메시지를 보냅니다.
+              sendDateMessage();
+          }
+
+          // 그리고 메시지를 보냅니다.
+          sendMessage();
+      });
+  }
+
+  function dateCheck(chatRoomId, callback) {
+      fetch(`/chat/date-check?chatRoomId=${chatRoomId}`, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+      })
+          .then(response => {
+              if (response.status === 200) {
+                  return response.json();
+              } else {
+                  console.error('오류 발생');
+                  throw new Error('날짜 검증 실패');
+              }
+          })
+          .then(dateNeeded => {
+              const isValid = dateNeeded;
+              callback(isValid); // 콜백 함수 호출
+          })
+          .catch(error => {
+              console.error('오류 발생', error);
+              callback(false); // 에러 발생 시 false 전달
+          });
+  }
+
+  function sendDateMessage() {
+      const formattedDate = `${today.getFullYear()}년 ${today.getMonth() + 1}월 ${today.getDate()}일`;
+      stompClient.send("/app/date", {}, JSON.stringify({
+          "chatRoomId": chatRoomId,
+          "message": formattedDate,
+          "sentTime": today.toISOString(),
+          "type" : MessageType.DATE
+      }));
+  }
+
+  function sendMessage() {
+      const messageInput = document.getElementById('message');
+      const message = messageInput.value;
+      if (message.trim() !== '') {
+          stompClient.send("/app/chat", {}, JSON.stringify({
+              "chatRoomId": chatRoomId,
+              "message": message,
+              "sentTime": today.toISOString(),
+              "type" : MessageType.CHAT
+          }));
+          messageInput.value = '';
+      }
+  }
+
+
+
+  function formatTime(dateString) {
+      const date = new Date(dateString);
+      const hours = date.getHours();
+      const minutes = date.getMinutes();
+
+      // 시간과 분을 원하는 형식으로 포맷팅
+      const formattedTime = `${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
+      return formattedTime;
+  }
+
+
+  // showMessage 함수에서 메시지 유형을 확인하여 처리합니다.
+  function showMessage(message) {
+      const messagesDiv = document.getElementById('messages');
+      const messageP = document.createElement('p');
+      const type = message.type;
+
+      if (type === "DATE") {
+          // 센드데이트메시지인 경우 별도로 처리
+          processDateMessage(message);
+      } else {
+          // 일반 메시지인 경우
+          const formattedTime = formatTime(message.sentTime);
+
+          if (message.senderId === 1) {
+              messageP.innerHTML = message.message;
+              messageP.className = "admin-message";
+          } else if(currentUserId === message.senderId){
+              messageP.innerHTML = formattedTime + "<br>" + message.sender + ": " + message.message;
+              messageP.className = "my-message";
+          } else{
+              messageP.innerHTML = formattedTime + "<br>" + message.sender + ": " + message.message;
+              messageP.className = "other-message";
+          }
+          messagesDiv.appendChild(messageP);
+          scrollToBottom();
+      }
+  }
+
+  function processDateMessage(message) {
+      const messagesDiv = document.getElementById('messages');
+      const messageP = document.createElement('p');
+      messageP.innerHTML = message.message;
+      messageP.className = "admin-message";
+      messagesDiv.appendChild(messageP);
+      scrollToBottom();
+  }
+
+      // 엔터 키로 메시지 전송을 가능하게 하는 코드
+  const messageInput = document.getElementById('message');
+  messageInput.addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        sendMessageWithDateCheck();
+    }
+  });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    scrollToBottom();
+  });
+
+  var endDateTimeStr = /*[[${endDate}]]*/ '';
+  var endDateTime = new Date(endDateTimeStr);
+
+  function disableChat() {
+    // 메시지 입력 상자 비활성화
+    const messageInput = document.getElementById('message');
+    messageInput.disabled = true;
+    messageInput.placeholder = "만료된 채팅방입니다.";
+
+    const sendButton = document.querySelector('.send-button');
+    sendButton.style.display = 'none';
+  }
+
+  function checkEndDateTime() {
+      var currentDateTime = new Date();
+      if (currentDateTime >= endDateTime) {
+          disableChat();
+      }
+  }
+
+  setInterval(checkEndDateTime, 1000);
+
+  window.onload = checkEndDateTime;
+
+  function fnMoveIndex(targetPage, seq) {
+      // 이동할 대상 페이지의 URL
+      var targetURL = targetPage + "#div" + seq;
+
+      // 새로운 페이지로 이동
+      window.location.href = targetURL;
+  }
+
+  function leaveChatRoom() {
+      var method = 'POST';
+      var url = '/chat/delete-from/' + chatRoomId;
+
+      fetch(url, {
+          method: method,
+          headers: {
+              'Content-Type': 'application/json;charset=UTF-8'
+          }
+      }).then(function(response) {
+          if (response.ok) {
+              // 채팅방을 나갔다는 메시지를 받았을 때, /chat/list로 리다이렉트
+              window.location.href = '/chat/list';
+          }
+      });
+  }
+
+    function fnMoveIndex(targetPage, seq) {
+        // 이동할 대상 페이지의 URL
+        var targetURL = targetPage + "#div" + seq;
+
+        // 새로운 페이지로 이동
+        window.location.href = targetURL;
+    }
+
+</script>
+
+<!-- script 추가 -->
+<script src="/static/bootstrap/vendor/jquery/jquery.min.js"></script>
+<script src="/static/bootstrap/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/static/bootstrap/vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="/static/bootstrap/js/sb-admin-2.min.js"></script>
+<script src="/static/bootstrap/vendor/chart.js/Chart.min.js"></script>
+<script src="/static/bootstrap/js/demo/chart-area-demo.js"></script>
+<script src="/static/bootstrap/js/demo/chart-pie-demo.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:utext="'Favorite Stocks for ' + ${username}"></title>
+</head>
+<body>
+<h1 th:utext="${username} + '의 공모주 즐겨찾기 목록'"></h1>
+
+<ul>
+    <th:block th:each="stock : ${favoriteStocks}">
+        <li>
+            <a th:href="@{/stock/{stockId}(stockId=${stock.id})}" th:text="${stock.name}"></a>
+        </li>
+    </th:block>
+</ul>
+</body>
+</html>
