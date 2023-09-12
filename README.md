@@ -4,19 +4,6 @@
 
 
 ## 🔍 프로젝트 정보
-
-## ❓ 프로젝트 소개
-
-<p align="center"><img src="https://ifh.cc/g/0qdbr4.png"  width="300" height="300"/></p>
-
-
-<div align="center">
-  <strong>캐치프레이즈?</strong>
-</div>
-<br></br>
-
-- **공모자들**은 실시간으로 공모주의 정보를 받아볼 수 있는 웹 어플리케이션 입니다.
-
 - 공모주 별로 복잡한 청약 기간, 환불/상장 일자를 달력으로 간단히 볼 수 있습니다
 
 - 관심가는 종목들은 한번에 마이페이지로 관리하여 지속 트래킹 할 수 있습니다
@@ -25,8 +12,17 @@
 
 - 항상 클린한 경험을 위하여 비매너 유저들을 신고 할 수 있습니다
 
-- (기능 소개를 분리하고 위에는 더 간결하게 할지 논의)
-  - 분리하기로 결정
+## ❓ 프로젝트 소개
+
+<p align="center"><img src="https://ifh.cc/g/0qdbr4.png"  width="300" height="300"/></p>
+
+
+<div align="center">
+  <strong>동영상으로 대체 할지 논의</strong>
+</div>
+<br></br>
+
+- **공모자들**은 실시간으로 공모주의 정보를 받아볼 수 있는 웹 어플리케이션 입니다.
 
 ## 📌 배포 주소
 **[gongmoja.store:8080](http://gongmoja.store:8080/)**
