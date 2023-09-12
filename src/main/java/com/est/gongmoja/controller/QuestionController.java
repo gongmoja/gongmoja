@@ -85,6 +85,6 @@ public class QuestionController {
         log.info("질문 작성 완료");
         log.info("upload file name = {}", imageFile.getOriginalFilename());
 
-        return "redirect:/question/list-by-user";
+        return "redirect:/question/question_list";
     }
 }
