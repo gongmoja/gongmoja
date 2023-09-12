@@ -10,4 +10,5 @@ public class UserRegisterRequestDto {
     private String password;
     private String nickname;
     private String email;
+    private String password_check;
 }

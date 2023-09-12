@@ -79,13 +79,19 @@ public class UserController {
     public String registerRequest(
             @ModelAttribute UserRegisterRequestDto requestDto,
             Model model){
+        if(!requestDto.getPassword().equals(requestDto.getPassword_check())){
+            model.addAttribute("message","사용할 패스워드를 다시 확인해주세요.");
+            model.addAttribute("searchUrl","/register");
+            return "users/message";
+        }
         try{
             userService.createUser(requestDto);
             return "redirect:/login";
         }
         catch (CustomException e){
-            //todo : message 띄워야하는데 나중에 추가구현해야함 2
-            return "users/register";
+            model.addAttribute("message","이미 존재하는 아이디입니다.");
+            model.addAttribute("searchUrl","/register");
+            return "users/message";
         }
 
     }
