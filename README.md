@@ -28,12 +28,9 @@
 <p align="center"><img src="https://ifh.cc/g/0qdbr4.png"  width="300" height="300"/></p>
 
 
-<div align="center">
-  <strong>동영상으로 대체 할지 논의</strong>
-</div>
-<br></br>
-
 - **공모자들**은 실시간으로 공모주의 정보를 받아볼 수 있는 웹 어플리케이션 입니다.
+
+![vllo (2)](https://github.com/gongmoja/gongmoja/assets/124870889/e1bdbe69-cad8-4da8-ae7a-486f222cf700)
 
 
 ## 개발 환경
