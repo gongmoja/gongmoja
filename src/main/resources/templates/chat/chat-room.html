@@ -237,7 +237,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.2/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 <script th:inline="javascript">
-  const socket = new WebSocket('ws://13.124.152.20/chatting');
+  const socket = new WebSocket('ws://gongmoja.store/chatting');
   const pathname = window.location.pathname;
   const chatRoomId = parseInt(pathname.split("/")[2]);
   const stompClient = Stomp.over(socket);
