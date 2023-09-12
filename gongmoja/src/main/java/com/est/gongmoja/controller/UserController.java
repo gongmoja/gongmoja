@@ -4,6 +4,7 @@ import com.est.gongmoja.dto.user.*;
 import com.est.gongmoja.entity.UserEntity;
 import com.est.gongmoja.exception.CustomException;
 import com.est.gongmoja.exception.ErrorCode;
+import com.est.gongmoja.exception.ErrorHandler;
 import com.est.gongmoja.jwt.CookieUtil;
 import com.est.gongmoja.jwt.JwtTokenUtil;
 import com.est.gongmoja.service.MailService;
@@ -80,7 +81,7 @@ public class UserController {
             @ModelAttribute UserRegisterRequestDto requestDto,
             Model model){
         if(!requestDto.getPassword().equals(requestDto.getPassword_check())){
-            model.addAttribute("message","사용할 패스워드를 다시 확인해주세요.");
+            model.addAttribute("message", ErrorCode.NEW_PASSWORD_NOT_CORRECT.getMessage());
             model.addAttribute("searchUrl","/register");
             return "users/message";
         }
@@ -89,7 +90,7 @@ public class UserController {
             return "redirect:/login";
         }
         catch (CustomException e){
-            model.addAttribute("message","이미 존재하는 아이디입니다.");
+            model.addAttribute("message",ErrorCode.USERNAME_ALREADY_EXISTS.getMessage());
             model.addAttribute("searchUrl","/register");
             return "users/message";
         }
