@@ -209,12 +209,15 @@
             </nav>
             <!-- 토글 바 끝 -->
             <div class="container-fluid">
-              <h1 th:utext="${stockName + '<br>채팅방'}" ></h1>
-              <style>
-                  #messages {
-                      height: 600px;
-                      width: 350px;
-                      overflow-y: scroll;
+                <h1 th:utext="${stockName + '<br>채팅방'}" class="ellipsis-text"></h1>
+                <style>
+
+                  @media (max-width: 700px) {
+                      #messages {
+                          height: 500px;
+                          width: 100%;
+                          overflow-y: scroll;
+                      }
                   }
                   .my-message {
                       text-align: right;
@@ -225,6 +228,11 @@
                   .admin-message {
                       text-align: center;
                       font-weight: bold;
+                  }
+                  .ellipsis-text {
+                      overflow: hidden;
+                      white-space: nowrap;
+                      text-overflow: ellipsis;
                   }
               </style>
                 <div id="chat">
@@ -376,12 +384,15 @@
           // 일반 메시지인 경우
           const formattedTime = formatTime(message.sentTime);
 
-          if (currentUserId === 1) {
+          if (message.senderId === 1) {
               messageP.innerHTML = message.message;
               messageP.className = "admin-message";
-          } else {
+          } else if(currentUserId === message.senderId){
               messageP.innerHTML = formattedTime + "<br>" + message.sender + ": " + message.message;
               messageP.className = "my-message";
+          } else{
+              messageP.innerHTML = formattedTime + "<br>" + message.sender + ": " + message.message;
+              messageP.className = "other-message";
           }
           messagesDiv.appendChild(messageP);
           scrollToBottom();
