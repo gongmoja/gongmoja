@@ -1,36 +1,10 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
-
+<html xmlns:th="http://www.thymeleaf.org">
 <style>
     #stiky {
-        position: sticky;
-        top: 10px;
+        position:sticky ;
+        top: 20px;
         bottom: 20px;
-
-    }
-
-    .news-item {
-        margin: 10px;
-    }
-
-    .custom-list {
-        padding: 0;
-        list-style: none;
-        display: flex;
-        flex-wrap: wrap;
-    }
-
-    .custom-list li {
-        margin-right: 10px;
-        width: calc(300px); /* 3개씩 표시하므로 33.33%로 설정 */
-        box-sizing: border-box; /* 요소의 padding과 border를 포함하여 크기 계산 */
-    }
-
-    /* 미디어 쿼리: 화면 크기가 768px 이하일 때 한 줄에 2개로 변경 */
-    @media (max-width: 768px) {
-        .custom-list li {
-            width: calc(50% - 10px); /* 화면 크기가 768px 이하일 때 2개씩 표시하므로 50%로 설정 */
-        }
     }
 
     /* 공모자들 타이틀 폰트 */
@@ -46,19 +20,15 @@
         justify-content: center;
         align-items: center;
     }
-
     .sidebar-brand-text {
         font-family: 'yg-jalnan', sans-serif;
         font-size: 23px;
         font-weight: bold;
         color: #5D5D5D;
     }
-
 </style>
 
-
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -77,6 +47,7 @@
     <!-- Custom styles for this template-->
     <link href="/static/bootstrap/css/sb-admin-2.min.css" rel="stylesheet">
 
+
 </head>
 
 <body id="page-top">
@@ -88,24 +59,26 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
         <!-- Sidebar - Brand -->
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
-            <div class="sidebar-brand-icon rotate-n-15"></div>
-            <div class="horizontal-container">
-                <div>GongMoJa</div>
+            <div class="sidebar-brand-icon rotate-n-15">
+                <!--아이콘 변경-->
+                <!--                    <i class="fas fa-laugh-wink"></i>-->
             </div>
+            <div class="horizontal-container">
+                <div>GongMoJa</div></div>
         </a>
 
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
-
-        <!-- 내비게이션 2 : 공모주 관련 내용들 -->
-        <hr class="sidebar-divider my-0">
+        <hr class="sidebar-divider my-0" >
 
         <!-- 구분선 -->
         <hr class="sidebar-divider">
 
+        <!-- 내비게이션 1번 제목-->
+
         <!--내비게이션 1번 항목 (공모주)-->
-        <div id="stiky">
-            <div class="sidebar-heading">GONGMOJA</div>
+        <div id="stiky" >
+            <div  class="sidebar-heading">GONGMOJA</div>
 
             <!-- 1. 공모주 일정 메뉴  -->
             <li class="nav-item">
@@ -169,12 +142,10 @@
                     <!--탑 네비게이션 바 - 로그인 로그아웃 사용자정보-->
                     <!-- Nav Item - User Information -->
                     <li class="nav-item dropdown no-arrow">
-                        <a class="nav-link dropdown-toggle text-dark text-center" href="#" id="userDropdown"
-                           role="button"
+                        <a class="nav-link dropdown-toggle text-dark text-center" href="#" id="userDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="mr-4 d-none d-lg-inline text-gray-600 small" th:if="${userEntity != null}"
-                                  th:text="${userEntity.nickName}+님"></span>
-                            <span class="mr-4 d-none d-lg-inline text-gray-600 small" th:unless="${userEntity != null}">클릭하여 로그인</span>
+                            <span class="mr-4 d-none d-lg-inline text-gray-600 small" th:if="${userEntity != null}"  th:text="${userEntity.nickName}+님"></span>
+                            <span class="mr-4 d-none d-lg-inline text-gray-600 small" th:unless="${userEntity != null}" >클릭하여 로그인</span>
                             <img class="img-profile rounded-circle" src="/static/bootstrap/img/undraw_profile.svg">
                             <!--                                    <button th:method="post" th:action="@{/logout}"></button>-->
                         </a>
@@ -463,6 +434,13 @@
       });
   }
 
+    function fnMoveIndex(targetPage, seq) {
+        // 이동할 대상 페이지의 URL
+        var targetURL = targetPage + "#div" + seq;
+
+        // 새로운 페이지로 이동
+        window.location.href = targetURL;
+    }
 
 </script>
 
