@@ -241,6 +241,15 @@
       }
     });
   }
+
+  function fnMoveIndex(targetPage, seq) {
+    // 이동할 대상 페이지의 URL
+    var targetURL = targetPage + "#div" + seq;
+
+    // 새로운 페이지로 이동
+    window.location.href = targetURL;
+  }
+
 </script>
 
 <!-- script 추가 -->
