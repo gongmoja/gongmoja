@@ -4,7 +4,7 @@
 ### 팀 소개
 | 사진 | 사진 | 사진 | 사진 | 사진 |
 | --- | --- | --- | --- | --- |
-| [**김남훈**](https://github.com/namhoon-kim97) | [**여민수**](https://github.com/minsooy) | [**백성아**](https://github.com/sunga0101) | [**윤쥰필**](https://github.com/leepnujnooy) | [**유다언**](https://github.com/yudaeon) | 
+| <div align="center">[**김남훈**](https://github.com/namhoon-kim97)</div> | [**여민수**](https://github.com/minsooy) | [**백성아**](https://github.com/sunga0101) | [**윤쥰필**](https://github.com/leepnujnooy) | [**유다언**](https://github.com/yudaeon) | 
 | **데이터 크롤링 및 시각화, 배포** | **채팅** | **담당** | **담당** | **담당** |
 
 ### 프로젝트 정보
