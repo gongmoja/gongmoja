@@ -132,7 +132,8 @@ public class UserController {
     @PostMapping("/modify-password")//TODO 소셜로그인 한 사람은 password 가 따로 없어서 관련해 로직 추가해야함
     public String modifyPasswordRequest(
             @ModelAttribute UserModifyPasswordRequestDto requestDto,
-            Authentication authentication
+            Authentication authentication,
+            Model model
     ){
         //유저객체 생성
         UserEntity temp = (UserEntity) authentication.getPrincipal();
@@ -146,10 +147,18 @@ public class UserController {
         String nowPassword = requestDto.getNowPassword();
 
         //현재 비밀번호가 맞는지 확인 (아니면 예외처리)
-        if(!userService.checkPassword(nowPassword,userEntity)) throw new CustomException(ErrorCode.PASSWORD_ERROR);
+        if(!userService.checkPassword(nowPassword,userEntity)){
+            model.addAttribute("message",ErrorCode.PASSWORD_ERROR);
+            model.addAttribute("searchUrl","/modify-password");
+            return "users/message";
+        }
 
         //새 비밀번호 & 새 비밀번호 확인 두개가 같은지 (아니면 예외처리)
-        if(!newPassword.equals(newPasswordCheck)) throw new CustomException(ErrorCode.NEW_PASSWORD_NOT_CORRECT);
+        if(!newPassword.equals(newPasswordCheck)) {
+            model.addAttribute("message",ErrorCode.NEW_PASSWORD_NOT_CORRECT);
+            model.addAttribute("searchUrl","/modify-password");
+            return "users/message";
+        };
 
         //비밀번호 변경
         userService.modifyPassword(newPassword,userEntity);
