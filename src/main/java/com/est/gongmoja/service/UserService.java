@@ -32,6 +32,10 @@ public class UserService {
         Optional<UserEntity> optionalUser = userRepository.findByUserName(requestDto.getUsername());
         if (optionalUser.isPresent()) throw new CustomException(ErrorCode.USERNAME_ALREADY_EXISTS);
 
+        //email 중복 예외처리
+        Optional<UserEntity> optionalUser1 = userRepository.findByEmail(requestDto.getEmail());
+        if (optionalUser1.isPresent()) throw new CustomException(ErrorCode.EMAIL_ALREADY_EXISTS);
+
         //유저 객체 저장
         userRepository.save(UserEntity
                 .builder()
