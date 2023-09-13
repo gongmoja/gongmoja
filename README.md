@@ -67,15 +67,9 @@
 - 마이페이지(즐겨찾는 공모주, 채팅방이동, 문의글등록, 목록, 비밀번호 수정)
   
 
-## 배포
+## 배포 주소
 **[gongmoja.store:8080](http://gongmoja.store/)**
 
-
-## 개인별 역할 
-| 사진 | 사진 | 사진 | 사진 | 사진 |
-| --- | --- | --- | --- | --- |
-| [**김남훈**](https://github.com/namhoon-kim97) | [**여민수**](https://github.com/minsooy) | [**백성아**](https://github.com/sunga0101) | [**윤쥰필**](https://github.com/leepnujnooy) | [**유다언**](https://github.com/yudaeon) | 
-| **담당** | **채팅** | **담당** | **담당** | **담당** |
 
 ## 프로젝트 구조
 
@@ -84,3 +78,9 @@
   
 - CI/CD Workflows
 ![image](https://github.com/leepnujnooy/cicdtest/assets/89959383/8fb8c3a7-2b5b-4ad3-9503-9d22be699b9f)
+
+## 개인별 역할 
+| 사진 | 사진 | 사진 | 사진 | 사진 |
+| --- | --- | --- | --- | --- |
+| [**김남훈**](https://github.com/namhoon-kim97) | [**여민수**](https://github.com/minsooy) | [**백성아**](https://github.com/sunga0101) | [**윤쥰필**](https://github.com/leepnujnooy) | [**유다언**](https://github.com/yudaeon) | 
+| **담당** | **채팅** | **담당** | **담당** | **담당** |
