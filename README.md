@@ -21,10 +21,8 @@
 
 <p align="center"><img src="https://ifh.cc/g/0qdbr4.png"  width="300" height="300"/></p>
 
-
-![vllo (2)](https://github.com/gongmoja/gongmoja/assets/124870889/e1bdbe69-cad8-4da8-ae7a-486f222cf700)
-
 <div align="center">
+  <img src="https://github.com/gongmoja/gongmoja/assets/124870889/e1bdbe69-cad8-4da8-ae7a-486f222cf700" /><br></br>
   <b>공모자들</b>은 실시간으로 공모주의 정보를 받아볼 수 있는 웹 어플리케이션 입니다.
 </div>
 <div align="center">
