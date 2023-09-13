@@ -25,6 +25,7 @@
 ![vllo (2)](https://github.com/gongmoja/gongmoja/assets/124870889/e1bdbe69-cad8-4da8-ae7a-486f222cf700)
 
  **공모자들**은 실시간으로 공모주의 정보를 받아볼 수 있는 웹 어플리케이션 입니다.
+주소 : **[gongmoja.store](http://gongmoja.store/)**
 
 
 ## 개발 기간
@@ -159,9 +160,6 @@
 - 본인이 참여중인 채팅방의 전체 목록을 보여주고 관리자는 모든 채팅방을 보여준다
 - 일반 사용자의 경우 X를 통하여 채팅방을 나갈 수 있다
 
-
-## 배포 주소
-**[gongmoja.store](http://gongmoja.store/)**
 
 
 ## 프로젝트 구조
