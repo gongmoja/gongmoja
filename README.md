@@ -28,41 +28,7 @@
   <b>공모자들</b>은 실시간으로 공모주의 정보를 받아볼 수 있는 웹 어플리케이션 입니다.
 </div>
 <div align="center">
-  주소 : <b>[gongmoja.store](http://gongmoja.store/)</b>
-</div>
- 
-
-
-
-## 개발 기간
-- 프로젝트 구상 : 2023.08.11 ~ 2023 08.16
-- 백엔드 개발: 2023.08.16 ~ 2023.09.04
-- 프론트엔드 개발 밎 리펙토링 2023.09.04 ~ 2023.09.13
-
-
-## 개발 환경
-**[Back-End]**
-
-- Language : `Java 17`
-- Framework: `Spring Boot` (from [spring.io](http://spring.io/))
-- Server : Apache Tomcat
-- IDE: IntelliJ IDEA
-- Database: MySQL
-- Dependencies:
-    - JPA (Java Persistence API)
-    - Lombok
-    - Spring Web
-    - Spring Boot DevTools
-    - WebSocket
-    - STOMP
-
-
-**[ERD]**
-
-![ERD](https://github.com/gongmoja/gongmoja/assets/59547021/2a679e5d-e992-4859-87d2-5688bd12582b)
-
-
-## 개발 기능 사진 및 소개
+기능 소개
 
 ### 메인페이지
 
