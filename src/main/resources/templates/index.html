@@ -85,7 +85,7 @@
 <div id="wrapper">
 
     <!-- 사이드바 -->
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion toggled" id="accordionSidebar">
         <!-- Sidebar - Brand -->
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
             <div class="sidebar-brand-icon rotate-n-15"></div>
@@ -344,22 +344,17 @@
                                 <h6 class="m-0 font-weight-bold text-primary">공모주 최신 뉴스</h6>
                             </div>
                             <!--뉴스 항목-->
-                            <div th:each="news : ${newsList}">
-                                <div class="news-item">
+                            <div th:each="news, iterStat : ${newsList}">
+                                <div class="news-item" th:if="${iterStat.index < 3}">
                                     <p></p>
-                                    <h6><a th:href="${news.newsUrl}" target="_blank"
-                                           th:text="${news.title}">News
-                                        Title</a></h6>
-                                    <p th:text="${news.publisher}" style="display: inline; margin: 0;">
-                                        Publisher</p>
-                                    <img th:src="${news.imageUrl}" alt="News Image" width="20"
-                                         style="max-height: 16px; display: inline;">
+                                    <h6><a th:href="${news.newsUrl}" target="_blank" th:text="${news.title}">News Title</a></h6>
+                                    <p th:text="${news.publisher}" style="display: inline; margin: 0;">Publisher</p>
+                                    <img th:src="${news.imageUrl}" alt="News Image" width="20" style="max-height: 16px; display: inline;">
                                     <span style="display: inline;">|</span>
-                                    <p th:text="${#temporals.format(news.publishedTime, 'yyyy-MM-dd')}"
-                                       style="display: inline; margin: 0;">Published Date</p>
+                                    <p th:text="${#temporals.format(news.publishedTime, 'yyyy-MM-dd')}" style="display: inline; margin: 0;">Published Date</p>
                                     <p th:text="${news.content}">News Summary</p>
                                 </div>
-                                <hr class="sidebar-divider d-none d-md-block">
+                                <hr class="sidebar-divider d-none d-md-block" th:if="${iterStat.index < 2}"> <!-- 여기서 2로 설정하여 3개까지 표시하도록 함 -->
                             </div>
                         </div>
                     </div>
