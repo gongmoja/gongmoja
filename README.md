@@ -4,10 +4,10 @@
 ### 팀 소개
 <div align="center">
  
-| <p align="center"><img src="https://github.com/gongmoja/gongmoja/assets/108842902/151a9b43-0966-42e2-9e24-d65c5bc87db9"  width="180" height="200"/></p> | <p align="center"><img src="https://github.com/gongmoja/gongmoja/assets/108842902/e00a0c81-c417-4cd5-bcd3-6fb390d6ccb6"  width="180" height="200"/></p> | <p align="center"><img src="https://github.com/gongmoja/gongmoja/assets/108842902/07aa7bb5-7207-4ebc-b709-e8d1ed55995c"  width="180" height="200"/></p> | <p align="center"><img src="https://github.com/gongmoja/gongmoja/assets/108842902/3f2c194d-d9b4-40ee-8ce5-a980be31dfaa"  width="180" height="200"/></p> | <p align="center"><img src="https://github.com/gongmoja/gongmoja/assets/108842902/1c4bec07-85df-45ec-9cd8-3ab379bdcdee"  width="180" height="200"/></p> |
+| <p align="center"><img src="https://github.com/gongmoja/gongmoja/assets/108842902/151a9b43-0966-42e2-9e24-d65c5bc87db9"  width="170" height="190"/></p> | <p align="center"><img src="https://github.com/gongmoja/gongmoja/assets/108842902/e00a0c81-c417-4cd5-bcd3-6fb390d6ccb6"  width="170" height="190"/></p> | <p align="center"><img src="https://github.com/gongmoja/gongmoja/assets/108842902/07aa7bb5-7207-4ebc-b709-e8d1ed55995c"  width="170" height="190"/></p> | <p align="center"><img src="https://github.com/gongmoja/gongmoja/assets/108842902/3f2c194d-d9b4-40ee-8ce5-a980be31dfaa"  width="170" height="190"/></p> | <p align="center"><img src="https://github.com/gongmoja/gongmoja/assets/108842902/1c4bec07-85df-45ec-9cd8-3ab379bdcdee"  width="170" height="190"/></p> |
 | --- | --- | --- | --- | --- |
 | <div align="center">[**김남훈**](https://github.com/namhoon-kim97) </div>| <div align="center">[**여민수**](https://github.com/minsooy)  </div>| <div align="center">[**백성아**](https://github.com/sunga0101)  </div>| <div align="center">[**윤쥰필**](https://github.com/leepnujnooy)  </div>| <div align="center">[**유다언**](https://github.com/yudaeon)  </div>| 
-| **데이터 크롤, 시각화, 배포** | **웹소켓 채팅, 채팅방 관리** | **데이터 크롤, 캘린더 연동** | **유저 관리, 보안** | **담당** |
+| <div align="center">**데이터 크롤/시각화/배포**</div> | <div align="center">**웹소켓 채팅/채팅방 관리**</div> | <div align="center">**데이터 크롤/캘린더 연동**</div> | <div align="center">**유저 관리/보안**</div> | <div align="center">**게시판 담당/캘린더 제작** </div>|
 
 </div>
 
