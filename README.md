@@ -24,8 +24,14 @@
 
 ![vllo (2)](https://github.com/gongmoja/gongmoja/assets/124870889/e1bdbe69-cad8-4da8-ae7a-486f222cf700)
 
- **공모자들**은 실시간으로 공모주의 정보를 받아볼 수 있는 웹 어플리케이션 입니다.
-주소 : **[gongmoja.store](http://gongmoja.store/)**
+<div align="center">
+  <b>공모자들</b>은 실시간으로 공모주의 정보를 받아볼 수 있는 웹 어플리케이션 입니다.
+</div>
+<div align="center">
+  주소 : <b>[gongmoja.store](http://gongmoja.store/)</b>
+</div>
+ 
+
 
 
 ## 개발 기간
