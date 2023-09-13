@@ -28,7 +28,7 @@
   <b>공모자들</b>은 실시간으로 공모주의 정보를 받아볼 수 있는 웹 어플리케이션 입니다.
 </div>
 <div align="center">
-  배포 주소 : <b><a href="http://gongmoja.store" target="blank">gongmoja.store</a></b>
+  배포 주소 : <b><a href="http://gongmoja.store" target="_blank">gongmoja.store</a></b>
 </div>
 
 ### 프로젝트 구조
