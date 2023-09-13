@@ -28,7 +28,19 @@
   <b>공모자들</b>은 실시간으로 공모주의 정보를 받아볼 수 있는 웹 어플리케이션 입니다.
 </div>
 <div align="center">
-기능 소개
+
+## 프로젝트 구조
+
+- 서비스 요청 흐름도
+  <img width="878" alt="스크린샷 2023-09-12 오후 5 24 15" src="https://github.com/leepnujnooy/cicdtest/assets/89959383/ee12a705-a4f9-44f5-b248-3746f202f1a7">
+  
+
+- CI/CD Workflows
+![image](https://github.com/leepnujnooy/cicdtest/assets/89959383/8fb8c3a7-2b5b-4ad3-9503-9d22be699b9f)
+
+
+
+## 기능 소개
 
 ### 메인페이지
 
@@ -133,14 +145,5 @@
 - 일반 사용자의 경우 X를 통하여 채팅방을 나갈 수 있다
 
 
-
-## 프로젝트 구조
-
-- 서비스 요청 흐름도
-  <img width="878" alt="스크린샷 2023-09-12 오후 5 24 15" src="https://github.com/leepnujnooy/cicdtest/assets/89959383/ee12a705-a4f9-44f5-b248-3746f202f1a7">
-  
-
-- CI/CD Workflows
-![image](https://github.com/leepnujnooy/cicdtest/assets/89959383/8fb8c3a7-2b5b-4ad3-9503-9d22be699b9f)
 
 
