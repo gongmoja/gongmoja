@@ -20,11 +20,6 @@
 
 - 항상 클린한 경험을 위하여 비매너 유저들을 신고 할 수 있습니다
  
-## 개발 기간
-- 프로젝트 구상 : 2023.08.11 ~ 2023 08.16
-- 백엔드 개발: 2023.08.16 ~ 2023.09.04
-- 프론트엔드 개발 밎 리펙토링 2023.09.04 ~ 2023.09.13
-
 ## 프로젝트 소개
 
 <p align="center"><img src="https://ifh.cc/g/0qdbr4.png"  width="300" height="300"/></p>
@@ -35,7 +30,31 @@
 ![vllo (2)](https://github.com/gongmoja/gongmoja/assets/124870889/e1bdbe69-cad8-4da8-ae7a-486f222cf700)
 
 
+## 개발 기간
+- 프로젝트 구상 : 2023.08.11 ~ 2023 08.16
+- 백엔드 개발: 2023.08.16 ~ 2023.09.04
+- 프론트엔드 개발 밎 리펙토링 2023.09.04 ~ 2023.09.13
+
+
 ## 개발 환경
+**[Back-End]**
+
+- Language : `Java 17`
+- Framework: `Spring Boot` (from [spring.io](http://spring.io/))
+- Server : Apache Tomcat
+- IDE: IntelliJ IDEA
+- Database: MySQL
+- Dependencies:
+    - JPA (Java Persistence API)
+    - Lombok
+    - Spring Web
+    - Spring Boot DevTools
+    - ... (+추가)
+
+
+**[ERD]**
+
+![ERD](https://github.com/gongmoja/gongmoja/assets/59547021/2a679e5d-e992-4859-87d2-5688bd12582b)
 
 
 ## 캐치프레이즈 및 프로젝트 설명
