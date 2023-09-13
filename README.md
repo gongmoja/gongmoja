@@ -1,7 +1,7 @@
 # 📈공모자들📈
 실시간 공모주 청약 경쟁률 제공 웹 어플리케이션
 
-### 팀 소개
+### 👥 팀 소개
 <div align="center">
  
 | <p align="center"><img src="https://github.com/gongmoja/gongmoja/assets/108842902/151a9b43-0966-42e2-9e24-d65c5bc87db9"  width="170" height="190"/></p> | <p align="center"><img src="https://github.com/gongmoja/gongmoja/assets/108842902/e00a0c81-c417-4cd5-bcd3-6fb390d6ccb6"  width="170" height="190"/></p> | <p align="center"><img src="https://github.com/gongmoja/gongmoja/assets/108842902/07aa7bb5-7207-4ebc-b709-e8d1ed55995c"  width="170" height="190"/></p> | <p align="center"><img src="https://github.com/gongmoja/gongmoja/assets/108842902/3f2c194d-d9b4-40ee-8ce5-a980be31dfaa"  width="170" height="190"/></p> | <p align="center"><img src="https://github.com/gongmoja/gongmoja/assets/108842902/1c4bec07-85df-45ec-9cd8-3ab379bdcdee"  width="170" height="190"/></p> |
@@ -11,7 +11,7 @@
 
 </div>
 
-### 프로젝트 정보
+### 💡 프로젝트 정보
 - 공모주 별로 복잡한 청약 기간, 환불/상장 일자를 달력으로 간단히 볼 수 있습니다
 
 - 관심가는 종목들은 한번에 마이페이지로 관리하여 지속 트래킹 할 수 있습니다
@@ -20,47 +20,46 @@
 
 - 항상 클린한 경험을 위하여 비매너 유저들을 신고 할 수 있습니다
  
-### 프로젝트 소개
-<p align="center"><img src="https://ifh.cc/g/0qdbr4.png"  width="300" height="300"/></p>
+### 📈 프로젝트 소개
+<p align="center"><img src="https://ifh.cc/g/K24wo2.jpg"  width="320" height="320"/></p>
 
 <div align="center">
-  <img src="https://github.com/gongmoja/gongmoja/assets/124870889/e1bdbe69-cad8-4da8-ae7a-486f222cf700" /><br></br>
+  <img src="https://github.com/gongmoja/gongmoja/assets/124870889/de37d2df-540f-4767-b266-1220005fc5d0" /><br></br>
   <b>공모자들</b>은 실시간으로 공모주의 정보를 받아볼 수 있는 웹 어플리케이션 입니다.
 </div>
 <div align="center">
   배포 주소 : <b><a href="http://gongmoja.store" target="_blank">gongmoja.store</a></b>
 </div>
 
-### 프로젝트 구조
-- 서비스 요청 흐름도
+### ⚙️ 프로젝트 구조
+**서비스 요청 흐름도**
   <img width="878" alt="스크린샷 2023-09-12 오후 5 24 15" src="https://github.com/leepnujnooy/cicdtest/assets/89959383/ee12a705-a4f9-44f5-b248-3746f202f1a7">
   
 
-- CI/CD Workflows
+**CI/CD Workflows**
 ![image](https://github.com/leepnujnooy/cicdtest/assets/89959383/8fb8c3a7-2b5b-4ad3-9503-9d22be699b9f)
 
 
-### 개발 환경
-
+### 🔧 개발 환경
 **[개발 기간]**
-- 프로젝트 구상 : 2023.08.11 ~ 2023 08.16
-- 백엔드 개발: 2023.08.16 ~ 2023.09.04
-- 프론트엔드 개발 밎 리펙토링 2023.09.04 ~ 2023.09.13
+- 프로젝트 구상 : `2023.08.11 ~ 2023 08.16`
+- 백엔드 개발 : `2023.08.16 ~ 2023.09.04`
+- 프론트엔드 개발 밎 리펙토링 : `2023.09.04 ~ 2023.09.13`
 
 **[Back-End]**
 
 - Language : `Java 17`
 - Framework: `Spring Boot` (from [spring.io](http://spring.io/))
-- Server : Apache Tomcat
-- IDE: IntelliJ IDEA
-- Database: MySQL
+- Server : `Apache Tomcat`
+- IDE: `IntelliJ IDEA`
+- Database: `MySQL`
 - Dependencies:
-    - JPA (Java Persistence API)
-    - Lombok
-    - Spring Web
-    - Spring Boot DevTools
-    - WebSocket
-    - STOMP
+    - `JPA (Java Persistence API)`
+    - `Lombok`
+    - `Spring Web`
+    - `Spring Boot DevTools`
+    - `WebSocket`
+    - `STOMP`
 
 
 **[ERD]**
@@ -96,7 +95,7 @@
  - 해당 공모주 크롤 된 주식 정보 확인 가능
  - 해당 공모주 관련 `뉴스 기사` 확인
     
-### `2.유저 관리 (인증 & 인가)`
+### `2.유저 관리(인증 & 인가)`
 **회원가입**
 - 아이디, 이메일은 UNIQUE 한 형태로 서버에 저장
 - 비밀번호 입력, 재입력 다를 시 예외처리
