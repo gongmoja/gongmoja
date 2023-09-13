@@ -49,7 +49,8 @@
     - Lombok
     - Spring Web
     - Spring Boot DevTools
-    - ... (+추가)
+    - WebSocket
+    - STOMP
 
 
 **[ERD]**
