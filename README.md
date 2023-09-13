@@ -2,10 +2,14 @@
 실시간 공모주 청약 경쟁률 제공 웹 어플리케이션
 
 ### 팀 소개
-| 사진 | 사진 | 사진 | 사진 | 사진 |
+<div align="center">
+ 
+| <p align="center"><img src="https://github.com/gongmoja/gongmoja/assets/108842902/151a9b43-0966-42e2-9e24-d65c5bc87db9"  width="180" height="200"/></p> | <p align="center"><img src="https://github.com/gongmoja/gongmoja/assets/108842902/e00a0c81-c417-4cd5-bcd3-6fb390d6ccb6"  width="180" height="200"/></p> | <p align="center"><img src="https://github.com/gongmoja/gongmoja/assets/108842902/07aa7bb5-7207-4ebc-b709-e8d1ed55995c"  width="180" height="200"/></p> | <p align="center"><img src="https://github.com/gongmoja/gongmoja/assets/108842902/3f2c194d-d9b4-40ee-8ce5-a980be31dfaa"  width="180" height="200"/></p> | <p align="center"><img src="https://github.com/gongmoja/gongmoja/assets/108842902/1c4bec07-85df-45ec-9cd8-3ab379bdcdee"  width="180" height="200"/></p> |
 | --- | --- | --- | --- | --- |
-| <div align="center">[**김남훈**](https://github.com/namhoon-kim97)</div> | [**여민수**](https://github.com/minsooy) | [**백성아**](https://github.com/sunga0101) | [**윤쥰필**](https://github.com/leepnujnooy) | [**유다언**](https://github.com/yudaeon) | 
-| **데이터 크롤링 및 시각화, 배포** | **채팅** | **담당** | **담당** | **담당** |
+| <div align="center">[**김남훈**](https://github.com/namhoon-kim97) </div>| <div align="center">[**여민수**](https://github.com/minsooy)  </div>| <div align="center">[**백성아**](https://github.com/sunga0101)  </div>| <div align="center">[**윤쥰필**](https://github.com/leepnujnooy)  </div>| <div align="center">[**유다언**](https://github.com/yudaeon)  </div>| 
+| **데이터 크롤, 시각화, 배포** | **웹소켓 채팅, 채팅방 관리** | **데이터 크롤, 캘린더 연동** | **유저 관리, 보안** | **담당** |
+
+</div>
 
 ### 프로젝트 정보
 - 공모주 별로 복잡한 청약 기간, 환불/상장 일자를 달력으로 간단히 볼 수 있습니다
@@ -116,7 +120,7 @@
 ### `4.채팅방`
 **채팅 기능**
 - 본인의 채팅은 좌측에 타인의 채팅은 우측에 표시
-- 일별 첫 채팅에는 현제날짜를 표시
+- 일별 첫 채팅에는 현재 날짜를 표시
 - 관리자 채팅은 공지형식으로 표시됨
 
 **참여중인 채팅방**
