@@ -90,11 +90,17 @@ public class UserController {
             return "redirect:/login";
         }
         catch (CustomException e){
-            model.addAttribute("message",ErrorCode.USERNAME_ALREADY_EXISTS.getMessage());
-            model.addAttribute("searchUrl","/register");
-            return "users/message";
+            if(e.getErrorCode().equals(ErrorCode.USERNAME_ALREADY_EXISTS)){
+                model.addAttribute("message",ErrorCode.USERNAME_ALREADY_EXISTS.getMessage());
+                model.addAttribute("searchUrl","/register");
+                return "users/message";
+            }
+            else{
+                model.addAttribute("message",ErrorCode.EMAIL_ALREADY_EXISTS.getMessage());
+                model.addAttribute("searchUrl","/register");
+                return "users/message";
+            }
         }
-
     }
 
 //    @PreAuthorize("isAuthenticated()")
